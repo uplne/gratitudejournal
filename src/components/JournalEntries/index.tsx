@@ -1,6 +1,6 @@
-import { View, Text, FlatList } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, FlatList, ImageBackground } from 'react-native';
 import moment from 'moment';
-import { Entypo } from '@expo/vector-icons';
 import {
   flow,
   groupBy,
@@ -9,10 +9,14 @@ import {
   first,
 } from 'lodash/fp';
 
-import { useJournalContext, JournalTypes, JOURNAL_TYPES } from '../../context/JournalContext';
+import { useJournalStore, JournalTypes, JOURNAL_TYPES } from '../../state/JournalState';
 import { JournalItem } from '../JournalItem';
 import { getImageSize } from '../../services/ImageSize';
 import { ImageWrapper } from '../ImageWrapper';
+import { TreeThingsEntry } from './Entries/TreeThingsEntry';
+import { Default } from './Entries/Default';
+
+import emptyJournal from '../../../assets/bgs/empty_journal2.png';
 
 import styles from './styles';
 
@@ -23,39 +27,25 @@ type Props = {
 export const JournalEntries = ({
   lastOnly = false,
 }: Props) => {
-  const { journal } = useJournalContext();
+  const { getData, journal } = useJournalStore();
   const hasJournal = journal.length > 0;
   let currentMonth = moment(new Date());
   let currentDay: moment.Moment | null = null;
 
-  const renderData = (post:JournalTypes) => {
-    if (typeof post.data !== 'string') {
-      return (
-        <View>
-          {post.data.map((item) => {
-            if (item === '') {
-              return null;
-            }
+  useEffect(() => {
+    getData();
+  }, []);
 
-            return (
-            <View key={item} style={styles.container}>
-              <Entypo style={styles.icon} name="dot-single" size={24} color="black" />
-              <Text style={styles.text}>{item}</Text>
-            </View> 
-            );
-          })}
-        </View>
-      );
+  const renderData = (post:JournalTypes) => {
+    if (post.type === JOURNAL_TYPES.THREE_THINGS) {
+      return <TreeThingsEntry data={post} />;
     }
 
-    const containerStyles = post.type === JOURNAL_TYPES.RANDOM ? styles.containerWithPrompt : styles.container
+    if (post.type === JOURNAL_TYPES.DEFAULT) {
+      return <Default data={post} />;
+    }
 
-    return (
-      <View key={post.data} style={containerStyles}>
-        {post.type === JOURNAL_TYPES.RANDOM && <Text style={styles.prompt}>{post.prompt}</Text>}
-        <Text style={styles.text}>{post.data}</Text>
-      </View> 
-    );
+    return null;
   };
 
   const getFooter = () => <View style={styles.footer} />;
@@ -75,7 +65,8 @@ export const JournalEntries = ({
   if (!hasJournal) {
     return (
       <View style={styles.empty}>
-        <Text>Your Journal is Empty</Text>
+        <ImageBackground source={emptyJournal} style={styles.emptyImage} />
+        <Text style={styles.emptyText}>The beauty of journaling lies in its freedom - the freedom to be completely honest, raw, and unfiltered.</Text>
       </View>
     );
   }

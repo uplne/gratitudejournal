@@ -6,6 +6,7 @@ import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetType
 import { PageHeading } from '../PageHeading';
 import { PageText } from '../PageText';
 import { StackNavigation } from '../../types/navigation-types';
+import { ButtonDelete } from '../Buttons/ButtonDelete';
 
 import styles from './styles';
 
@@ -17,6 +18,7 @@ type ComponentProps = {
   showHome?: boolean,
   style?: TextStyle,
   pageHeadingStyle?: TextStyle,
+  allowDelete?: () => void | undefined,
 };
 
 export const ContainerWithHeader = ({
@@ -27,6 +29,7 @@ export const ContainerWithHeader = ({
   showHome = false,
   style = {},
   pageHeadingStyle = {},
+  allowDelete = undefined,
 }: ComponentProps) => {
   const navigation = useNavigation<StackNavigation>();
   const componentStyles = [
@@ -50,6 +53,14 @@ export const ContainerWithHeader = ({
         <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
         <Appbar.Header style={styles.appBar}>
           {renderBackAction()}
+          {allowDelete &&
+            <ButtonDelete
+              style={styles.buttonDelete}
+              onPress={allowDelete}
+            >
+              Delete
+            </ButtonDelete>
+          }
           {showHome && <Appbar.Action icon="home-account" onPress={goHome} />}
         </Appbar.Header>
         {title && <PageHeading style={pageHeadingStyle} title={title} />}

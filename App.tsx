@@ -13,8 +13,10 @@ import { Home } from './src/pages/Home';
 import { AppStart } from './src/pages/AppStart';
 import { AddNew } from './src/pages/AddNew';
 import { ThreeThings } from './src/pages/Journals/ThreeThings';
-import { AppStartContextComponent, getAppData } from './src/context/AppStartContext';
-import { JournalContextComponent } from './src/context/JournalContext';
+import { Default } from './src/pages/Journals/Default';
+import { EditJournalEntry } from './src/pages/EditJournalEntry';
+import { getAppData } from './src/state/AppStartState';
+import { idType } from './src/types/idtype';
 
 import { InitTracking } from './src/services/Tracking';
 
@@ -30,15 +32,16 @@ export type RootStackParamList = {
   AppStart: undefined,
   Tracking: undefined,
   AddNew: undefined,
+  EditJournalEntry: { id: idType },
 
   ThreeThings: undefined,
+  Default: undefined,
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [appData, setAppData] = useState(null);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
     'CeraProMedium': require('./assets/fonts/cerapro/CeraProMedium.otf'),
@@ -49,15 +52,14 @@ export default function App() {
   });
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded && appIsReady) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, appIsReady]);
 
   useEffect(() => {
     const prepare = async () => {
-      const data = await getAppData();
-      setAppData(data);
+      await getAppData();
       setAppIsReady(true);
     };
 
@@ -76,35 +78,34 @@ export default function App() {
       <PaperProvider>
         <NativeBaseProvider>
           <NavigationContainer>
-            <AppStartContextComponent data={appData}>
-              <JournalContextComponent>
-                <SheetProvider>
-                  <FlashMessage position="bottom" />
-                  <Stack.Navigator
-                    screenOptions={{
-                      headerShown: false,
-                      animation: 'slide_from_right',
-                      contentStyle: {
-                        backgroundColor: theme.secondary,
-                      }
-                    }}
-                    initialRouteName="AppStart"
-                  >
-                    <Stack.Screen name="AppStart" component={AppStart} />
-                    <Stack.Screen name="Home" component={Home} />
+            <SheetProvider>
+              <FlashMessage position="bottom" />
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                  animation: 'slide_from_right',
+                  contentStyle: {
+                    backgroundColor: theme.secondary,
+                  }
+                }}
+                initialRouteName="AppStart"
+              >
+                <Stack.Screen name="AppStart" component={AppStart} />
+                <Stack.Screen name="Home" component={Home} />
 
-                    <Stack.Screen name="ThreeThings" component={ThreeThings} />
+                {/* // Journals */}
+                <Stack.Screen name="ThreeThings" component={ThreeThings} />
+                <Stack.Screen name="Default" component={Default} />
 
-                    <Stack.Group screenOptions={{
-                      presentation: 'modal',
-                      animation: 'slide_from_bottom',
-                    }}>
-                      <Stack.Screen name="AddNew" component={AddNew} />
-                    </Stack.Group>
-                  </Stack.Navigator>
-                </SheetProvider>
-              </JournalContextComponent>
-            </AppStartContextComponent>
+                <Stack.Group screenOptions={{
+                  presentation: 'modal',
+                  animation: 'slide_from_bottom',
+                }}>
+                  <Stack.Screen name="AddNew" component={AddNew} />
+                  <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
+                </Stack.Group>
+              </Stack.Navigator>
+            </SheetProvider>
           </NavigationContainer>
         </NativeBaseProvider>
       </PaperProvider>

@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingBottom: 5,
+    backgroundColor: 'red',
+    marginTop: 15,
   },
   containerWithPrompt: {
     width: '85%',
@@ -21,11 +22,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingBottom: 10,
   },
+  emptyImage: {
+    width: 300,
+    height: 290,
+  },
   text: {
     width: '100%',
     fontSize: 16,
     lineHeight: 22,
-    marginBottom: 15,
   },
   icon: {
     marginTop: 0,
@@ -67,7 +71,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   empty: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginBottom: 60,
+  },
+  emptyText: {
+    fontFamily: 'CeraProLight',
+    fontSize: 15,
+    lineHeight: 22,
+    color: 'rgba(0,0,0,.6)',
+    textAlign: 'center',
   }
 });
 

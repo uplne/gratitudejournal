@@ -5,10 +5,10 @@ const styles = StyleSheet.create({
   headerImage: {
     position: 'absolute',
     top: 0,
-    right: -40,
+    right: -10,
     width: 200,
-    height: 290,
-    zIndex: 1,
+    height: 320,
+    zIndex: -1,
   },
   pressableBox: {
     backgroundColor: theme.primary,
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 40,
+    paddingTop: 0,
     paddingBottom: 0,
     marginBottom: 0,
-    backgroundColor: theme.secondary,
+    zIndex: 10,
   },
   container: {
     flex: 1,

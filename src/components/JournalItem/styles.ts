@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.primary,
     marginBottom: 20,
     padding: 20,
-    paddingBottom: 8,
     fontWeight: 'bold',
     display: 'flex',
     flexDirection: 'row',
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   iconButton: {
     margin: 0,
     marginRight: -10,
-    marginTop: -10,
+    marginTop: -9,
     position: 'absolute',
     top: 20,
     right: 20,

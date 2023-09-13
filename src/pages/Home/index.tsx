@@ -4,7 +4,6 @@ import {
   StatusBar,
   View,
 } from 'react-native';
-import { useDisclose } from "native-base";
 
 import { IconCircleButton } from '../../components/Buttons/IconCircleButton';
 import { StackNavigation } from '../../types/navigation-types';
@@ -18,27 +17,21 @@ import styles from './styles';
 
 export const Home = () => {
   const navigation = useNavigation<StackNavigation>();
-  const {
-    isOpen,
-    onToggle,
-  } = useDisclose();
 
   const clickPlusHandler = () => {
     TrackingEvent('Home - Click', { "Name": 'Add button'});
     navigation.navigate('AddNew');
   };
 
-  const staggerStyles = isOpen ? [styles.stagger, { opacity: 1, height: 'auto' }] : styles.stagger;
-
   return (
     <View style={styles.root}>
       <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
       <Container>
-        <SubHeading>Latest Journal Entry</SubHeading>
+        <SubHeading>My Journal</SubHeading>
         <JournalEntries />
       </Container>
       <IconCircleButton
-        icon="plus"
+        icon="text-box-plus-outline"
         style={styles.addNewButton}
         onPress={clickPlusHandler}
         disabled={false}

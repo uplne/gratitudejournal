@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Pressable } from "native-base";
 import moment from 'moment';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -22,9 +21,9 @@ import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 
 import styles from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ThreeThings'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Default'>;
 
-export const ThreeThings = ({
+export const Default = ({
   route,
 }: Props) => {
   const { resetToHome } = resetNavigationToHome();
@@ -33,32 +32,17 @@ export const ThreeThings = ({
 
   const date = moment(route.params?.date || new Date()).toISOString();
 
-  const [positive, setPositive] = useState<string[]>(new Array(3).fill(''));
+  const [text, setText] = useState('');
   const [image, setImage] = useState<ImageType | null>(null);
 
   const onSave = async () => {
-    const filterOutEmpty = positive.filter((item) => item !== '');
-    const newArray = new Array(3).fill('').map((_, index) => {
-      if (filterOutEmpty[index]) {
-        return filterOutEmpty[index];
-      }
-
-      return '';
-    });
-
     await setNewJournal({
-      type: JOURNAL_TYPES.THREE_THINGS,
+      type: JOURNAL_TYPES.DEFAULT,
       date,
-      data: newArray,
+      data: text,
       image, 
     });
     resetToHome();
-  };
-
-  const setPositiveHandler = (value: string, id: number) => {
-    const newArray = [...positive];
-    newArray[id] = value;
-    setPositive(newArray);
   };
 
   const keyboardPressHandler = () => {
@@ -103,7 +87,7 @@ export const ThreeThings = ({
 
   return (
     <ContainerWithHeader
-      title="Three Positive Things Entry"
+      title="Blank Page Entry"
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
@@ -115,30 +99,12 @@ export const ThreeThings = ({
             showsHorizontalScrollIndicator={false}
           >
             <View style={styles.textInputContainer}>
-              <Entypo name="dot-single" size={24} color="black" />
               <TextInput
-                value={positive[0] || ''}
+                value={text}
                 multiline
-                onChangeText={(value) => setPositiveHandler(value, 0)}
+                onChangeText={setText}
                 style={styles.textArea}
-              />
-            </View>
-            <View style={styles.textInputContainer}>
-              <Entypo name="dot-single" size={24} color="black" />
-              <TextInput
-                value={positive[1] || ''}
-                multiline
-                onChangeText={(value) => setPositiveHandler(value, 1)}
-                style={styles.textArea}
-              />
-            </View>
-            <View style={styles.textInputContainer}>
-              <Entypo name="dot-single" size={24} color="black" />
-              <TextInput
-                value={positive[2] || ''}
-                multiline
-                onChangeText={(value) => setPositiveHandler(value, 2)}
-                style={styles.textArea}
+                selectionColor={styles.textArea.selectionColor}
               />
             </View>
             <View style={styles.bottomSection}>

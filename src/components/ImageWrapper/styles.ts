@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 20,
     backgroundColor: 'white',
   },
 });

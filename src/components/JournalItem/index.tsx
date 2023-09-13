@@ -19,10 +19,10 @@ export const JournalItem = ({
 }: ComponentProps) => {
   const navigation = useNavigation<StackNavigation>();
   const onPress = () => {
-    TrackingEvent('Gratitude - Click', { "Name": `Edit ${id}`});
-    // navigation.navigate('EditGratitude', {
-    //   id,
-    // });
+    TrackingEvent('Journal Entry - Click', { "Name": `Edit ${id}`});
+    navigation.navigate('EditJournalEntry', {
+      id,
+    });
   };
 
   return (

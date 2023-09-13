@@ -1,15 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 
-import { useAppStartContext } from '../../context/AppStartContext';
+import { useAppStateStore } from '../../state/AppStartState';
 import { StackNavigation } from '../../types/navigation-types';
 import { useEffect } from 'react';
 
 export const AppStart = () => {
-  const { appStart } = useAppStartContext();
   const navigation = useNavigation<StackNavigation>();
+  const appState = useAppStateStore((state) => state.appState);
+
+  console.log(appState);
 
   useEffect(() => {
-    if (appStart && !appStart.alreadyLaunched) {
+    console.log('appstarted mounted');
+    if (appState && !appState.alreadyLaunched) {
       navigation.navigate('Home');
     } else {
       navigation.navigate('Home');
