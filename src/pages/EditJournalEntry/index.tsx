@@ -8,6 +8,7 @@ import { useJournalStore, JOURNAL_TYPES } from '../../state/JournalState';
 import { RootStackParamList } from '../../../App';
 import { StackNavigation } from '../../types/navigation-types';
 import { EditThreeThingsJournal } from './EditThreeThingsJournal';
+import { EditDefaultJournal } from './EditDefaultJournal';
 import { resetNavigationToHome } from '../../hooks/resetNavigationToHome';
 
 import styles from './styles';
@@ -30,6 +31,10 @@ export const EditJournalEntry = ({
     if (!journalItem) {
       navigation.navigate('AddNew');
       return;
+    }
+
+    if (journalItem.type === JOURNAL_TYPES.DEFAULT) {
+      return <EditDefaultJournal id={journalId} goBack={() => navigation.goBack()} />
     }
 
     if (journalItem.type === JOURNAL_TYPES.THREE_THINGS) {

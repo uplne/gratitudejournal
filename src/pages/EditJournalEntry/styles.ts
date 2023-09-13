@@ -50,6 +50,17 @@ const styles = StyleSheet.create({
     width: '90%',
     textAlignVertical: 'top',
   },
+  textAreaMultiline: {
+    fontFamily: 'CeraProBold',
+    fontSize: 18,
+    lineHeight: 24,
+    color: theme.colorSecondary,
+    selectionColor: theme.colorSecondary,
+    backgroundColor: 'transparent',
+    width: '100%',
+    minHeight: 100,
+    textAlignVertical: 'top',
+  },
   viewWrapper: {
     borderRadius: 20,
     overflow: 'hidden',

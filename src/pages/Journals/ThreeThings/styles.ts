@@ -8,6 +8,14 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
+  headerImage: {
+    position: 'absolute',
+    top: 35,
+    right: -35,
+    width: 350,
+    height: 200,
+    zIndex: -1,
+  },
   textHeading: {
     fontFamily: 'CeraProBold',
     fontSize: 26,
