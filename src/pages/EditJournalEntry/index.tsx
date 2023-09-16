@@ -8,7 +8,9 @@ import { useJournalStore, JOURNAL_TYPES } from '../../state/JournalState';
 import { RootStackParamList } from '../../../App';
 import { StackNavigation } from '../../types/navigation-types';
 import { EditThreeThingsJournal } from './EditThreeThingsJournal';
+import { EditOneLineJournal } from './EditOneLineJournal';
 import { EditDefaultJournal } from './EditDefaultJournal';
+import { EditPromptJournal } from './EditPromptJournal';
 import { resetNavigationToHome } from '../../hooks/resetNavigationToHome';
 
 import styles from './styles';
@@ -33,8 +35,16 @@ export const EditJournalEntry = ({
       return;
     }
 
+    if (journalItem.type === JOURNAL_TYPES.ONE_LINE) {
+      return <EditOneLineJournal id={journalId} goBack={() => navigation.goBack()} />
+    }
+
     if (journalItem.type === JOURNAL_TYPES.DEFAULT) {
       return <EditDefaultJournal id={journalId} goBack={() => navigation.goBack()} />
+    }
+
+    if (journalItem.type === JOURNAL_TYPES.PROMPT) {
+      return <EditPromptJournal id={journalId} goBack={() => navigation.goBack()} />
     }
 
     if (journalItem.type === JOURNAL_TYPES.THREE_THINGS) {

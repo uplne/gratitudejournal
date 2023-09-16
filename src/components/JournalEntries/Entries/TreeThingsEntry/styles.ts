@@ -25,15 +25,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginLeft: -6,
   },
-  prompt: {
-    fontFamily: 'CeraProMedium',
-    fontSize: 16,
-    backgroundColor: 'rgba(0,0,0,.1)',
-    padding: 10,
-    width: '100%',
-    borderRadius: 10,
-    marginBottom: 20,
-  },
 });
 
 export default styles as typeof styles;

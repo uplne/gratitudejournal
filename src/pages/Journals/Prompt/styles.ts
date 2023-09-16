@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     color: theme.colorSecondary,
     selectionColor: theme.colorSecondary,
     backgroundColor: 'transparent',
-    width: '90%',
+    width: '100%',
+    minHeight: 100,
     textAlignVertical: 'top',
   },
   floatingBlock: {
@@ -105,6 +106,23 @@ const styles = StyleSheet.create({
   bottomSection: {
     marginBottom: 40,
   },
+  prompt: {
+    fontFamily: 'CeraProBold',
+    fontSize: 18,
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  buttonPrompt: {
+    width: 130,
+    height: 40,
+    backgroundColor: 'rgba(0,0,0,.1)',
+    borderRadius: 100,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+  }
 });
 
 export default styles as typeof styles;

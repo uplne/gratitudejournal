@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 
 import { JournalTypes, JOURNAL_TYPES } from '../../../../state/JournalState';
 
-import styles from '../TreeThingsEntry/styles';
+import styles from '../../styles';
 
 type Props = {
   data: JournalTypes,
@@ -11,11 +11,11 @@ type Props = {
 export const Default = ({
   data,
 }: Props) => {
-  const containerStyles = data.type === JOURNAL_TYPES.RANDOM ? styles.containerWithPrompt : styles.container
+  const containerStyles = data.type === JOURNAL_TYPES.PROMPT ? styles.containerWithPrompt : styles.container;
 
   return (
-    <View key={data.data} style={containerStyles}>
-      {data.type === JOURNAL_TYPES.RANDOM && <Text style={styles.prompt}>{data.prompt}</Text>}
+    <View key={String(data.data)} style={containerStyles}>
+      {data.type === JOURNAL_TYPES.PROMPT && <Text style={styles.prompt}>{data.prompt}</Text>}
       <Text style={styles.text}>{data.data}</Text>
     </View> 
   );

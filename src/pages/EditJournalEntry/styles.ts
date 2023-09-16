@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   viewWrapper: {
-    borderRadius: 20,
     overflow: 'hidden',
   },
   innerWrap: {
@@ -79,7 +78,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   buttonKeyboard: {
-    right: 0,
+    right: 20,
+    bottom: 20,
   },
   prompt: {
     fontFamily: 'CeraProBold',

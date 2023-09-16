@@ -1,9 +1,10 @@
 import { Text, StatusBar, View, TextInput, Keyboard, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable } from "native-base";
 import moment from 'moment';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 import { RootStackParamList } from '../../../../App';
@@ -18,16 +19,18 @@ import { getImageSize } from '../../../services/ImageSize';
 import { ImageWrapper } from '../../../components/ImageWrapper';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
+import { JournalPrompts } from './JournalPrompts';
 
 import styles from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Default'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Prompt'>;
 
-export const OneLine = ({
+export const Prompt = ({
   route,
 }: Props) => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
+  const [prompt, setPrompt] = useState('');
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
 
   const date = moment(route.params?.date || new Date()).toISOString();
@@ -37,13 +40,26 @@ export const OneLine = ({
 
   const onSave = async () => {
     await setNewJournal({
-      type: JOURNAL_TYPES.ONE_LINE,
+      type: JOURNAL_TYPES.PROMPT,
       date,
       data: text,
+      prompt,
       image, 
     });
     resetToHome();
   };
+
+  const requestPrompt = () => {
+    const numberOfPrompts = JournalPrompts.length;
+    const promptNumber = Math.floor(Math.random() * numberOfPrompts) + 1;
+    const newPrompt = JournalPrompts[promptNumber] || '';
+
+    setPrompt(newPrompt);
+  };
+
+  useEffect(() => {
+    requestPrompt();
+  }, []);
 
   const keyboardPressHandler = () => {
     Keyboard.dismiss();
@@ -87,12 +103,20 @@ export const OneLine = ({
 
   return (
     <ContainerWithHeader
-      title="One Line Entry"
+      title="Write With Prompt"
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
       <Container>
         <ShowDate date={date} />
+        <Pressable
+          style={styles.buttonPrompt}
+          onPress={requestPrompt}
+        >
+          <Entypo name="shuffle" style={styles.buttonImageIcon} size={18} color="black" />
+          <Text style={styles.buttonImageText}>New prompt</Text>
+        </Pressable>
+        <Text style={styles.prompt}>{prompt}</Text>
         <View style={styles.inputWrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -101,6 +125,7 @@ export const OneLine = ({
             <View style={styles.textInputContainer}>
               <TextInput
                 value={text}
+                multiline
                 onChangeText={setText}
                 style={styles.textArea}
                 selectionColor={styles.textArea.selectionColor}

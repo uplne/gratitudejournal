@@ -96,12 +96,11 @@ export const EditDefaultJournal = ({
             >
               Save
             </ButtonNext>
-            {isKeyboardVisible &&
-              <ButtonKeyboard onPress={keyboardPressHandler} style={styles.buttonKeyboard}/>
-            }
           </View>
-          
         </View>
+        {isKeyboardVisible &&
+          <ButtonKeyboard onPress={keyboardPressHandler} style={styles.buttonKeyboard}/>
+        }
       </Container>
   );
 };

@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    backgroundColor: 'red',
-    marginTop: 15,
+    paddingBottom: 15,
   },
   containerWithPrompt: {
     width: '85%',
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingBottom: 10,
+    paddingBottom: 15,
   },
   emptyImage: {
     width: 300,
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
   prompt: {
     fontFamily: 'CeraProMedium',
     fontSize: 16,
-    backgroundColor: 'rgba(0,0,0,.1)',
+    backgroundColor: '#f7f6f3',
     padding: 10,
     width: '100%',
     borderRadius: 10,
@@ -83,6 +82,15 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: 'rgba(0,0,0,.6)',
     textAlign: 'center',
+  },
+  journalType: {
+    fontFamily: 'CeraProMedium',
+    fontSize: 12,
+    color: '#acacaa',
+    position: 'absolute',
+    bottom: -10,
+    right: 0,
+    textTransform: 'uppercase',
   }
 });
 

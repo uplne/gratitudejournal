@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontWeight: 'bold',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: theme.borderRadius,
@@ -26,20 +26,23 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   textHeadline: {
     fontFamily: 'CeraProBold',
-    fontSize: 22,
+    fontSize: 16,
+    paddingBottom: 10,
+  },
+  text: {
+    fontFamily: 'CeraProLight',
+    color: '#000000',
+    fontSize: 14,
+    lineHeight: 16,
     paddingBottom: 10,
   },
   pressableImage: {
-    position: 'absolute',
-    bottom: 0,
-    left: -10,
     width: 120,
-    height: 170,
-    zIndex: 1,
+    height: 120,
   },
   wrapper: {
     flex: 1,
@@ -51,9 +54,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   container: {
-    flex: 1,
-    marginBottom: 0,
-    paddingTop: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
 });
 

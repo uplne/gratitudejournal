@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     position: 'absolute',
-    top: 35,
-    right: -35,
-    width: 350,
-    height: 200,
+    top: 120,
+    right: 50,
+    width: 120,
+    height: 120,
     zIndex: -1,
   },
   textHeading: {
@@ -45,14 +45,6 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     position: 'relative',
     zIndex: -1,
-  },
-  headImage: {
-    position: 'absolute',
-    bottom: -40,
-    right: 10,
-    width: 200,
-    height: 300,
-    zIndex: 1,
   },
   textInputContainer: {
     width: '100%',

@@ -20,7 +20,7 @@ import { ImageWrapper } from '../../../components/ImageWrapper';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 
-import asset from '../../../../assets/bgs/moon.png';
+import asset from '../../../../assets/bgs/stars_square.png';
 
 import styles from './styles';
 
@@ -109,7 +109,7 @@ export const ThreeThings = ({
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
-      <ImageBackground source={asset} style={styles.headerImage} />
+      {/* <ImageBackground source={asset} style={styles.headerImage} /> */}
       <Container>
         <ShowDate date={date} />
         <View style={styles.inputWrapper}>

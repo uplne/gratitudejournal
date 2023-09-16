@@ -7,6 +7,7 @@ import {
   toPairs,
   sortBy,
   first,
+  reverse,
 } from 'lodash/fp';
 
 import { useJournalStore, JournalTypes, JOURNAL_TYPES } from '../../state/JournalState';
@@ -15,6 +16,7 @@ import { getImageSize } from '../../services/ImageSize';
 import { ImageWrapper } from '../ImageWrapper';
 import { TreeThingsEntry } from './Entries/TreeThingsEntry';
 import { Default } from './Entries/Default';
+import { JOURNAL_TYPES_HUMAN_READABLE } from '../../state/JournalState';
 
 import emptyJournal from '../../../assets/bgs/empty_journal2.png';
 
@@ -41,7 +43,9 @@ export const JournalEntries = ({
       return <TreeThingsEntry data={post} />;
     }
 
-    if (post.type === JOURNAL_TYPES.DEFAULT) {
+    if (post.type === JOURNAL_TYPES.ONE_LINE ||
+      post.type === JOURNAL_TYPES.DEFAULT ||
+      post.type === JOURNAL_TYPES.PROMPT) {
       return <Default data={post} />;
     }
 
@@ -73,6 +77,7 @@ export const JournalEntries = ({
 
   const groupGratitude = () => {
     let result = flow(
+      reverse,
       groupBy('date'),
       toPairs,
       sortBy(2),
@@ -143,6 +148,7 @@ export const JournalEntries = ({
                         height={imageHeight}
                       />
                     }
+                    <Text style={styles.journalType}>{JOURNAL_TYPES_HUMAN_READABLE[journalPost.type]}</Text>
                   </JournalItem>
                 </View>
               );

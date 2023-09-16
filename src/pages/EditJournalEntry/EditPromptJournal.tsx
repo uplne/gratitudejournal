@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, TextInput, Keyboard, ScrollView } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { View, Text, TextInput, Keyboard, ScrollView } from 'react-native';
 
 import { useJournalStore, JOURNAL_TYPES } from '../../state/JournalState';
 import { ButtonNext } from '../../components/Buttons/ButtonNext';
@@ -17,7 +16,7 @@ type Props = {
   goBack: () => void,
 }
 
-export const EditThreeThingsJournal = ({
+export const EditPromptJournal = ({
   id,
   goBack,
 }: Props) => {
@@ -25,9 +24,7 @@ export const EditThreeThingsJournal = ({
   const journalId = id;
   const journalItem = journal.filter((item) => item.id === journalId)[0] || null;
   const journalItemData = journal.filter((item) => item.id === journalId)[0]?.data || null;
-  const [positive1, setPositive1] = useState(journalItemData ? journalItemData[0] : '');
-  const [positive2, setPositive2] = useState(journalItemData ? journalItemData[1] : '');
-  const [positive3, setPositive3] = useState(journalItemData ? journalItemData[2] : '');
+  const [text, setText] = useState('');
   const [image, setImage] = useState(journalItem ? journalItem.image : null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
@@ -36,12 +33,8 @@ export const EditThreeThingsJournal = ({
     setIsSaving(true);
     await updateJournal(
       journalId,
-      JOURNAL_TYPES.THREE_THINGS,
-      [
-      positive1 || '',
-      positive2 || '',
-      positive3 || '',
-      ], 
+      JOURNAL_TYPES.PROMPT,
+      text,
       image
     );
     setIsSaving(false);
@@ -56,9 +49,7 @@ export const EditThreeThingsJournal = ({
   const onDeleteImage = () => setImage(null);
 
   useEffect(() => {
-    setPositive1(journalItemData ? journalItemData[0] : '');
-    setPositive2(journalItemData ? journalItemData[1] : '');
-    setPositive3(journalItemData ? journalItemData[2] : '');
+    setText(typeof journalItemData === 'string' ? journalItemData : '');
     setImage(journalItem ? journalItem.image : null);
   }, [journal]);
 
@@ -77,34 +68,14 @@ export const EditThreeThingsJournal = ({
             showsHorizontalScrollIndicator={false}
             decelerationRate={0.9}
           >
+            <Text style={styles.prompt}>{journalItem?.prompt}</Text>
             <View style={styles.innerWrap}>
               <View style={styles.textInputContainer}>
-                <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={positive1}
+                  value={text}
                   multiline
-                  onChangeText={setPositive1}
-                  style={styles.textArea}
-                  selectionColor={styles.textArea.selectionColor}
-                />
-              </View>
-              <View style={styles.textInputContainer}>
-                <Entypo name="dot-single" size={24} color="black" />
-                <TextInput
-                  value={positive2}
-                  multiline
-                  onChangeText={setPositive2}
-                  style={styles.textArea}
-                  selectionColor={styles.textArea.selectionColor}
-                />
-              </View>
-              <View style={styles.textInputContainer}>
-                <Entypo name="dot-single" size={24} color="black" />
-                <TextInput
-                  value={positive3}
-                  multiline
-                  onChangeText={setPositive3}
-                  style={styles.textArea}
+                  onChangeText={setText}
+                  style={styles.textAreaMultiline}
                   selectionColor={styles.textArea.selectionColor}
                 />
               </View>
@@ -129,7 +100,7 @@ export const EditThreeThingsJournal = ({
           </View>
         </View>
         {isKeyboardVisible &&
-          <ButtonKeyboard onPress={keyboardPressHandler} style={styles.buttonKeyboard} />
+          <ButtonKeyboard onPress={keyboardPressHandler} style={styles.buttonKeyboard}/>
         }
       </Container>
   );

@@ -14,6 +14,8 @@ import { AppStart } from './src/pages/AppStart';
 import { AddNew } from './src/pages/AddNew';
 import { ThreeThings } from './src/pages/Journals/ThreeThings';
 import { Default } from './src/pages/Journals/Default';
+import { OneLine } from './src/pages/Journals/OneLine';
+import { Prompt } from './src/pages/Journals/Prompt';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
 import { getAppData } from './src/state/AppStartState';
 import { idType } from './src/types/idtype';
@@ -36,6 +38,8 @@ export type RootStackParamList = {
 
   ThreeThings: undefined,
   Default: undefined,
+  OneLine: undefined,
+  Prompt: undefined,
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -96,6 +100,8 @@ export default function App() {
                 {/* // Journals */}
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />
                 <Stack.Screen name="Default" component={Default} />
+                <Stack.Screen name="OneLine" component={OneLine} />
+                <Stack.Screen name="Prompt" component={Prompt} />
 
                 <Stack.Group screenOptions={{
                   presentation: 'modal',
