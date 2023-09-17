@@ -31,7 +31,7 @@ export const JournalItem = ({
         {children}
       </View>
       <IconButton
-        icon='pencil'
+        icon='pencil-outline'
         style={styles.iconButton}
         onPress={onPress}
       />

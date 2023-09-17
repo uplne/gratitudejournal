@@ -5,9 +5,9 @@ import { useJournalStore, JOURNAL_TYPES } from '../../state/JournalState';
 import { ButtonNext } from '../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
-import { ImageWrapper } from '../../components/ImageWrapper';
 import { getImageSize } from '../../services/ImageSize';
 import { Container } from '../../components/Container';
+import { ImageThumbnail } from '../../components/ImageThumbnail';
 
 import styles from './styles';
 
@@ -46,7 +46,17 @@ export const EditPromptJournal = ({
     setKeyboardVisible(false);
   };
 
-  const onDeleteImage = () => setImage(null);
+  const onDeleteImage = async () => {
+    setIsSaving(true);
+    await updateJournal(
+      journalId,
+      JOURNAL_TYPES.PROMPT,
+      text,
+      null,
+    );
+    setImage(null);
+    setIsSaving(false);
+  };
 
   useEffect(() => {
     setText(typeof journalItemData === 'string' ? journalItemData : '');
@@ -79,14 +89,13 @@ export const EditPromptJournal = ({
                   selectionColor={styles.textArea.selectionColor}
                 />
               </View>
-              {image &&
-                <ImageWrapper
-                  uri={image.uri}
-                  width={imageWidth}
-                  height={imageHeight}
-                  onDelete={onDeleteImage}
-                />
-              }
+              <ImageThumbnail 
+                image={image}
+                setImage={setImage}
+                onDeleteImage={onDeleteImage}
+                imageWidth={imageWidth}
+                imageHeight={imageHeight}
+              />
             </View>
           </ScrollView>
 

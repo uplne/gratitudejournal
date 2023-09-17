@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
   emptyImage: {
     width: 300,

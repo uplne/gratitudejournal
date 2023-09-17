@@ -3,9 +3,7 @@ import { useEffect, useState } from 'react';
 import { Pressable } from "native-base";
 import moment from 'moment';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 
 import { RootStackParamList } from '../../../../App';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
@@ -15,11 +13,10 @@ import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
-import { getImageSize } from '../../../services/ImageSize';
-import { ImageWrapper } from '../../../components/ImageWrapper';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { JournalPrompts } from './JournalPrompts';
+import { ImagePicker } from '../../../components/ImagePicker';
 
 import styles from './styles';
 
@@ -66,40 +63,7 @@ export const Prompt = ({
     setKeyboardVisible(false);
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result?.assets) {
-      const item = result?.assets[0];
-
-      if (!item) {
-        setImage(null);
-        return;
-      }
-
-      setImage({
-        uri: item.uri,
-        width: item.width,
-        height: item.height,
-      });
-    }
-  };
-
-  const onDelete = () => setImage(null);
-
   const isDisabled:boolean = false;
-
-  let imageWidth = 0;
-  let imageHeight = 0;
-
-  if (image) {
-    ({ imageWidth, imageHeight } = getImageSize(image.width, image.height, 40));
-  }
 
   return (
     <ContainerWithHeader
@@ -132,21 +96,10 @@ export const Prompt = ({
               />
             </View>
             <View style={styles.bottomSection}>
-              {image &&
-                <ImageWrapper
-                  uri={image.uri}
-                  width={imageWidth}
-                  height={imageHeight}
-                  onDelete={onDelete}
-                />
-              }
-              <Pressable
-                style={styles.buttonImage}
-                onPress={pickImage}
-              >
-                <MaterialIcons name="add-photo-alternate" style={styles.buttonImageIcon} size={24} color="black" />
-                <Text style={styles.buttonImageText}>Add image</Text>
-              </Pressable>
+              <ImagePicker
+                image={image}
+                setImage={setImage}
+              />
             </View>
           </ScrollView>
         </View>

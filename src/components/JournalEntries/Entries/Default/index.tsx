@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 
 import { JournalTypes, JOURNAL_TYPES } from '../../../../state/JournalState';
 
@@ -11,6 +12,31 @@ type Props = {
 export const Default = ({
   data,
 }: Props) => {
+  if (typeof data.data !== 'string') {
+    return (
+      <View style={{ marginBottom: 15 }}>
+        {data?.data?.map((item, index) => {
+          let marginTopStyle = 15;
+
+          if (item === '' || item === undefined) {
+            return null;
+          }
+
+          if (index === 0) {
+            marginTopStyle = 0;
+          }
+
+          return (
+          <View key={item} style={[styles.container, { marginTop: marginTopStyle, paddingBottom: 0 }]}>
+            <Entypo style={styles.icon} name="dot-single" size={24} color="black" />
+            <Text style={styles.text}>{item}</Text>
+          </View> 
+          );
+        })}
+      </View>
+    );
+  }
+
   const containerStyles = data.type === JOURNAL_TYPES.PROMPT ? styles.containerWithPrompt : styles.container;
 
   return (

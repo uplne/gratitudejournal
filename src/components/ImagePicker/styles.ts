@@ -3,24 +3,19 @@ import { StyleSheet } from 'react-native';
 import theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
-  root: {
-    position: 'relative',
-    marginBottom: 15,
-  },
-  deleteButton: {
-    width: 40,
-    height: 25,
+  buttonImage: {
+    width: 130,
+    height: 40,
     backgroundColor: 'rgba(0,0,0,.1)',
     borderRadius: 100,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  image: {
-    borderRadius: 20,
-    backgroundColor: 'white',
-    marginBottom: 10,
+  buttonImageIcon: {
+    marginTop: -2,
+    marginRight: 5,
   },
   buttonImageText: {
     color: theme.colorSecondary,

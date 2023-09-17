@@ -10,11 +10,10 @@ import {
   reverse,
 } from 'lodash/fp';
 
-import { useJournalStore, JournalTypes, JOURNAL_TYPES } from '../../state/JournalState';
+import { useJournalStore, JournalTypes } from '../../state/JournalState';
 import { JournalItem } from '../JournalItem';
 import { getImageSize } from '../../services/ImageSize';
 import { ImageWrapper } from '../ImageWrapper';
-import { TreeThingsEntry } from './Entries/TreeThingsEntry';
 import { Default } from './Entries/Default';
 import { JOURNAL_TYPES_HUMAN_READABLE } from '../../state/JournalState';
 
@@ -38,19 +37,7 @@ export const JournalEntries = ({
     getData();
   }, []);
 
-  const renderData = (post:JournalTypes) => {
-    if (post.type === JOURNAL_TYPES.THREE_THINGS) {
-      return <TreeThingsEntry data={post} />;
-    }
-
-    if (post.type === JOURNAL_TYPES.ONE_LINE ||
-      post.type === JOURNAL_TYPES.DEFAULT ||
-      post.type === JOURNAL_TYPES.PROMPT) {
-      return <Default data={post} />;
-    }
-
-    return null;
-  };
+  const renderData = (post:JournalTypes) => <Default data={post} />;
 
   const getFooter = () => <View style={styles.footer} />;
 
