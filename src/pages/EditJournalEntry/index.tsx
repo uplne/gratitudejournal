@@ -9,7 +9,7 @@ import { RootStackParamList } from '../../../App';
 import { StackNavigation } from '../../types/navigation-types';
 import { EditThreeThingsJournal } from './EditThreeThingsJournal';
 import { EditOneLineJournal } from './EditOneLineJournal';
-import { EditDefaultJournal } from './EditDefaultJournal';
+import { EditDefaultJournal, RefTypesProps } from './EditDefaultJournal';
 import { EditPromptJournal } from './EditPromptJournal';
 import { resetNavigationToHome } from '../../hooks/resetNavigationToHome';
 
@@ -28,6 +28,7 @@ export const EditJournalEntry = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const cancelRef = useRef(null);
+  const saveRef = useRef<RefTypesProps>(null);
 
   const renderEdit = () => {
     if (!journalItem) {
@@ -40,7 +41,7 @@ export const EditJournalEntry = ({
     }
 
     if (journalItem.type === JOURNAL_TYPES.DEFAULT) {
-      return <EditDefaultJournal id={journalId} goBack={() => navigation.goBack()} />
+      return <EditDefaultJournal ref={saveRef} id={journalId} goBack={() => navigation.goBack()} />
     }
 
     if (journalItem.type === JOURNAL_TYPES.PROMPT) {
@@ -70,6 +71,7 @@ export const EditJournalEntry = ({
       title='Edit Journal Entry'
       style={styles.root}
       allowDelete={openDelete}
+      allowSave={saveRef.current?.save}
       modal
     >
       {renderEdit()}

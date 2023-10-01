@@ -18,9 +18,8 @@ const styles = StyleSheet.create({
     fontFamily: 'SourceSans3-Black',
   },
   buttonDelete: {
-    position: 'absolute',
-    top: 4,
-    right: 10,
+    alignItems: 'flex-end',
+    marginRight: 20,
   },
 });
 

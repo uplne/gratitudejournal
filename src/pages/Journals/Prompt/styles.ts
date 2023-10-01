@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     width: '100%',
     minHeight: 100,
+    padding: 10,
     textAlignVertical: 'top',
   },
   floatingBlock: {

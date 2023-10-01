@@ -1,25 +1,29 @@
-import { useState, useEffect } from 'react';
-import { View, TextInput, Keyboard, ScrollView } from 'react-native';
+import { useState, forwardRef, useRef, useImperativeHandle, useEffect } from 'react';
+import { View, ScrollView } from 'react-native';
 
 import { useJournalStore, JOURNAL_TYPES } from '../../state/JournalState';
-import { ButtonNext } from '../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { getImageSize } from '../../services/ImageSize';
 import { Container } from '../../components/Container';
 import { ImageThumbnail } from '../../components/ImageThumbnail';
+import { RichTextEditor, RefTypes } from '../../components/RichTextEditor';
 
 import styles from './styles';
 
 type Props = {
   id: string | number[],
   goBack: () => void,
-}
+};
 
-export const EditDefaultJournal = ({
+export type RefTypesProps = {
+  save: () => void;
+};
+
+export const EditDefaultJournal = forwardRef<RefTypesProps, Props>(({
   id,
   goBack,
-}: Props) => {
+}: Props, ref) => {
   const { journal, updateJournal } = useJournalStore();
   const journalId = id;
   const journalItem = journal.filter((item) => item.id === journalId)[0] || null;
@@ -28,6 +32,7 @@ export const EditDefaultJournal = ({
   const [image, setImage] = useState(journalItem ? journalItem.image : null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
+  const EditorRef = useRef<RefTypes | null>(null);
 
   const saveValue = async () => {
     setIsSaving(true);
@@ -41,8 +46,16 @@ export const EditDefaultJournal = ({
     goBack();
   };
 
+  useImperativeHandle(ref, () => {
+    return {
+      save() {
+        saveValue();
+      }
+    }
+  }, []);
+
   const keyboardPressHandler = () => {
-    Keyboard.dismiss();
+    EditorRef.current?.dismissKeyboard();
     setKeyboardVisible(false);
   };
 
@@ -79,7 +92,7 @@ export const EditDefaultJournal = ({
             decelerationRate={0.9}
           >
             <View style={styles.innerWrap}>
-              <View style={styles.textInputContainer}>
+              {/* <View style={styles.textInputContainer}>
                 <TextInput
                   value={text}
                   multiline
@@ -87,7 +100,12 @@ export const EditDefaultJournal = ({
                   style={styles.textAreaMultiline}
                   selectionColor={styles.textArea.selectionColor}
                 />
-              </View>
+              </View> */}
+              <RichTextEditor
+                ref={EditorRef}
+                initialContentHTML={text}
+                setText={setText}
+              />
               <ImageThumbnail 
                 image={image}
                 setImage={setImage}
@@ -97,19 +115,10 @@ export const EditDefaultJournal = ({
               />
             </View>
           </ScrollView>
-
-          <View style={styles.buttonContainer}>
-            <ButtonNext
-              onPress={saveValue}
-              isLoading={isSaving}
-            >
-              Save
-            </ButtonNext>
-          </View>
         </View>
         {isKeyboardVisible &&
           <ButtonKeyboard onPress={keyboardPressHandler} style={styles.buttonKeyboard}/>
         }
       </Container>
   );
-};
+});

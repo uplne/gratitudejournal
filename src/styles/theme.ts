@@ -6,9 +6,10 @@ const BACKGROUNDS = {
 };
 
 const COLORS = {
-  colorPrimary: '#F8CD5F',
+  colorPrimary: '#d68aa2',
   colorPrimaryLight: '#fee39e',
   colorSecondary: '#3b3e43',
+  colorTernary: '#ce869d',
 };
 
 const VALUES = {

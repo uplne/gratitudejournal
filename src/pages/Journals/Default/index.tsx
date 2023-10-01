@@ -1,52 +1,47 @@
-import { StatusBar, View, TextInput, Keyboard, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { StatusBar, View } from 'react-native';
+import { useState, useRef } from 'react';
 import moment from 'moment';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { RootStackParamList } from '../../../../App';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
+import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 import { ShowDate } from '../../../components/ShowDate';
 import { ContentBlock } from '../../../components/ContentBlock';
-import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
+import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
-import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { ImagePicker } from '../../../components/ImagePicker';
+import { RichTextEditor, RefTypes } from '../../../components/RichTextEditor';
 
 import styles from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Default'>;
-
-export const Default = ({
-  route,
-}: Props) => {
+export const Default = () => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
+  const [ date, setDate ] = useState(moment());
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
-
-  const date = moment(route.params?.date || new Date()).toISOString();
 
   const [text, setText] = useState('');
   const [image, setImage] = useState<ImageType | null>(null);
+  const EditorRef = useRef<RefTypes | null>(null);
 
   const onSave = async () => {
     await setNewJournal({
       type: JOURNAL_TYPES.DEFAULT,
-      date,
+      date: date.toISOString(),
       data: text,
       image, 
     });
     resetToHome();
   };
 
+  const isDisabled:boolean = false;
+
   const keyboardPressHandler = () => {
-    Keyboard.dismiss();
+    EditorRef.current?.dismissKeyboard();
     setKeyboardVisible(false);
   };
-
-  const isDisabled:boolean = false;
 
   return (
     <ContainerWithHeader
@@ -55,32 +50,29 @@ export const Default = ({
     >
       <StatusBar translucent backgroundColor='transparent' />
       <Container>
-        <ShowDate date={date} />
-        <View style={styles.inputWrapper}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          >
-            <View style={styles.textInputContainer}>
-              <TextInput
-                value={text}
-                multiline
-                onChangeText={setText}
-                style={styles.textArea}
-                selectionColor={styles.textArea.selectionColor}
+        {/* <Pressable onPress={() => richText.current?.dismissKeyboard()}> */}
+          <ShowDate date={date} setDate={setDate} />
+          <View style={styles.inputWrapper}>
+            {/* <ScrollView
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            > */}
+              <RichTextEditor
+                ref={EditorRef}
+                setText={setText}
               />
-            </View>
-            <View style={styles.bottomSection}>
-              <ImagePicker
-                image={image}
-                setImage={setImage}
-              />
-            </View>
-          </ScrollView>
-        </View>
-        {isKeyboardVisible &&
-          <ButtonKeyboard onPress={keyboardPressHandler} />
-        }
+              <View style={styles.bottomSection}>
+                <ImagePicker
+                  image={image}
+                  setImage={setImage}
+                />
+              </View>
+            {/* </ScrollView> */}
+          </View>
+          {isKeyboardVisible &&
+            <ButtonKeyboard onPress={keyboardPressHandler} />
+          }
+        {/* </Pressable> */}
         <ContentBlock style={styles.floatingBlock}>
           <ButtonNext
             isDisabled={isDisabled}

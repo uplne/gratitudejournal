@@ -16,6 +16,7 @@ import { getImageSize } from '../../services/ImageSize';
 import { ImageWrapper } from '../ImageWrapper';
 import { Default } from './Entries/Default';
 import { JOURNAL_TYPES_HUMAN_READABLE } from '../../state/JournalState';
+import { ShowDate } from '../ShowDate';
 
 import emptyJournal from '../../../assets/bgs/empty_journal2.png';
 
@@ -33,6 +34,8 @@ export const JournalEntries = ({
   let currentMonth = moment(new Date());
   let currentDay: moment.Moment | null = null;
 
+  console.log(journal);
+
   useEffect(() => {
     getData();
   }, []);
@@ -40,18 +43,6 @@ export const JournalEntries = ({
   const renderData = (post:JournalTypes) => <Default data={post} />;
 
   const getFooter = () => <View style={styles.footer} />;
-
-  const generateDate = (date: string) => {
-    if (moment(date).isSame(new Date(), 'day')) {
-      return 'Today';
-    }
-
-    if (moment(new Date()).subtract(1, 'days').isSame(moment(date), 'day')) {
-      return 'Yesterday';
-    }
-
-    return moment(date).format('ddd Do MMMM YYYY');
-  };
 
   if (!hasJournal) {
     return (
@@ -64,10 +55,10 @@ export const JournalEntries = ({
 
   const groupGratitude = () => {
     let result = flow(
-      reverse,
       groupBy('date'),
       toPairs,
       sortBy(2),
+      reverse,
     )(journal);
   
     if (lastOnly) {
@@ -122,7 +113,7 @@ export const JournalEntries = ({
                       <Text style={styles.month}>{moment(journalPost.date).format('MMMM')}</Text>
                     </View>
                   }
-                  {renderDate && <Text style={styles.date}>{generateDate(journalPost.date)}</Text>}
+                  {renderDate && <ShowDate date={journalPost.date} small />}
                   <JournalItem
                     key={String(journalPost.id)}
                     id={journalPost.id || ''}

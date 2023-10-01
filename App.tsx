@@ -16,6 +16,9 @@ import { ThreeThings } from './src/pages/Journals/ThreeThings';
 import { Default } from './src/pages/Journals/Default';
 import { OneLine } from './src/pages/Journals/OneLine';
 import { Prompt } from './src/pages/Journals/Prompt';
+import { MyAccount } from './src/pages/MyAccount';
+import { Reminders } from './src/pages/Reminders';
+import { Tracking } from './src/pages/Tracking';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
 import { getAppData } from './src/state/AppStartState';
 import { idType } from './src/types/idtype';
@@ -32,8 +35,10 @@ InitTracking();
 export type RootStackParamList = {
   Home: undefined;
   AppStart: undefined,
-  Tracking: undefined,
   AddNew: undefined,
+  MyAccount: undefined,
+  Reminders: undefined,
+  Tracking: undefined,
   EditJournalEntry: { id: idType },
 
   ThreeThings: undefined,
@@ -48,11 +53,11 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
+    'CeraProBoldItalic': require('./assets/fonts/cerapro/CeraProBoldItalic.otf'),
     'CeraProMedium': require('./assets/fonts/cerapro/CeraProMedium.otf'),
+    'CeraProMediumItalic': require('./assets/fonts/cerapro/CeraProMediumItalic.otf'),
     'CeraProLight': require('./assets/fonts/cerapro/CeraProLight.otf'),
-
-    'SourceSans3-Black': require('./assets/fonts/sourcesans/SourceSans3-Black.ttf'),
-    'SourceSans3-Medium': require('./assets/fonts/sourcesans/SourceSans3-Medium.ttf'),
+    'CeraProLightItalic': require('./assets/fonts/cerapro/CeraProLightItalic.otf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -96,6 +101,9 @@ export default function App() {
               >
                 <Stack.Screen name="AppStart" component={AppStart} />
                 <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="MyAccount" component={MyAccount} />
+                <Stack.Screen name="Reminders" component={Reminders} />
+                <Stack.Screen name="Tracking" component={Tracking} />
 
                 {/* // Journals */}
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />

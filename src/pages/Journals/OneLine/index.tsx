@@ -1,9 +1,7 @@
 import { StatusBar, View, TextInput, Keyboard, ScrollView } from 'react-native';
 import { useState } from 'react';
 import moment from 'moment';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { RootStackParamList } from '../../../../App';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
 import { ContentBlock } from '../../../components/ContentBlock';
@@ -17,16 +15,11 @@ import { ImagePicker } from '../../../components/ImagePicker';
 
 import styles from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Default'>;
-
-export const OneLine = ({
-  route,
-}: Props) => {
+export const OneLine = () => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
+  const [ date, setDate ] = useState(moment());
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
-
-  const date = moment(route.params?.date || new Date()).toISOString();
 
   const [text, setText] = useState('');
   const [image, setImage] = useState<ImageType | null>(null);
@@ -34,7 +27,7 @@ export const OneLine = ({
   const onSave = async () => {
     await setNewJournal({
       type: JOURNAL_TYPES.ONE_LINE,
-      date,
+      date: date.toISOString(),
       data: text,
       image, 
     });
@@ -55,7 +48,7 @@ export const OneLine = ({
     >
       <StatusBar translucent backgroundColor='transparent' />
       <Container>
-        <ShowDate date={date} />
+        <ShowDate date={date} setDate={setDate} />
         <View style={styles.inputWrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}

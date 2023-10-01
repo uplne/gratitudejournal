@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
     bottom: 20,
     right: 20,
   },
+  myAccountButton: {
+    position: 'absolute',
+    bottom: 90,
+    right: 20,
+  },
   root: {
     flex: 1,
     marginTop: 50,

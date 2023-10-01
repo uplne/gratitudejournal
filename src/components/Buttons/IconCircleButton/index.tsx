@@ -9,6 +9,7 @@ type ComponentProps = {
   onPress: () => void,
   disabled?: boolean,
   style?: TextStyle,
+  iconColor?: string,
 };
 
 export const IconCircleButton = ({
@@ -16,6 +17,7 @@ export const IconCircleButton = ({
   onPress,
   disabled = true,
   style = {},
+  iconColor = theme.white,
 }: ComponentProps) => {
   const componentStyles = [
     styles.root,
@@ -27,7 +29,7 @@ export const IconCircleButton = ({
   return (
     <IconButton
       icon={iconData}
-      iconColor={theme.white}
+      iconColor={iconColor}
       containerColor={theme.colorSecondary}
       style={componentStyles}
       onPress={onPress}

@@ -1,13 +1,17 @@
 import { View, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 
 import { JournalTypes, JOURNAL_TYPES } from '../../../../state/JournalState';
 
 import styles from '../../styles';
+import TagStyles from '../TagStyles';
 
 type Props = {
   data: JournalTypes,
 };
+
+const systemFonts = [...defaultSystemFonts, 'CeraProMedium', 'CeraProBold'];
 
 export const Default = ({
   data,
@@ -42,7 +46,13 @@ export const Default = ({
   return (
     <View key={String(data.data)} style={containerStyles}>
       {data.type === JOURNAL_TYPES.PROMPT && <Text style={styles.prompt}>{data.prompt}</Text>}
-      <Text style={styles.text}>{data.data}</Text>
+      <RenderHtml
+        contentWidth={300}
+        baseStyle={styles.text}
+        tagsStyles={TagStyles}
+        systemFonts={systemFonts}
+        source={{ html: data.data}}
+      />
     </View> 
   );
 };

@@ -29,16 +29,11 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     lineHeight: 22,
+    fontFamily: 'CeraProMedium',
   },
   icon: {
     marginTop: 0,
     marginLeft: -6,
-  },
-  date: {
-    fontFamily: 'CeraProBold',
-    fontSize: 20,
-    paddingLeft: 20,
-    paddingBottom: 5,
   },
   footer: {
     height: 100,
@@ -63,6 +58,7 @@ const styles = StyleSheet.create({
   prompt: {
     fontFamily: 'CeraProMedium',
     fontSize: 16,
+    lineHeight: 22,
     backgroundColor: '#f7f6f3',
     padding: 10,
     width: '100%',

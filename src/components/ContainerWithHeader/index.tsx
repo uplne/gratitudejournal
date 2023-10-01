@@ -7,6 +7,7 @@ import { PageHeading } from '../PageHeading';
 import { PageText } from '../PageText';
 import { StackNavigation } from '../../types/navigation-types';
 import { ButtonDelete } from '../Buttons/ButtonDelete';
+import { ButtonNext } from '../Buttons/ButtonNext';
 
 import styles from './styles';
 
@@ -19,6 +20,7 @@ type ComponentProps = {
   style?: TextStyle,
   pageHeadingStyle?: TextStyle,
   allowDelete?: () => void | undefined,
+  allowSave?: () => void | undefined,
 };
 
 export const ContainerWithHeader = ({
@@ -30,6 +32,7 @@ export const ContainerWithHeader = ({
   style = {},
   pageHeadingStyle = {},
   allowDelete = undefined,
+  allowSave = undefined,
 }: ComponentProps) => {
   const navigation = useNavigation<StackNavigation>();
   const componentStyles = [
@@ -60,6 +63,13 @@ export const ContainerWithHeader = ({
             >
               Delete
             </ButtonDelete>
+          }
+          {allowSave &&
+            <ButtonNext
+              onPress={allowSave}
+            >
+              Save
+            </ButtonNext>
           }
           {showHome && <Appbar.Action icon="home-account" onPress={goHome} />}
         </Appbar.Header>

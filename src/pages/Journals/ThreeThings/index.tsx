@@ -2,10 +2,8 @@ import { StatusBar, View, TextInput, Keyboard, ScrollView } from 'react-native';
 import { useState } from 'react';
 
 import moment from 'moment';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Entypo } from '@expo/vector-icons';
 
-import { RootStackParamList } from '../../../../App';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
 import { ContentBlock } from '../../../components/ContentBlock';
@@ -18,21 +16,13 @@ import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { ImagePicker } from '../../../components/ImagePicker';
 
-import asset from '../../../../assets/bgs/stars_square.png';
-
 import styles from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ThreeThings'>;
-
-export const ThreeThings = ({
-  route,
-}: Props) => {
+export const ThreeThings = () => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
-
-  const date = moment(route.params?.date || new Date()).toISOString();
-
+  const [ date, setDate ] = useState(moment());
   const [positive, setPositive] = useState<string[]>(new Array(3).fill(''));
   const [image, setImage] = useState<ImageType | null>(null);
 
@@ -48,7 +38,7 @@ export const ThreeThings = ({
 
     await setNewJournal({
       type: JOURNAL_TYPES.THREE_THINGS,
-      date,
+      date: date.toISOString(),
       data: newArray,
       image, 
     });
@@ -76,7 +66,7 @@ export const ThreeThings = ({
       <StatusBar translucent backgroundColor='transparent' />
       {/* <ImageBackground source={asset} style={styles.headerImage} /> */}
       <Container>
-        <ShowDate date={date} />
+        <ShowDate date={date} setDate={setDate} />
         <View style={styles.inputWrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}

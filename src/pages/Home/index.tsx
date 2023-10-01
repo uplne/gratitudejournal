@@ -23,6 +23,11 @@ export const Home = () => {
     navigation.navigate('AddNew');
   };
 
+  const clickAccountHandler = () => {
+    TrackingEvent('Home - Click', { "Name": 'My Account button'});
+    navigation.navigate('MyAccount');
+  };
+
   return (
     <View style={styles.root}>
       <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
@@ -34,6 +39,12 @@ export const Home = () => {
         icon="text-box-plus-outline"
         style={styles.addNewButton}
         onPress={clickPlusHandler}
+        disabled={false}
+      />
+      <IconCircleButton
+        icon="account-cog-outline"
+        style={styles.myAccountButton}
+        onPress={clickAccountHandler}
         disabled={false}
       />
     </View>

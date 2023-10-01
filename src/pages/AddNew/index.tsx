@@ -6,7 +6,6 @@ import { StackNavigation } from '../../types/navigation-types';
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
 import { JOURNAL_TYPES_HUMAN_READABLE, JOURNAL_TYPES } from '../../state/JournalState';
 
-import ivy from '../../../assets/bgs/ivy2.png';
 import stars from '../../../assets/bgs/stars_square.png';
 import bulb from '../../../assets/bgs/bulp_square.png';
 import journal from '../../../assets/bgs/journal_square.png';
@@ -44,7 +43,6 @@ export const AddNew = () => {
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
-      {/* <ImageBackground source={ivy} style={styles.headerImage} /> */}
 
       <View style={styles.wrapper}>
         <ScrollView
