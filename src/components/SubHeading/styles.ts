@@ -4,9 +4,9 @@ import theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
   root: {
-    fontFamily: 'SourceSans3-Black',
+    fontFamily: 'GabaritoBold',
     color: theme.colorSecondary,
-    fontSize: 20,
+    fontSize: 22,
     paddingTop: 0,
     marginBottom: 30,
   },

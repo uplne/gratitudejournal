@@ -5,9 +5,7 @@ import moment from 'moment';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 import { ShowDate } from '../../../components/ShowDate';
-import { ContentBlock } from '../../../components/ContentBlock';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
-import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
@@ -36,8 +34,6 @@ export const Default = () => {
     resetToHome();
   };
 
-  const isDisabled:boolean = false;
-
   const keyboardPressHandler = () => {
     EditorRef.current?.dismissKeyboard();
     setKeyboardVisible(false);
@@ -46,6 +42,7 @@ export const Default = () => {
   return (
     <ContainerWithHeader
       title="Blank Page Entry"
+      allowSave={onSave}
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
@@ -73,14 +70,6 @@ export const Default = () => {
             <ButtonKeyboard onPress={keyboardPressHandler} />
           }
         {/* </Pressable> */}
-        <ContentBlock style={styles.floatingBlock}>
-          <ButtonNext
-            isDisabled={isDisabled}
-            onPress={onSave}
-          >
-            Save
-          </ButtonNext>
-        </ContentBlock>
       </Container>
     </ContainerWithHeader>
   );

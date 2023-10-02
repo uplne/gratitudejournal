@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   date: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoSemiBold',
     fontSize: 25,
     lineHeight: 30,
   },

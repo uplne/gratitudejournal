@@ -29,13 +29,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textHeadline: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoSemiBold',
+    letterSpacing: 0.5,
     fontSize: 16,
     paddingBottom: 10,
   },
   text: {
-    fontFamily: 'CeraProLight',
-    color: '#000000',
+    fontFamily: 'GabaritoRegular',
+    color: 'rgba(0,0,0,.4)',
     fontSize: 14,
     lineHeight: 16,
     paddingBottom: 10,

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   titleStyle: {
-    fontFamily: 'SourceSans3-Black',
+    fontFamily: 'GabaritoSemiBold',
   },
   buttonDelete: {
     alignItems: 'flex-end',

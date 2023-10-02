@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     lineHeight: 22,
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoMedium',
   },
   icon: {
     marginTop: 0,
@@ -39,8 +39,9 @@ const styles = StyleSheet.create({
     height: 100,
   },
   month: {
-    fontFamily: 'CeraProBold',
-    fontSize: 16,
+    fontFamily: 'GabaritoSemiBold',
+    fontSize: 17,
+    letterSpacing: 0.5,
     backgroundColor: 'rgba(0,0,0,.1)',
     paddingTop: 5,
     paddingBottom: 5,

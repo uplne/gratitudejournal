@@ -1,11 +1,10 @@
+import { MixedStyleDeclaration } from 'react-native-render-html';
+
 import theme from "../../../styles/theme";
 
-const styles = {
+const styles:Record<string, MixedStyleDeclaration> = {
   div: {
     fontWeight: 'normal',
-  },
-  br: {
-    backgroundColor: 'blue',
   },
   b: {
     fontWeight: 'normal',

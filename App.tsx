@@ -58,6 +58,14 @@ export default function App() {
     'CeraProMediumItalic': require('./assets/fonts/cerapro/CeraProMediumItalic.otf'),
     'CeraProLight': require('./assets/fonts/cerapro/CeraProLight.otf'),
     'CeraProLightItalic': require('./assets/fonts/cerapro/CeraProLightItalic.otf'),
+
+    'Gabarito': require('./assets/fonts/Gabarito-VariableFont_wght.ttf'),
+    'GabaritoRegular': require('./assets/fonts/Gabarito/Gabarito-Regular.ttf'),
+    'GabaritoMedium': require('./assets/fonts/Gabarito/Gabarito-Medium.ttf'),
+    'GabaritoBold': require('./assets/fonts/Gabarito/Gabarito-Bold.ttf'),
+    'GabaritoSemiBold': require('./assets/fonts/Gabarito/Gabarito-SemiBold.ttf'),
+    'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
+    'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {

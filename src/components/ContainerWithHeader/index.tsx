@@ -20,7 +20,7 @@ type ComponentProps = {
   style?: TextStyle,
   pageHeadingStyle?: TextStyle,
   allowDelete?: () => void | undefined,
-  allowSave?: () => void | undefined,
+  allowSave?: () => void | Promise<void> | undefined,
 };
 
 export const ContainerWithHeader = ({
@@ -67,6 +67,7 @@ export const ContainerWithHeader = ({
           {allowSave &&
             <ButtonNext
               onPress={allowSave}
+              simple
             >
               Save
             </ButtonNext>

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius,
   },
   text: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 20,
     paddingBottom: 0,

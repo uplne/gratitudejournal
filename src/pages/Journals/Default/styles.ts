@@ -46,18 +46,6 @@ const styles = StyleSheet.create({
     height: 300,
     zIndex: 1,
   },
-  floatingBlock: {
-    width: '100%',
-    height: 100,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    position: 'absolute',
-    bottom: 0,
-    left: 20,
-    right: 20,
-  },
   inputWrapper: {
     flex: 1,
   },

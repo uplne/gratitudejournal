@@ -11,7 +11,7 @@ type Props = {
   data: JournalTypes,
 };
 
-const systemFonts = [...defaultSystemFonts, 'CeraProMedium', 'CeraProBold'];
+const systemFonts = [...defaultSystemFonts, 'Gabarito'];
 
 export const Default = ({
   data,

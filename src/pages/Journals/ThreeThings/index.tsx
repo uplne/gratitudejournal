@@ -6,8 +6,6 @@ import { Entypo } from '@expo/vector-icons';
 
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
-import { ContentBlock } from '../../../components/ContentBlock';
-import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
@@ -56,11 +54,10 @@ export const ThreeThings = () => {
     setKeyboardVisible(false);
   };
 
-  const isDisabled:boolean = false;
-
   return (
     <ContainerWithHeader
       title="Three Positive Things Entry"
+      allowSave={onSave}
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
@@ -110,14 +107,6 @@ export const ThreeThings = () => {
         {isKeyboardVisible &&
           <ButtonKeyboard onPress={keyboardPressHandler} />
         }
-        <ContentBlock style={styles.floatingBlock}>
-          <ButtonNext
-            isDisabled={isDisabled}
-            onPress={onSave}
-          >
-            Save
-          </ButtonNext>
-        </ContentBlock>
       </Container>
     </ContainerWithHeader>
   );

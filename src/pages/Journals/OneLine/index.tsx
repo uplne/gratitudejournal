@@ -4,8 +4,6 @@ import moment from 'moment';
 
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
-import { ContentBlock } from '../../../components/ContentBlock';
-import { ButtonNext } from '../../../components/Buttons/ButtonNext';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
@@ -39,11 +37,10 @@ export const OneLine = () => {
     setKeyboardVisible(false);
   };
 
-  const isDisabled:boolean = false;
-
   return (
     <ContainerWithHeader
       title="One Line Entry"
+      allowSave={onSave}
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
@@ -73,14 +70,6 @@ export const OneLine = () => {
         {isKeyboardVisible &&
           <ButtonKeyboard onPress={keyboardPressHandler} />
         }
-        <ContentBlock style={styles.floatingBlock}>
-          <ButtonNext
-            isDisabled={isDisabled}
-            onPress={onSave}
-          >
-            Save
-          </ButtonNext>
-        </ContentBlock>
       </Container>
     </ContainerWithHeader>
   );

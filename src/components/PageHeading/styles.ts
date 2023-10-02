@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   text: {
-    fontFamily: 'SourceSans3-Black',
+    fontFamily: 'GabaritoSemiBold',
     fontSize: 30,
     lineHeight: 35,
     color: theme.colorSecondary,

@@ -21,6 +21,14 @@ const styles = StyleSheet.create({
   },
   buttonTextInverse: {
     color: 'black',
+  },
+  buttonSimple: {
+    backgroundColor: 'transparent',
+    width: 'auto',
+    paddingHorizontal: 5,
+  },
+  buttonTextSimple: {
+    color: theme.colorSecondary,
   }
 });
 
