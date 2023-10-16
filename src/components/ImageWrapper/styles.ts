@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   root: {
     position: 'relative',
     marginBottom: 15,
+    marginRight: 35,
   },
   deleteButton: {
     width: 40,

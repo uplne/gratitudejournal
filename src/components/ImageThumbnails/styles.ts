@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginBottom: 40,
   },
   buttonImage: {
     width: 100,

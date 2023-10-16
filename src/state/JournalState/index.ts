@@ -4,6 +4,8 @@ import uuid from 'react-native-uuid';
 
 import { idType } from '../../types/idtype';
 
+const NUMBER_LOADING = 3;
+
 export enum JOURNAL_TYPES {
   'THREE_THINGS'= 'THREE_THINGS',
   'DEFAULT'= 'DEFAULT',
@@ -19,9 +21,11 @@ export enum JOURNAL_TYPES_HUMAN_READABLE {
 };
 
 export type ImageType = {
+  id: idType,
   uri: string,
   width: number,
   height: number,
+  exif: Record<string, any> | null,
 };
 
 export type DataType = string | undefined | (undefined | string)[];
@@ -44,15 +48,17 @@ export type JournalTypes = {
   date: string,
   data: DataType,
   prompt?: PromptType,
-  image: ImageType | null,
+  images: ImageType[],
   ordial?: typeof ORDIAL_TYPES[keyof typeof ORDIAL_TYPES],
 };
 
-type JournalStateType = {
+export type JournalStateType = {
   journal: JournalTypes[],
+  numberLoaded: number,
+  increaseNumberLoaded: () => void,
   setNewJournal: (values: JournalTypes) => void,
   deleteJournal: (id: idType) => void,
-  updateJournal: (id: idType, type: JOURNAL_TYPES, values: DataType, image: ImageType | null) => void,
+  updateJournal: (id: idType, type: JOURNAL_TYPES, values: DataType, images: ImageType[]) => void,
   getData: () => void,
 };
 
@@ -77,7 +83,12 @@ const saveJournal = async (values: JournalTypes[]) => {
 
 export const useJournalStore = create<JournalStateType>((set, get) => ({
   journal: [],
-  updateJournal: async (id:idType, type: JOURNAL_TYPES, values: DataType, image: ImageType | null) => {
+  numberLoaded: NUMBER_LOADING,
+  increaseNumberLoaded: async () => {
+    const numberLoaded = get().numberLoaded;
+    set({ numberLoaded: numberLoaded + NUMBER_LOADING });
+  },
+  updateJournal: async (id:idType, type: JOURNAL_TYPES, values: DataType, images: ImageType[]) => {
     const journal: JournalTypes[] = get().journal;
     const journalToSave = journal.map((item:JournalTypes) => {
       if (item.id === id) {
@@ -85,7 +96,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
           ...item,
           type,
           data: values,
-          image,
+          images,
         };
       }
   
@@ -108,7 +119,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
       date: item.date,
       data: item.data,
       prompt: item.prompt,
-      image: item.image,
+      images: item.images,
       ordial: ORDIAL_TYPES[item.type] || 1,
     };
     const newJournalArray = [...journal, newJournal];

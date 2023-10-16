@@ -5,7 +5,7 @@ import theme from '../../styles/theme';
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    height: 450,
+    height: 260,
     backgroundColor: '#ffffff',
     borderRadius: theme.borderRadius,
     paddingVertical: 10,
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   richEditor: {
     width: '100%',
-    height: 450,
+    height: 260,
   },
 });
 

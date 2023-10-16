@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   calendarTextStyle: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoMedium',
     fontSize: 16,
   }
 });

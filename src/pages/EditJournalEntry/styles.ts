@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
   },
   textArea: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 24,
     color: theme.colorSecondary,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   textAreaMultiline: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 24,
     color: theme.colorSecondary,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   prompt: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 24,
     marginBottom: 20,

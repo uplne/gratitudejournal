@@ -1,4 +1,5 @@
-import { View, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
+import { Pressable } from "native-base";
 import { Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
@@ -6,8 +7,6 @@ import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetType
 import { PageHeading } from '../PageHeading';
 import { PageText } from '../PageText';
 import { StackNavigation } from '../../types/navigation-types';
-import { ButtonDelete } from '../Buttons/ButtonDelete';
-import { ButtonNext } from '../Buttons/ButtonNext';
 
 import styles from './styles';
 
@@ -56,22 +55,24 @@ export const ContainerWithHeader = ({
         <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
         <Appbar.Header style={styles.appBar}>
           {renderBackAction()}
-          {allowDelete &&
-            <ButtonDelete
-              style={styles.buttonDelete}
-              onPress={allowDelete}
-            >
-              Delete
-            </ButtonDelete>
-          }
-          {allowSave &&
-            <ButtonNext
-              onPress={allowSave}
-              simple
-            >
-              Save
-            </ButtonNext>
-          }
+          <View style={styles.buttons}>
+            {allowDelete &&
+              <Pressable
+                style={styles.buttonDelete}
+                onPress={allowDelete}
+              >
+                <Text>Delete</Text>
+              </Pressable>
+            }
+            {allowSave &&
+              <Pressable
+                style={styles.buttonSave}
+                onPress={allowSave}
+              >
+                <Text>Save</Text>
+              </Pressable>
+            }
+          </View>
           {showHome && <Appbar.Action icon="home-account" onPress={goHome} />}
         </Appbar.Header>
         {title && <PageHeading style={pageHeadingStyle} title={title} />}

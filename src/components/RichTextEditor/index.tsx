@@ -6,9 +6,10 @@ import { IconButton } from 'react-native-paper';
 import theme from '../../styles/theme';
 import styles from './styles';
 import FontFamilyStylesheet from '../../styles/fonts';
+import { ContentType } from '../../state/JournalEntryState';
 
 type Props = {
-  initialContentHTML?: string | '',
+  initialContentHTML?: ContentType,
   setText: (value: string) => void,
 };
 
@@ -22,8 +23,18 @@ export const RichTextEditor = forwardRef<RefTypes, Props>(({
 }: Props, ref) => {
   const richText = useRef<RichEditor>(null);
 
-  const fontFamily = 'Cera Pro';
-  const initialCSSText = { initialCSSText: `${FontFamilyStylesheet}`, contentCSSText: `font-family: ${fontFamily}` };
+  const fontFamily = 'Gabarito';
+  const initialCSSText = {
+    initialCSSText: `
+    ${FontFamilyStylesheet}
+    a: {
+      color: 'red',
+    }
+    `,
+    contentCSSText: `font-family: ${fontFamily}`,
+  };
+
+  // richText.current?.insertLink=('Add link') => {};
 
   useImperativeHandle(ref, () => {
     return {
@@ -32,6 +43,10 @@ export const RichTextEditor = forwardRef<RefTypes, Props>(({
       }
     }
   }, []);
+
+  if (typeof initialContentHTML !== 'string') {
+    return null;
+  }
 
   return (
     <>
@@ -42,7 +57,6 @@ export const RichTextEditor = forwardRef<RefTypes, Props>(({
         selectedIconTint={theme.colorPrimary}
         actions={[
           actions.setBold,
-          actions.setItalic,
           actions.setUnderline,
           actions.heading1,
           actions.heading2,
@@ -77,6 +91,9 @@ export const RichTextEditor = forwardRef<RefTypes, Props>(({
         <RichEditor
           ref={richText}
           initialHeight={350}
+          autoCapitalize="on"
+          pasteAsPlainText={true}
+          styleWithCSS={true}
           style={styles.richEditor}
           useContainer={false}
           editorStyle={initialCSSText}

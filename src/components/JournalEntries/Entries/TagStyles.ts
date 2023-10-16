@@ -4,23 +4,35 @@ import theme from "../../../styles/theme";
 
 const styles:Record<string, MixedStyleDeclaration> = {
   div: {
-    fontWeight: 'normal',
+    fontFamily: 'GabaritoRegular',
+    fontWeight: '300',
+    fontSize: 16,
+    lineHeight: 22,
   },
   b: {
-    fontWeight: 'normal',
+    fontFamily: 'GabaritoBold',
+    fontWeight: '500',
   },
   i: {
     fontSize: 26,
   },
+  span: {
+    fontFamily: 'GabaritoRegular',
+    fontWeight: '300',
+    fontStyle: 'normal',
+  },
   h1: {
+    fontFamily: 'GabaritoBold',
+    fontWeight: '500',
     fontSize: 26,
     lineHeight: 26,
-    fontWeight: 'normal',
     marginVertical: 10,
     marginBottom: 20,
   },
   h2: {
-    fontSize: 24,
+    fontFamily: 'GabaritoBold',
+    fontWeight: '500',
+    fontSize: 22,
     lineHeight: 24,
     marginVertical: 10,
     marginBottom: 20,
@@ -37,7 +49,7 @@ const styles:Record<string, MixedStyleDeclaration> = {
   li: {
     margin: 0,
     padding: 0,
-    lineHeight: 19,
+    lineHeight: 21,
   },
   blockquote: {
     width: '100%',

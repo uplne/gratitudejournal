@@ -5,7 +5,8 @@ import moment from 'moment';
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
-import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
+import { useJournalStore, JOURNAL_TYPES } from '../../../state/JournalState';
+import { useJournalEntryStore } from '../../../state/JournalEntryState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
@@ -16,18 +17,18 @@ import styles from './styles';
 export const OneLine = () => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
+  const { journalEditedImages } = useJournalEntryStore();
   const [ date, setDate ] = useState(moment());
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
 
   const [text, setText] = useState('');
-  const [image, setImage] = useState<ImageType | null>(null);
 
   const onSave = async () => {
     await setNewJournal({
       type: JOURNAL_TYPES.ONE_LINE,
       date: date.toISOString(),
       data: text,
-      image, 
+      images: journalEditedImages,
     });
     resetToHome();
   };
@@ -39,7 +40,6 @@ export const OneLine = () => {
 
   return (
     <ContainerWithHeader
-      title="One Line Entry"
       allowSave={onSave}
       modal
     >
@@ -59,12 +59,7 @@ export const OneLine = () => {
                 selectionColor={styles.textArea.selectionColor}
               />
             </View>
-            <View style={styles.bottomSection}>
-              <ImagePicker
-                image={image}
-                setImage={setImage}
-              />
-            </View>
+            <ImagePicker />
           </ScrollView>
         </View>
         {isKeyboardVisible &&

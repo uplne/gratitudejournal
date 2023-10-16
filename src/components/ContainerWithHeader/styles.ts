@@ -17,9 +17,22 @@ const styles = StyleSheet.create({
   titleStyle: {
     fontFamily: 'GabaritoSemiBold',
   },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   buttonDelete: {
     alignItems: 'flex-end',
+    width: 70,
     marginRight: 20,
+  },
+  buttonSave: {
+    alignItems: 'flex-end',
+    marginRight: 20,
+    padding: 0,
+    margin: 0,
   },
 });
 

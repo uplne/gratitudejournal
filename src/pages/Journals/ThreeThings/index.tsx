@@ -8,6 +8,7 @@ import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
 import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
+import { useJournalEntryStore } from '../../../state/JournalEntryState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 
 import { Container } from '../../../components/Container';
@@ -19,10 +20,10 @@ import styles from './styles';
 export const ThreeThings = () => {
   const { resetToHome } = resetNavigationToHome();
   const { setNewJournal } = useJournalStore();
+  const { journalEditedImages } = useJournalEntryStore();
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
   const [ date, setDate ] = useState(moment());
   const [positive, setPositive] = useState<string[]>(new Array(3).fill(''));
-  const [image, setImage] = useState<ImageType | null>(null);
 
   const onSave = async () => {
     const filterOutEmpty = positive.filter((item) => item !== '');
@@ -38,7 +39,7 @@ export const ThreeThings = () => {
       type: JOURNAL_TYPES.THREE_THINGS,
       date: date.toISOString(),
       data: newArray,
-      image, 
+      images: journalEditedImages,
     });
     resetToHome();
   };
@@ -56,12 +57,10 @@ export const ThreeThings = () => {
 
   return (
     <ContainerWithHeader
-      title="Three Positive Things Entry"
       allowSave={onSave}
       modal
     >
       <StatusBar translucent backgroundColor='transparent' />
-      {/* <ImageBackground source={asset} style={styles.headerImage} /> */}
       <Container>
         <ShowDate date={date} setDate={setDate} />
         <View style={styles.inputWrapper}>
@@ -96,12 +95,7 @@ export const ThreeThings = () => {
                 style={styles.textArea}
               />
             </View>
-            <View style={styles.bottomSection}>
-              <ImagePicker
-                image={image}
-                setImage={setImage}
-              />
-            </View>
+            <ImagePicker />
           </ScrollView>
         </View>
         {isKeyboardVisible &&

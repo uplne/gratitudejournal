@@ -25,10 +25,16 @@ const styles = StyleSheet.create({
   buttonSimple: {
     backgroundColor: 'transparent',
     width: 'auto',
+    borderRadius: 0,
+    padding: 0,
+    margin: 0,
     paddingHorizontal: 5,
   },
   buttonTextSimple: {
     color: theme.colorSecondary,
+    lineHeight: 24,
+    padding: 0,
+    margin: 0,
   }
 });
 

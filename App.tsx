@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, AppState } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,9 +19,14 @@ import { Prompt } from './src/pages/Journals/Prompt';
 import { MyAccount } from './src/pages/MyAccount';
 import { Reminders } from './src/pages/Reminders';
 import { Tracking } from './src/pages/Tracking';
+import { Biometrics } from './src/pages/Biometrics';
+import { LockScreen } from './src/pages/LockScreen';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
-import { getAppData } from './src/state/AppStartState';
+import { ImageGallery } from './src/pages/ImageGallery';
+import { AppStateListener } from './src/components/AppStateListener';
+import { getAppData } from './src/state/AppState';
 import { idType } from './src/types/idtype';
+import { useAppStateStore } from './src/state/AppState';
 
 import { InitTracking } from './src/services/Tracking';
 
@@ -39,18 +44,24 @@ export type RootStackParamList = {
   MyAccount: undefined,
   Reminders: undefined,
   Tracking: undefined,
+  Biometrics: undefined,
+  LockScreen: undefined,
   EditJournalEntry: { id: idType },
 
   ThreeThings: undefined,
   Default: undefined,
   OneLine: undefined,
   Prompt: undefined,
+  ImageGallery: { id: idType },
 };
+
+console.log('APP appState: ', AppState.currentState);
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const { updateAppState, appState, shouldLock } = useAppStateStore((state) => state);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
     'CeraProBoldItalic': require('./assets/fonts/cerapro/CeraProBoldItalic.otf'),
@@ -67,6 +78,7 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
+  let startPage: keyof RootStackParamList = 'AppStart';
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
@@ -76,7 +88,11 @@ export default function App() {
 
   useEffect(() => {
     const prepare = async () => {
-      await getAppData();
+      const appData = await getAppData();
+      await updateAppState({
+        ...appData,
+      });
+      
       setAppIsReady(true);
     };
 
@@ -86,6 +102,11 @@ export default function App() {
   if (!fontsLoaded || !appIsReady) {
     return null;
   }
+
+  // If biometrics are active landing page should be the lock screen
+  // if (appState && appState.biometrics && shouldLock) {
+  //   startPage = 'LockScreen';
+  // }
 
   return (
     <View
@@ -105,13 +126,14 @@ export default function App() {
                     backgroundColor: theme.secondary,
                   }
                 }}
-                initialRouteName="AppStart"
+                initialRouteName={startPage}
               >
                 <Stack.Screen name="AppStart" component={AppStart} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="MyAccount" component={MyAccount} />
                 <Stack.Screen name="Reminders" component={Reminders} />
                 <Stack.Screen name="Tracking" component={Tracking} />
+                <Stack.Screen name="Biometrics" component={Biometrics} />
 
                 {/* // Journals */}
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />
@@ -125,8 +147,16 @@ export default function App() {
                 }}>
                   <Stack.Screen name="AddNew" component={AddNew} />
                   <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
+                  <Stack.Screen name="ImageGallery" component={ImageGallery} />
+                </Stack.Group>
+
+                <Stack.Group screenOptions={{
+                  animation: 'fade',
+                }}>
+                  <Stack.Screen name="LockScreen" component={LockScreen} />
                 </Stack.Group>
               </Stack.Navigator>
+              <AppStateListener />
             </SheetProvider>
           </NavigationContainer>
         </NativeBaseProvider>

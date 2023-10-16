@@ -10,6 +10,7 @@ import { StackNavigation } from '../../types/navigation-types';
 import { SubHeading } from '../../components/SubHeading';
 import { Container } from '../../components/Container';
 import { JournalEntries } from '../../components/JournalEntries';
+import { Quotes } from '../../components/Quotes';
 
 import { TrackingEvent } from '../../services/Tracking';
 
@@ -33,6 +34,7 @@ export const Home = () => {
       <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
       <Container>
         <SubHeading>My Journal</SubHeading>
+        <Quotes />
         <JournalEntries />
       </Container>
       <IconCircleButton

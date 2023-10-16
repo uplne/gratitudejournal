@@ -6,14 +6,14 @@ import {
   groupBy,
   toPairs,
   sortBy,
-  first,
   reverse,
+  slice,
 } from 'lodash/fp';
 
-import { useJournalStore, JournalTypes } from '../../state/JournalState';
+import { useJournalStore, JournalTypes, JournalStateType } from '../../state/JournalState';
 import { JournalItem } from '../JournalItem';
 import { getImageSize } from '../../services/ImageSize';
-import { ImageWrapper } from '../ImageWrapper';
+import { ImageThumbnails } from '../ImageThumbnails';
 import { Default } from './Entries/Default';
 import { JOURNAL_TYPES_HUMAN_READABLE } from '../../state/JournalState';
 import { ShowDate } from '../ShowDate';
@@ -22,19 +22,20 @@ import emptyJournal from '../../../assets/bgs/empty_journal2.png';
 
 import styles from './styles';
 
-type Props = {
-  lastOnly?: boolean,
-};
+const journalSelector = (state: JournalStateType)  => flow(
+  groupBy('date'),
+  toPairs,
+  sortBy(0),
+  reverse,
+  slice(0, state.numberLoaded)
+)(state.journal);
 
-export const JournalEntries = ({
-  lastOnly = false,
-}: Props) => {
-  const { getData, journal } = useJournalStore();
+export const JournalEntries = () => {
+  const journal = useJournalStore(journalSelector);
+  const { getData, increaseNumberLoaded } = useJournalStore();
   const hasJournal = journal.length > 0;
   let currentMonth = moment(new Date());
   let currentDay: moment.Moment | null = null;
-
-  console.log(journal);
 
   useEffect(() => {
     getData();
@@ -53,30 +54,17 @@ export const JournalEntries = ({
     );
   }
 
-  const groupGratitude = () => {
-    let result = flow(
-      groupBy('date'),
-      toPairs,
-      sortBy(2),
-      reverse,
-    )(journal);
-  
-    if (lastOnly) {
-      return [flow(
-        first,
-      )(result)];
-    }
-
-    return result;
-  };
-
   let renderMonth = false;
+
+  const loadMode = async () => {
+    await increaseNumberLoaded();
+  };
 
   return (
     <FlatList
       style={styles.root}
-      data={groupGratitude()}
-      renderItem={({item}) => {
+      data={journal}
+      renderItem={({ item }: any) => {
         const items = flow(
           sortBy('ordial'),
         )(item[1]);
@@ -108,7 +96,7 @@ export const JournalEntries = ({
               
               return (
                 <View key={String(journalPost.id)}>
-                  {(renderMonth && !lastOnly) &&
+                  {(renderMonth) &&
                     <View style={{ alignSelf: 'center' }}>
                       <Text style={styles.month}>{moment(journalPost.date).format('MMMM')}</Text>
                     </View>
@@ -119,11 +107,9 @@ export const JournalEntries = ({
                     id={journalPost.id || ''}
                   >
                     {renderData(journalPost)}
-                    {journalPost.image &&
-                      <ImageWrapper
-                        uri={journalPost.image.uri}
-                        width={imageWidth}
-                        height={imageHeight}
+                    {journalPost.id &&
+                      <ImageThumbnails
+                        journalId={journalPost.id}
                       />
                     }
                     <Text style={styles.journalType}>{JOURNAL_TYPES_HUMAN_READABLE[journalPost.type]}</Text>
@@ -134,7 +120,9 @@ export const JournalEntries = ({
           </>
         )
       }}
-      keyExtractor={item => item[0]}
+      keyExtractor={(item:any) => item[0]}
+      onEndReached={loadMode}
+      onEndReachedThreshold={0.6}
       ListFooterComponent={getFooter}
     />
   );

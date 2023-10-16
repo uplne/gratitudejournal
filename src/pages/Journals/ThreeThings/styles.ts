@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   textHeading: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
+    letterSpacing: 0.3,
     fontSize: 26,
     lineHeight: 30,
     marginBottom: 15,
@@ -60,7 +61,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   textArea: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
+    letterSpacing: 0.3,
     fontSize: 18,
     lineHeight: 24,
     color: theme.colorSecondary,

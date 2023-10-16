@@ -43,6 +43,11 @@ export const MyAccount = () => {
             content="Tracking"
             onPress={() => navigation.navigate('Tracking')}
           />
+          <SubMenu.MenuButton
+            icon="shield-lock-outline"
+            content="Touch/Face ID Lock"
+            onPress={() => navigation.navigate('Biometrics')}
+          />
         </SubMenu>
         <SubMenu>
           <SubMenu.MenuTitle title="Support" />

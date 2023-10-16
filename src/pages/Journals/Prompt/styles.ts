@@ -8,22 +8,6 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
-  textHeading: {
-    fontFamily: 'CeraProBold',
-    fontSize: 26,
-    lineHeight: 30,
-    marginBottom: 15,
-    position: 'relative',
-    zIndex: 1,
-    width: '65%',
-  },
-  textSubheading: {
-    fontFamily: 'CeraProMedium',
-    fontSize: 14,
-    lineHeight: 20,
-    color: 'rgba(0,0,0,.5)',
-    width: '60%',
-  },
   header: {
     width: '100%',
     paddingTop: 0,
@@ -89,6 +73,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   buttonImageText: {
+    fontFamily: 'GabaritoRegular',
     color: theme.colorSecondary,
     lineHeight: 15,
   },
@@ -96,10 +81,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   prompt: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoBold',
     fontSize: 18,
     lineHeight: 24,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   buttonPrompt: {
     width: 130,
@@ -110,6 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 5,
     marginBottom: 15,
   }
 });

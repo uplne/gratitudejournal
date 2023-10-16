@@ -4,8 +4,9 @@ import theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
   root: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoRegular',
     fontSize: 16,
+    letterSpacing: .6,
     fontWeight: '500',
     lineHeight: 23,
     paddingLeft: 21,

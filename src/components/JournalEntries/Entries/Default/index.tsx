@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
+import Constants from "expo-constants";
+import RenderHtml from 'react-native-render-html';
 
 import { JournalTypes, JOURNAL_TYPES } from '../../../../state/JournalState';
 
@@ -11,7 +12,7 @@ type Props = {
   data: JournalTypes,
 };
 
-const systemFonts = [...defaultSystemFonts, 'Gabarito'];
+const systemFonts = [...Constants.systemFonts, 'GabaritoRegular', 'GabaritoBold'];
 
 export const Default = ({
   data,
@@ -31,13 +32,21 @@ export const Default = ({
           }
 
           return (
-          <View key={item} style={[styles.container, { marginTop: marginTopStyle, paddingBottom: 0 }]}>
+          <View key={item} style={[styles.container, { marginTop: marginTopStyle, paddingBottom: 0, width: '85%', }]}>
             <Entypo style={styles.icon} name="dot-single" size={24} color="black" />
             <Text style={styles.text}>{item}</Text>
           </View> 
           );
         })}
       </View>
+    );
+  }
+
+  if (data.type === JOURNAL_TYPES.ONE_LINE) {
+    return (
+      <View key={data.data} style={[styles.container, { paddingBottom: 0, marginBottom: 15, }]}>
+        <Text style={styles.text}>{data.data}</Text>
+      </View> 
     );
   }
 

@@ -1,25 +1,34 @@
 import { useState } from 'react';
 import { Image, Text, View, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Pressable } from "native-base";
-import { MaterialIcons } from '@expo/vector-icons';
 
+import { idType } from '../../types/idtype';
 import { Delete } from '../Alerts/Delete';
+import { StackNavigation } from '../../types/navigation-types';
 
 import styles from './styles';
 
 type ComponentProps = {
+  journalId?: idType | undefined,
+  imageId: idType,
   uri: string,
   width: number,
   height: number,
-  onDelete?: () => void,
+  smallGap?: boolean,
+  onDelete?: (imageId: idType) => void,
 };
 
 export const ImageWrapper = ({
+  journalId,
+  imageId,
   uri,
   width,
   height,
+  smallGap = false,
   onDelete,
 }: ComponentProps) => {
+  const navigation = useNavigation<StackNavigation>();
   const [ isOpen, setIsOpen ] = useState(false);
   const { width: windowWidth } = Dimensions.get('window');
   const gap = 20;
@@ -33,13 +42,28 @@ export const ImageWrapper = ({
   
   const imageWidth = DEFAULT_WIDTH;
   const imageHeight = DEFAULT_HEIGHT;
+  const marginRight = smallGap ? 15 : styles.root.marginRight;
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { marginRight }]}>
+      {journalId &&
+        <Pressable
+          onPress={() => navigation.navigate('ImageGallery', {
+            id: journalId,
+          })}
+        >
+          <Image
+            style={[...[styles.image], { width: imageWidth, height: imageHeight }]}
+            source={{uri}}
+          />
+        </Pressable>
+      }
+      {!journalId &&
       <Image
         style={[...[styles.image], { width: imageWidth, height: imageHeight }]}
         source={{uri }}
       />
+      }
       {onDelete && 
         <>
           <Pressable
@@ -52,7 +76,10 @@ export const ImageWrapper = ({
           <Delete
             title="Remove Image"
             deleteButtonLabel="Remove"
-            deleteHandler={onDelete}
+            deleteHandler={() => {
+              onDelete(imageId);
+              setIsOpen(false);
+            }}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />

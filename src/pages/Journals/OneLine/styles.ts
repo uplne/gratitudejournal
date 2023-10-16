@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   textHeading: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoBold',
     fontSize: 26,
     lineHeight: 30,
     marginBottom: 15,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: '65%',
   },
   textSubheading: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoBold',
     fontSize: 14,
     lineHeight: 20,
     color: 'rgba(0,0,0,.5)',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   textArea: {
-    fontFamily: 'CeraProBold',
+    fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 24,
     color: theme.colorSecondary,
@@ -89,9 +89,6 @@ const styles = StyleSheet.create({
   buttonImageText: {
     color: theme.colorSecondary,
     lineHeight: 15,
-  },
-  bottomSection: {
-    marginBottom: 40,
   },
 });
 

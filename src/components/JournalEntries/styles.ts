@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   container: {
-    width: '95%',
+    width: '90%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
   text: {
     width: '100%',
     fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 20,
     fontFamily: 'GabaritoMedium',
   },
   icon: {
-    marginTop: 0,
+    marginTop: -2,
     marginLeft: -6,
   },
   footer: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   prompt: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoMedium',
     fontSize: 16,
     lineHeight: 22,
     backgroundColor: '#f7f6f3',
@@ -74,14 +74,15 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   emptyText: {
-    fontFamily: 'CeraProLight',
+    fontFamily: 'GabaritoMedium',
     fontSize: 15,
     lineHeight: 22,
     color: 'rgba(0,0,0,.6)',
     textAlign: 'center',
   },
   journalType: {
-    fontFamily: 'CeraProMedium',
+    fontFamily: 'GabaritoMedium',
+    letterSpacing: 0.5,
     fontSize: 12,
     color: '#acacaa',
     position: 'absolute',

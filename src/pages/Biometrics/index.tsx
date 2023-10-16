@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
 import { Switch } from 'react-native-paper';
-import { enableTracking, disableTracking } from 'vexo-analytics';
 import { showMessage } from "react-native-flash-message";
 
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
@@ -11,23 +10,21 @@ import { MESSAGES } from '../../state/messages';
 
 import styles from './styles';
 
-export const Tracking = () => {
+export const Biometrics = () => {
   const appState = useAppStateStore((state) => state.appState);
   const updateAppState = useAppStateStore((state) => state.updateAppState);
 
   const onPressHandler = async () => {
-    if (appState.tracking) {
-      TrackingEvent('My Account', { "Tracking": 'Opt Out'});
+    if (appState.biometrics) {
+      TrackingEvent('My Account', { "Biometrics": 'Turn Off'});
       updateAppState({
-        tracking: false,
+        biometrics: false,
       });
-      await disableTracking();
     } else {
-      TrackingEvent('My Account', { "Tracking": 'Opt In'});
+      TrackingEvent('My Account', { "Biometrics": 'Turn On'});
       updateAppState({
-        tracking: true,
+        biometrics: true,
       });
-      await enableTracking();
     }
 
     showMessage({
@@ -39,12 +36,13 @@ export const Tracking = () => {
 
   return (
     <ContainerWithHeader
-      title="Tracking"
+      title="Touch/Face ID Lock"
+      pageText="Lock your journal for further privacy (if supported by your device)."
     >
       <View style={styles.root}>
-        <Text style={styles.text}>Tracking Opt In/Out</Text>
+        <Text style={styles.text}>Touch/Face ID Lock</Text>
         <Switch
-          value={appState.tracking}
+          value={appState.biometrics}
           onValueChange={onPressHandler}
           color={theme.colorPrimary}
         />
