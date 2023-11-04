@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Text, View, Dimensions } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from "native-base";
 
@@ -13,8 +13,6 @@ type ComponentProps = {
   journalId?: idType | undefined,
   imageId: idType,
   uri: string,
-  width: number,
-  height: number,
   smallGap?: boolean,
   onDelete?: (imageId: idType) => void,
 };
@@ -23,19 +21,11 @@ export const ImageWrapper = ({
   journalId,
   imageId,
   uri,
-  width,
-  height,
   smallGap = false,
   onDelete,
 }: ComponentProps) => {
   const navigation = useNavigation<StackNavigation>();
   const [ isOpen, setIsOpen ] = useState(false);
-  const { width: windowWidth } = Dimensions.get('window');
-  const gap = 20;
-  const itemPerRow = 2;
-  const totalGapSize = (itemPerRow - 1) * gap;
-  const windowWidthWithOffset = windowWidth - 40;
-  const childWidth = (windowWidthWithOffset - totalGapSize) / itemPerRow;
 
   const DEFAULT_WIDTH = 100;
   const DEFAULT_HEIGHT = 100;
@@ -70,7 +60,6 @@ export const ImageWrapper = ({
             style={[styles.deleteButton, { width: imageWidth }]}
             onPress={() => setIsOpen(true)}
           >
-            {/* <MaterialIcons name="delete" size={16} color="black" /> */}
             <Text style={styles.buttonImageText}>Remove</Text>
           </Pressable>
           <Delete

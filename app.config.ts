@@ -27,7 +27,7 @@ export default {
       "foregroundImage": "./assets/icon.png",
       "backgroundColor": "#ffffff"
     },
-    "package": IS_DEV ? "com.planmylife.dailyupliftdailyaffirmations.dev" : "com.planmylife.dailyupliftdailyaffirmations",
+    "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
     "versionCode": 6
   },
   "web": {
@@ -53,7 +53,16 @@ export default {
     [
       "expo-image-picker",
       {
-        "photosPermission": "The app accesses your photos to add them in your journals."
+        "photosPermission": "Allow Gratitude Journal access your photos to add them in your journals.",
+        "savePhotosPermission": "Allow Gratitude Journal to save photos."
+      }
+    ],
+    [
+      "expo-media-library",
+      {
+        "photosPermission": "Allow Gratitude Journal access your photos to add them in your journals.",
+        "savePhotosPermission": "Allow Gratitude Journal to save photos.",
+        "isAccessMediaLocationEnabled": true
       }
     ]
   ],

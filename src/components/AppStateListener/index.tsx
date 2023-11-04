@@ -1,5 +1,6 @@
-import { useEffect, useCallback, useRef, useState } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import {
+  NativeEventSubscription,
   AppState as ReactAppState,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -17,9 +18,10 @@ export const AppStateListener = () => {
   } = useAppStateStore((state) => state);
   const RefShouldLock = useRef(shouldLock);
   const RefAppState = useRef(ReactAppState.currentState);
+  const biometricsActive = appState && appState.biometrics;
 
   const handleBiometricAuth = async () => {
-    if (appState && appState.biometrics) {
+    if (biometricsActive) {
       updateAppState({
         loggedIn: false,
       });
@@ -68,7 +70,11 @@ export const AppStateListener = () => {
   }, [])
 
   useEffect(() => {
-    const subscription = ReactAppState.addEventListener('change', changeHandler);
+    let subscription: NativeEventSubscription | null = null;
+
+    if (biometricsActive) {
+      subscription = ReactAppState.addEventListener('change', changeHandler);
+    }
 
     (async () => {
       const compatible = await LocalAuthentication.hasHardwareAsync();
@@ -81,7 +87,9 @@ export const AppStateListener = () => {
 
     return () => {
       console.log('subscription remove');
-      subscription.remove();
+      if (subscription !== null) {
+        subscription.remove();
+      }
     };
   }, []);
 
@@ -98,10 +106,16 @@ export const AppStateListener = () => {
       return;
     }
 
+    if (!biometricsActive) {
+      return goNext();
+    }
+
     if (appState && appState.loggedIn) {
       goNext();
     } else {
       navigation.navigate('LockScreen');
     }
   }, [appState, RefShouldLock]);
+
+  return null;
 };

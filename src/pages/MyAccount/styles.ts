@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   blockVersion: {
-    marginTop: 40,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

@@ -4,7 +4,6 @@ import moment from 'moment';
 import {
   flow,
   groupBy,
-  find,
 } from 'lodash/fp';
 
 import CalendarPicker from 'react-native-calendar-picker';

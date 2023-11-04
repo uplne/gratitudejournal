@@ -1,18 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { SheetManager } from 'react-native-actions-sheet';
 import { Pressable } from "native-base";
 import { Entypo } from '@expo/vector-icons';
-import * as ImagePick from 'expo-image-picker';
-import uuid from 'react-native-uuid';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { ImageWrapper } from '../ImageWrapper';
-import { getImageSize } from '../../services/ImageSize';
-import { useJournalStore } from '../../state/JournalState';
-import { useAppStateStore } from '../../state/AppState';
+import { ImageType, useJournalStore } from '../../state/JournalState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
 
 import styles from './styles';
 import { idType } from 'src/types/idtype';
+
+export const PHOTOS_FOLDER = `${FileSystem.documentDirectory || ''}gratitudejournal_photos`;
 
 type ComponentPropTypes = {
   journalId?: idType | undefined,
@@ -27,12 +29,23 @@ export const ImagePicker = ({
     addJournalEditedImages,
     removeJournalEditedImages,
   } = useJournalEntryStore();
-  const updateShouldLock = useAppStateStore((state) => state.updateShouldLock);
   const { journal } = useJournalStore();
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+
+  const initializeFolder = async () => {
+    const info = await FileSystem.getInfoAsync(PHOTOS_FOLDER)
+
+    if (info.exists) {
+        return Promise.resolve()
+    }
+
+    return await FileSystem.makeDirectoryAsync(PHOTOS_FOLDER, { intermediates: true })
+  };
 
   useEffect(() => {
     const initFunc = async () => {
       await resetJournalEditedImages();
+      await initializeFolder();
     
       if (journalId) {
         const journalItem = journal.filter((item) => item.id === journalId)[0] || null;
@@ -46,51 +59,48 @@ export const ImagePicker = ({
     initFunc();
   }, []);
 
-  const pickImage = async () => {
-    await updateShouldLock(false);
-    let result = await ImagePick.launchImageLibraryAsync({
-      mediaTypes: ImagePick.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    await updateShouldLock(true);
+  const checkPermissions = async () => {
+    const permission = await MediaLibrary.getPermissionsAsync();
 
-    if (!result.canceled && result?.assets) {
-      const item = result?.assets[0];
-
-      if (!item) {
-        return;
+    if (!permission.granted) {
+      const result = await MediaLibrary.requestPermissionsAsync();
+      
+      if (!result.granted) {
+        // TODO - show something
+        console.log('No access granted to media library');
+        return false;
       }
 
-      addJournalEditedImages([{
-        id: uuid.v4(),
-        uri: item.uri,
-        width: item.width,
-        height: item.height,
-        exif: item.exif || null,
-      }]);
+      return true;
     }
+
+    return permission.granted;
+  };
+
+  const pickImage = async () => {
+    const permissions = await checkPermissions();
+
+    if (permissions) {
+      SheetManager.show("MediaGallery");
+    } else {
+      setIsAlertOpen(true);
+    }
+  };
+
+  const deleteImage = async (image: ImageType) => {
+    await removeJournalEditedImages(image.id)
+    // await FileSystem.deleteAsync(image.uri);
   };
 
   return (
     <View style={styles.root}>
       {journalEditedImages.length > 0 &&
         journalEditedImages.map((image) => {
-          let imageWidth = 0;
-          let imageHeight = 0;
-
-          if (image) {
-            ({ imageWidth, imageHeight } = getImageSize(image.width, image.height, 40));
-          }
-
           return (
             <ImageWrapper
               imageId={image.id}
               uri={image.uri}
-              width={imageWidth}
-              height={imageHeight}
-              onDelete={removeJournalEditedImages}
+              onDelete={() => deleteImage(image)}
             />
           );
         })
@@ -102,6 +112,21 @@ export const ImagePicker = ({
         >
           <Entypo name="plus" size={30} color="rgba(0,0,0,.3)" />
         </Pressable>
+      }
+      {isAlertOpen &&
+        <AwesomeAlert
+          show={isAlertOpen}
+          showProgress={false}
+          title="No Permission To Access Media"
+          message="Please allow access to media in Permission Manager."
+          closeOnTouchOutside={true}
+          showConfirmButton={true}
+          confirmText="Ok"
+          confirmButtonColor="#DD6B55"
+          onConfirmPressed={() => {
+            setIsAlertOpen(false);
+          }}
+        />
       }
     </View>
   );

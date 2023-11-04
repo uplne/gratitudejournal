@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 import { idType } from '../../types/idtype';
 
@@ -20,13 +22,9 @@ export enum JOURNAL_TYPES_HUMAN_READABLE {
   'PROMPT'= 'With Prompt',
 };
 
-export type ImageType = {
-  id: idType,
-  uri: string,
-  width: number,
-  height: number,
-  exif: Record<string, any> | null,
-};
+export type ImageType = MediaLibrary.Asset;
+
+export const PHOTOS_FOLDER = `${FileSystem.documentDirectory || ''}gratitudejournal_photos`;
 
 export type DataType = string | undefined | (undefined | string)[];
 export type PromptType = string | null;
@@ -48,7 +46,7 @@ export type JournalTypes = {
   date: string,
   data: DataType,
   prompt?: PromptType,
-  images: ImageType[],
+  images: MediaLibrary.Asset[],
   ordial?: typeof ORDIAL_TYPES[keyof typeof ORDIAL_TYPES],
 };
 
@@ -90,36 +88,86 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
   },
   updateJournal: async (id:idType, type: JOURNAL_TYPES, values: DataType, images: ImageType[]) => {
     const journal: JournalTypes[] = get().journal;
-    const journalToSave = journal.map((item:JournalTypes) => {
+
+    const imagesMap = async (item: JournalTypes) => {
+      let tempImages:ImageType[] = [];
+
+      // Go through the new images
+      await Promise.all(images.map(async (image) => {
+        // Find if image is the same as we already have. If yes, just move it in temp array.
+        if (item.images.find((img) => img.id === image.id)) {
+          tempImages.push(image);
+
+        // If not, move the image and add it to the temp array.
+        } else {
+          const key = uuid.v4();
+          const newUri = `${PHOTOS_FOLDER}/${key}.jpg`;
+          await FileSystem.copyAsync({ from: image.uri, to: newUri });
+          tempImages.push({
+            ...image,
+            uri: newUri,
+          });
+        }
+      }));
+
+      // Now go through the current images again and delete ones that are not in the temp Array
+      await Promise.all(item.images.map(async (image) => {
+        if (!tempImages.find((img) => img.id === image.id)) {
+          await FileSystem.deleteAsync(image.uri);
+        }
+      }));
+
+      return tempImages;
+    };
+
+    const journalToSave = await Promise.all(journal.map(async (item:JournalTypes) => {
       if (item.id === id) {
+        const updatedImages = await imagesMap(item);
         return {
           ...item,
           type,
           data: values,
-          images,
+          images: updatedImages,
         };
       }
   
       return item;
-    });
+    }));
     await saveJournal(journalToSave);
     set({ journal: journalToSave });
   },
   deleteJournal: async (id:idType) => {
     const journal: JournalTypes[] = get().journal;
+    const journalToRemove = journal.filter((item:JournalTypes) => item.id === id)[0];
     const journalToSave = journal.filter((item:JournalTypes) => item.id !== id);
+
+    journalToRemove?.images.forEach(async (image) => {
+      await FileSystem.deleteAsync(image.uri);
+    });
+
     await saveJournal(journalToSave);
     set({ journal: journalToSave });
   },
   setNewJournal: async (item: JournalTypes) => {
     const journal: JournalTypes[] = get().journal;
+    const imagesMap = await Promise.all([...item.images].map(async (image) => {
+      const key = uuid.v4();
+      const newUri = `${PHOTOS_FOLDER}/${key}.jpg`;
+      await FileSystem.copyAsync({ from: image.uri, to: newUri });
+
+      return {
+        ...image,
+        uri: newUri,
+      };
+    }));
+
     const newJournal:JournalTypes = {
       id: uuid.v4(),
       type: item.type,
       date: item.date,
       data: item.data,
       prompt: item.prompt,
-      images: item.images,
+      images: imagesMap,
       ordial: ORDIAL_TYPES[item.type] || 1,
     };
     const newJournalArray = [...journal, newJournal];

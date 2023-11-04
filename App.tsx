@@ -21,6 +21,7 @@ import { Reminders } from './src/pages/Reminders';
 import { Tracking } from './src/pages/Tracking';
 import { Biometrics } from './src/pages/Biometrics';
 import { LockScreen } from './src/pages/LockScreen';
+import { ExportData } from './src/pages/ExportData';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
 import { ImageGallery } from './src/pages/ImageGallery';
 import { AppStateListener } from './src/components/AppStateListener';
@@ -30,7 +31,7 @@ import { useAppStateStore } from './src/state/AppState';
 
 import { InitTracking } from './src/services/Tracking';
 
-// import './src/components/ActionSheet/sheets';
+import './src/components/ActionSheet/sheets';
 
 import theme from './src/styles/theme';
 
@@ -46,6 +47,7 @@ export type RootStackParamList = {
   Tracking: undefined,
   Biometrics: undefined,
   LockScreen: undefined,
+  ExportData: undefined,
   EditJournalEntry: { id: idType },
 
   ThreeThings: undefined,
@@ -78,7 +80,6 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
-  let startPage: keyof RootStackParamList = 'AppStart';
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
@@ -103,11 +104,6 @@ export default function App() {
     return null;
   }
 
-  // If biometrics are active landing page should be the lock screen
-  // if (appState && appState.biometrics && shouldLock) {
-  //   startPage = 'LockScreen';
-  // }
-
   return (
     <View
       style={{ flex: 1 }}
@@ -126,7 +122,7 @@ export default function App() {
                     backgroundColor: theme.secondary,
                   }
                 }}
-                initialRouteName={startPage}
+                initialRouteName="AppStart"
               >
                 <Stack.Screen name="AppStart" component={AppStart} />
                 <Stack.Screen name="Home" component={Home} />
@@ -134,6 +130,7 @@ export default function App() {
                 <Stack.Screen name="Reminders" component={Reminders} />
                 <Stack.Screen name="Tracking" component={Tracking} />
                 <Stack.Screen name="Biometrics" component={Biometrics} />
+                <Stack.Screen name="ExportData" component={ExportData} />
 
                 {/* // Journals */}
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />

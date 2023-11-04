@@ -11,7 +11,7 @@ import styles from './styles';
 
 export const MyAccount = () => {
   const navigation = useNavigation<StackNavigation>();
-  const version = Constants?.manifest?.version || '1.0.0';
+  const version = Constants?.expoConfig?.version || '1.0.0';
 
   const shareApp = async () => {
     try {
@@ -47,6 +47,11 @@ export const MyAccount = () => {
             icon="shield-lock-outline"
             content="Touch/Face ID Lock"
             onPress={() => navigation.navigate('Biometrics')}
+          />
+          <SubMenu.MenuButton
+            icon="file-export-outline"
+            content="Export Data"
+            onPress={() => navigation.navigate('ExportData')}
           />
         </SubMenu>
         <SubMenu>

@@ -1,7 +1,7 @@
 import { View } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 import { ImageWrapper } from '../ImageWrapper';
-import { getImageSize } from '../../services/ImageSize';
 import { useJournalStore } from '../../state/JournalState';
 import { idType } from '../../types/idtype';
 
@@ -25,20 +25,11 @@ export const ImageThumbnails = ({
     <View style={styles.root}>
       {journalItem.images.length > 0 &&
         journalItem.images.map((image) => {
-          let imageWidth = 0;
-          let imageHeight = 0;
-
-          if (image) {
-            ({ imageWidth, imageHeight } = getImageSize(image.width, image.height, 40));
-          }
-
           return (
             <ImageWrapper
               journalId={journalId}
               imageId={image.id}
               uri={image.uri}
-              width={imageWidth}
-              height={imageHeight}
               smallGap
             />
           );
