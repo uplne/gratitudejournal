@@ -19,6 +19,7 @@ export const AppStateListener = () => {
   const RefShouldLock = useRef(shouldLock);
   const RefAppState = useRef(ReactAppState.currentState);
   const biometricsActive = appState && appState.biometrics;
+  const RefBiometricsActive = useRef(biometricsActive);
 
   const handleBiometricAuth = async () => {
     if (biometricsActive) {
@@ -42,6 +43,7 @@ export const AppStateListener = () => {
   };
 
   useEffect(() => { RefShouldLock.current = shouldLock; }, [shouldLock]);
+  useEffect(() => { RefBiometricsActive.current = biometricsActive; }, [biometricsActive]);
 
   const changeHandler = useCallback((nextAppState: any) => {
     // To prevent locking the screen for events like image picker which sends app to background
@@ -49,8 +51,13 @@ export const AppStateListener = () => {
       return;
     }
 
+    // If biometrics is not active stop here
+    if (!RefBiometricsActive.current) {
+      return;
+    }
+
     if (RefAppState.current.match(/active/) && nextAppState === 'background') {
-      // console.log('app is in going to background');
+      console.log('app is in going to background');
       updateAppState({
         loggedIn: false,
       });
@@ -61,7 +68,7 @@ export const AppStateListener = () => {
       RefAppState.current.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      // console.log('app is in going to foreground');
+      console.log('app is in going to foreground');
       navigation.navigate('LockScreen');
       handleBiometricAuth();
     }
