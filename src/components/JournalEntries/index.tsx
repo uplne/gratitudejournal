@@ -9,7 +9,6 @@ import {
   sortBy,
   reverse,
   slice,
-  keys,
 } from 'lodash/fp';
 
 import { useJournalStore, JournalTypes, JournalStateType } from '../../state/JournalState';

@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import * as FileSystem from 'expo-file-system';
 
 import { ImageWrapper } from '../ImageWrapper';
 import { useJournalStore } from '../../state/JournalState';

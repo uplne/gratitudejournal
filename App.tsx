@@ -57,13 +57,11 @@ export type RootStackParamList = {
   ImageGallery: { id: idType },
 };
 
-console.log('APP appState: ', AppState.currentState);
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const { updateAppState, appState, shouldLock } = useAppStateStore((state) => state);
+  const { updateAppState } = useAppStateStore((state) => state);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
     'CeraProBoldItalic': require('./assets/fonts/cerapro/CeraProBoldItalic.otf'),

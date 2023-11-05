@@ -13,16 +13,19 @@ import styles from './styles';
 export const Biometrics = () => {
   const appState = useAppStateStore((state) => state.appState);
   const updateAppState = useAppStateStore((state) => state.updateAppState);
+  const updateShouldLock = useAppStateStore((state) => state.updateShouldLock);
 
   const onPressHandler = async () => {
+    await updateShouldLock(false);
+
     if (appState.biometrics) {
-      TrackingEvent('My Account', { "Biometrics": 'Turn Off'});
-      updateAppState({
+      await TrackingEvent('My Account', { "Biometrics": 'Turn Off'});
+      await updateAppState({
         biometrics: false,
       });
     } else {
-      TrackingEvent('My Account', { "Biometrics": 'Turn On'});
-      updateAppState({
+      await TrackingEvent('My Account', { "Biometrics": 'Turn On'});
+      await updateAppState({
         biometrics: true,
       });
     }
@@ -32,6 +35,8 @@ export const Biometrics = () => {
       type: 'success',
       backgroundColor: theme.colorSecondary,
     });
+
+    await updateShouldLock(true);
   };
 
   return (
