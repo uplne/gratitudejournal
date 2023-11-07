@@ -93,7 +93,6 @@ export const AppStateListener = () => {
     })();
 
     return () => {
-      console.log('subscription remove');
       if (subscription !== null) {
         subscription.remove();
       }

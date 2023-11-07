@@ -8,6 +8,7 @@ import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
 import { ImagePicker } from '../../components/ImagePicker';
+import { AddTags } from '../../components/AddTags';
 
 import styles from './styles';
 
@@ -22,9 +23,11 @@ export const EditThreeThingsJournal = ({
   const {
     journalEditedText,
     updateJournalEditedText,
+    updateJournalTags,
   } = useJournalEntryStore();
   const journalId = id;
-  const journalItemData = journal.filter((item) => item.id === journalId)[0]?.data || null;
+  const journalEntry = journal.filter((item) => item.id === journalId)[0];
+  const journalItemData = journalEntry?.data || null;
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
 
   const keyboardPressHandler = () => {
@@ -39,6 +42,7 @@ export const EditThreeThingsJournal = ({
       data[1],
       data[2],
     ]);
+    updateJournalTags(journalEntry?.tags || []);
   }, [journal]);
 
   const onChangeText = (text: string, position: number) => {
@@ -87,6 +91,7 @@ export const EditThreeThingsJournal = ({
                 />
               </View>
               <ImagePicker journalId={journalId} />
+              <AddTags />
             </View>
           </ScrollView>
         </View>

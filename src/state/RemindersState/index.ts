@@ -151,7 +151,7 @@ type RemindersStateType = {
 
 const getData = async () => {
   try {
-    const jsonValue = await AsyncStorage.getItem('@reminders');
+    const jsonValue = await AsyncStorage.getItem('@gratitude_journal_reminders');
     return jsonValue != null ? JSON.parse(jsonValue) : [];
   } catch(e) {
     console.log('Reading error: ', e);
@@ -162,7 +162,7 @@ const saveReminders = async (values: Reminder[]) => {
   try {
     const jsonValue = JSON.stringify(values);
 
-    await AsyncStorage.setItem('@reminders', jsonValue);
+    await AsyncStorage.setItem('@gratitude_journal_reminders', jsonValue);
     console.log('new reminders: ', values);
   } catch (e) {
     console.log('Saving error: ', e);

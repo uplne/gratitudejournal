@@ -35,8 +35,6 @@ export const ExportData = () => {
       data: journalData,
     });
 
-    console.log(html);
-
     const { uri } = await Print.printToFileAsync({ html });
     const pdfName = `${uri.slice(
       0,

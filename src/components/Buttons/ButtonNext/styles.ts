@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colorSecondary,
   },
   buttonText: {
+    fontFamily: 'GabaritoBold',
     fontSize: 18,
     lineHeight: 17,
     color: theme.white,

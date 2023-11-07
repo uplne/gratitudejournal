@@ -11,6 +11,7 @@ import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { ImagePicker } from '../../../components/ImagePicker';
+import { AddTags } from '../../../components/AddTags';
 
 import styles from './styles';
 
@@ -60,6 +61,7 @@ export const OneLine = () => {
               />
             </View>
             <ImagePicker />
+            <AddTags />
           </ScrollView>
         </View>
         {isKeyboardVisible &&

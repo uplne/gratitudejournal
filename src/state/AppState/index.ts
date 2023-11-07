@@ -40,7 +40,7 @@ const appStateDefaultValues = {
 
 export const getAppData = async () => {
   try {
-    const jsonValue = await AsyncStorage.getItem('@appstate');
+    const jsonValue = await AsyncStorage.getItem('@gratitude_journal_appstate');
     const parsedJSONValue  = jsonValue != null ? JSON.parse(jsonValue) : {};
 
     return {
@@ -56,7 +56,7 @@ const saveAppState = async (values: Partial<AppStateTypes>) => {
   try {
     const jsonValue = JSON.stringify(values);
 
-    await AsyncStorage.setItem('@appstate', jsonValue);
+    await AsyncStorage.setItem('@gratitude_journal_appstate', jsonValue);
   } catch (e) {
     console.log('Saving error: ', e);
   }

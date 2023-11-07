@@ -8,6 +8,7 @@ import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
 import { RichTextEditor, RefTypes } from '../../components/RichTextEditor';
 import { ImagePicker } from '../../components/ImagePicker';
+import { AddTags } from '../../components/AddTags';
 
 import styles from './styles';
 
@@ -22,9 +23,11 @@ export const EditDefaultJournal = ({
   const {
     journalEditedText,
     updateJournalEditedText,
+    updateJournalTags,
   } = useJournalEntryStore();
   const journalId = id;
-  const journalItemData = journal.filter((item) => item.id === journalId)[0]?.data || null;
+  const journalEntry = journal.filter((item) => item.id === journalId)[0];
+  const journalItemData = journalEntry?.data || null;
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
   const EditorRef = useRef<RefTypes | null>(null);
 
@@ -35,6 +38,7 @@ export const EditDefaultJournal = ({
 
   useEffect(() => {
     updateJournalEditedText(typeof journalItemData === 'string' ? journalItemData : '');
+    updateJournalTags(journalEntry?.tags || []);
   }, [journal]);
 
   return (
@@ -52,6 +56,7 @@ export const EditDefaultJournal = ({
                 setText={updateJournalEditedText}
               />
               <ImagePicker journalId={journalId} />
+              <AddTags />
             </View>
           </ScrollView>
         </View>

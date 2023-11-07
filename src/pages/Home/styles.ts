@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
   addNewButton: {
@@ -15,6 +14,17 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     marginTop: 50,
+  },
+  stagger: {
+    position: 'absolute',
+    bottom: 140,
+    right: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    opacity: 0,
+    height: 0,
   },
 });
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { View, Text, FlatList, ImageBackground } from 'react-native';
 import moment from 'moment';
 import * as FileSystem from 'expo-file-system';
+import { AntDesign } from '@expo/vector-icons';
 import {
   flow,
   groupBy,
@@ -41,10 +42,7 @@ export const JournalEntries = () => {
     getData();
 
     const initFunc = async () => {
-      const dir = await FileSystem.readDirectoryAsync('file:///data/user/0/com.planmylife.gratitudejournal.dev/files/gratitudejournal_photos/');
-      console.log('DIR JOURNAL: ', dir);
-
-      // dir.forEach((uri) => FileSystem.deleteAsync(`file:///data/user/0/com.planmylife.gratitudejournal.dev/files/gratitudejournal_photos/${uri}`));
+      await FileSystem.readDirectoryAsync('file:///data/user/0/com.planmylife.gratitudejournal.dev/files/gratitudejournal_photos/');
     };
 
     initFunc();
@@ -115,6 +113,12 @@ export const JournalEntries = () => {
                       />
                     }
                     <Text style={styles.journalType}>{JOURNAL_TYPES_HUMAN_READABLE[journalPost.type]}</Text>
+                    {(journalPost?.tags && journalPost?.tags.length > 0) &&
+                      <View style={styles.journalTags}>
+                        <AntDesign name="tagso" size={20} color="#acacaa" />
+                        <Text style={styles.tagsText}>{journalPost?.tags.length}</Text>
+                      </View>
+                    }
                   </JournalItem>
                 </View>
               );
