@@ -28,7 +28,7 @@ export default {
       "backgroundColor": "#ffffff"
     },
     "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "versionCode": 6
+    "versionCode": 1
   },
   "web": {
     "favicon": "./assets/favicon.png"
@@ -46,7 +46,7 @@ export default {
         "color": "#ffffff",
         "sounds": [],
         "androidMode": "default",
-        "androidCollapsedTitle": "Daily Uplift",
+        "androidCollapsedTitle": "Gratitude Journal",
         "iosDisplayInForeground": true
       }
     ],
