@@ -8,6 +8,7 @@ import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
 import { RichTextEditor, RefTypes } from '../../components/RichTextEditor';
 import { ImagePicker } from '../../components/ImagePicker';
+import { AddTags } from '../../components/AddTags';
 
 import styles from './styles';
 
@@ -22,10 +23,11 @@ export const EditPromptJournal = ({
   const {
     journalEditedText,
     updateJournalEditedText,
+    updateJournalTags,
   } = useJournalEntryStore();
   const journalId = id;
-  const journalItem = journal.filter((item) => item.id === journalId)[0] || null;
-  const journalItemData = journal.filter((item) => item.id === journalId)[0]?.data || null;
+  const journalEntry = journal.filter((item) => item.id === journalId)[0];
+  const journalItemData = journalEntry?.data || null;
   const { isKeyboardVisible, setKeyboardVisible } = useKeyboardShow();
   const EditorRef = useRef<RefTypes | null>(null);
 
@@ -36,6 +38,7 @@ export const EditPromptJournal = ({
 
   useEffect(() => {
     updateJournalEditedText(typeof journalItemData === 'string' ? journalItemData : '');
+    updateJournalTags(journalEntry?.tags || []);
   }, [journal]);
 
   return (
@@ -46,7 +49,7 @@ export const EditPromptJournal = ({
             showsHorizontalScrollIndicator={false}
             decelerationRate={0.9}
           >
-            <Text style={styles.prompt}>{journalItem?.prompt}</Text>
+            <Text style={styles.prompt}>{journalEntry?.prompt}</Text>
             <View style={styles.innerWrap}>
               <RichTextEditor
                 ref={EditorRef}
@@ -54,6 +57,7 @@ export const EditPromptJournal = ({
                 setText={updateJournalEditedText}
               />
               <ImagePicker journalId={journalId} />
+              <AddTags />
             </View>
           </ScrollView>
         </View>

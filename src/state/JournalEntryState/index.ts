@@ -12,6 +12,8 @@ type JournalStateType = {
   addJournalEditedImages: (images: ImageType[]) => void,
   removeJournalEditedImages: (imageId: idType) => void,
   resetJournalEditedImages: () => void,
+  journalTags: idType[],
+  updateJournalTags: (tags:idType[]) => void,
 };
 
 export const useJournalEntryStore = create<JournalStateType>((set, get) => ({
@@ -30,5 +32,9 @@ export const useJournalEntryStore = create<JournalStateType>((set, get) => ({
   removeJournalEditedImages: async (imageId: idType) => {
     const journalEditedImages: ImageType[] = get().journalEditedImages;
     set({ journalEditedImages: journalEditedImages.filter((item) => item && item.id !== imageId) });
+  },
+  journalTags: [],
+  updateJournalTags: async (tags: idType[]) => {
+    set({ journalTags: tags });
   },
 }));

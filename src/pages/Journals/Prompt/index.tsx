@@ -15,6 +15,7 @@ import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { JournalPrompts } from './JournalPrompts';
 import { ImagePicker } from '../../../components/ImagePicker';
 import { RichTextEditor, RefTypes } from '../../../components/RichTextEditor';
+import { AddTags } from '../../../components/AddTags';
 
 import styles from './styles';
 
@@ -81,6 +82,7 @@ export const Prompt = () => {
             setText={setText}
           />
           <ImagePicker />
+          <AddTags />
         </View>
         {isKeyboardVisible &&
           <ButtonKeyboard onPress={keyboardPressHandler} />

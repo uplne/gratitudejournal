@@ -1,19 +1,19 @@
 import { StatusBar, View, TextInput, Keyboard, ScrollView } from 'react-native';
 import { useState } from 'react';
-
 import moment from 'moment';
 import { Entypo } from '@expo/vector-icons';
 
 import { ContainerWithHeader } from '../../../components/ContainerWithHeader';
 import { ShowDate } from '../../../components/ShowDate';
 import { ButtonKeyboard } from '../../../components/Buttons/ButtonKeyboard';
-import { useJournalStore, ImageType, JOURNAL_TYPES } from '../../../state/JournalState';
+import { useJournalStore, JOURNAL_TYPES } from '../../../state/JournalState';
 import { useJournalEntryStore } from '../../../state/JournalEntryState';
 import { useKeyboardShow } from '../../../hooks/useKeyboardShow';
 
 import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { ImagePicker } from '../../../components/ImagePicker';
+import { AddTags } from '../../../components/AddTags';
 
 import styles from './styles';
 
@@ -96,6 +96,7 @@ export const ThreeThings = () => {
               />
             </View>
             <ImagePicker />
+            <AddTags />
           </ScrollView>
         </View>
         {isKeyboardVisible &&

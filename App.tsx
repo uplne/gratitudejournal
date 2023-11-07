@@ -24,6 +24,8 @@ import { LockScreen } from './src/pages/LockScreen';
 import { ExportData } from './src/pages/ExportData';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
 import { ImageGallery } from './src/pages/ImageGallery';
+import { TagManager } from './src/pages/TagManager';
+import { EditTag } from './src/pages/EditTag';
 import { AppStateListener } from './src/components/AppStateListener';
 import { getAppData } from './src/state/AppState';
 import { idType } from './src/types/idtype';
@@ -48,7 +50,9 @@ export type RootStackParamList = {
   Biometrics: undefined,
   LockScreen: undefined,
   ExportData: undefined,
+  TagManager: undefined,
   EditJournalEntry: { id: idType },
+  EditTag: { id: idType },
 
   ThreeThings: undefined,
   Default: undefined,
@@ -61,7 +65,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const { updateAppState } = useAppStateStore((state) => state);
+  const { updateAppState, appState } = useAppStateStore((state) => state);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
     'CeraProBoldItalic': require('./assets/fonts/cerapro/CeraProBoldItalic.otf'),
@@ -78,6 +82,8 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
+
+  console.log(appState);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
@@ -129,6 +135,7 @@ export default function App() {
                 <Stack.Screen name="Tracking" component={Tracking} />
                 <Stack.Screen name="Biometrics" component={Biometrics} />
                 <Stack.Screen name="ExportData" component={ExportData} />
+                <Stack.Screen name="TagManager" component={TagManager} />
 
                 {/* // Journals */}
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />
@@ -143,6 +150,7 @@ export default function App() {
                   <Stack.Screen name="AddNew" component={AddNew} />
                   <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
                   <Stack.Screen name="ImageGallery" component={ImageGallery} />
+                  <Stack.Screen name="EditTag" component={EditTag} />
                 </Stack.Group>
 
                 <Stack.Group screenOptions={{

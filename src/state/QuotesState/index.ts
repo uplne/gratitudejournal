@@ -24,7 +24,7 @@ const saveQuote = async (quote: QuoteStateTypes) => {
   try {
     const jsonValue = JSON.stringify(quote);
 
-    await AsyncStorage.setItem('@quote', jsonValue);
+    await AsyncStorage.setItem('@gratitude_journal_quote', jsonValue);
   } catch (e) {
     console.log('Saving error: ', e);
   }
@@ -32,7 +32,7 @@ const saveQuote = async (quote: QuoteStateTypes) => {
 
 export const getQuoteData = async () => {
   try {
-    const jsonValue = await AsyncStorage.getItem('@quote');
+    const jsonValue = await AsyncStorage.getItem('@gratitude_journal_quote');
     const parsedJSONValue  = jsonValue != null ? JSON.parse(jsonValue) : null;
 
     if (parsedJSONValue) {

@@ -4,6 +4,9 @@ import uuid from 'react-native-uuid';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
+import { TagTypes } from '../TagsState';
+import { useJournalEntryStore } from '../JournalEntryState';
+
 import { idType } from '../../types/idtype';
 
 const NUMBER_LOADING = 3;
@@ -47,6 +50,7 @@ export type JournalTypes = {
   data: DataType,
   prompt?: PromptType,
   images: MediaLibrary.Asset[],
+  tags?: idType[],
   ordial?: typeof ORDIAL_TYPES[keyof typeof ORDIAL_TYPES],
 };
 
@@ -62,7 +66,7 @@ export type JournalStateType = {
 
 const getData = async () => {
   try {
-    const jsonValue = await AsyncStorage.getItem('@journal');
+    const jsonValue = await AsyncStorage.getItem('@gratitude_journal_journal');
     return jsonValue != null ? JSON.parse(jsonValue) : [];
   } catch(e) {
     console.log('Reading error: ', e);
@@ -73,7 +77,7 @@ const saveJournal = async (values: JournalTypes[]) => {
   try {
     const jsonValue = JSON.stringify(values);
 
-    await AsyncStorage.setItem('@journal', jsonValue);
+    await AsyncStorage.setItem('@gratitude_journal_journal', jsonValue);
   } catch (e) {
     console.log('Saving error: ', e);
   }
@@ -88,6 +92,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
   },
   updateJournal: async (id:idType, type: JOURNAL_TYPES, values: DataType, images: ImageType[]) => {
     const journal: JournalTypes[] = get().journal;
+    const tags: TagTypes[] = useJournalEntryStore.getState().journalTags;
 
     const imagesMap = async (item: JournalTypes) => {
       let tempImages:ImageType[] = [];
@@ -127,6 +132,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
           ...item,
           type,
           data: values,
+          tags,
           images: updatedImages,
         };
       }
@@ -150,6 +156,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
   },
   setNewJournal: async (item: JournalTypes) => {
     const journal: JournalTypes[] = get().journal;
+    const tags: idType[] = useJournalEntryStore.getState().journalTags;
     const imagesMap = await Promise.all([...item.images].map(async (image) => {
       const key = uuid.v4();
       const newUri = `${PHOTOS_FOLDER}/${key}.jpg`;
@@ -168,6 +175,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
       data: item.data,
       prompt: item.prompt,
       images: imagesMap,
+      tags, 
       ordial: ORDIAL_TYPES[item.type] || 1,
     };
     const newJournalArray = [...journal, newJournal];

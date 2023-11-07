@@ -12,6 +12,7 @@ import { Container } from '../../../components/Container';
 import { resetNavigationToHome } from '../../../hooks/resetNavigationToHome';
 import { ImagePicker } from '../../../components/ImagePicker';
 import { RichTextEditor, RefTypes } from '../../../components/RichTextEditor';
+import { AddTags } from '../../../components/AddTags';
 
 import styles from './styles';
 
@@ -54,6 +55,7 @@ export const Default = () => {
             setText={setText}
           />
           <ImagePicker />
+          <AddTags />
         </View>
         {isKeyboardVisible &&
           <ButtonKeyboard onPress={keyboardPressHandler} />

@@ -67,6 +67,7 @@ export const EditJournalEntry = ({
   const {
     journalEditedText,
     updateJournalEditedText,
+    updateJournalTags,
     journalEditedImages,
   } = useJournalEntryStore();
   const journalId = route.params?.id;
@@ -99,6 +100,7 @@ export const EditJournalEntry = ({
       journalEditedImages,
     );
     await updateJournalEditedText('');
+    await updateJournalTags([]);
     navigation.goBack()
   };
 

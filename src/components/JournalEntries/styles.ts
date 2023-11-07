@@ -89,6 +89,27 @@ const styles = StyleSheet.create({
     bottom: -10,
     right: 0,
     textTransform: 'uppercase',
+  },
+  journalTags: {
+    fontFamily: 'GabaritoMedium',
+    letterSpacing: 0.5,
+    fontSize: 12,
+    color: '#acacaa',
+    position: 'absolute',
+    bottom: -10,
+    left: 0,
+    textTransform: 'uppercase',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  tagsText: {
+    fontFamily: 'GabaritoMedium',
+    letterSpacing: 0.5,
+    fontSize: 12,
+    color: '#acacaa',
+    marginLeft: 3,
   }
 });
 
