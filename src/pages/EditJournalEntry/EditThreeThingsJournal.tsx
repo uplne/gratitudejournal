@@ -63,7 +63,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalItemData ? journalItemData[0] : ''}
+                  value={journalEditedText[0]}
                   multiline
                   onChangeText={(text) => onChangeText(text, 0)}
                   style={styles.textArea}
@@ -73,7 +73,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalItemData ? journalItemData[1] : ''}
+                  value={journalEditedText[1]}
                   multiline
                   onChangeText={(text) => onChangeText(text, 1)}
                   style={styles.textArea}
@@ -83,7 +83,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalItemData ? journalItemData[2] : ''}
+                  value={journalEditedText[2]}
                   multiline
                   onChangeText={(text) => onChangeText(text, 2)}
                   style={styles.textArea}
