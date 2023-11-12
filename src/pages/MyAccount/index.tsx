@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Share, Text, View } from 'react-native';
+import { Share, Text, View, Platform } from 'react-native';
 import * as Linking from 'expo-linking';
 import Constants from "expo-constants";
 
@@ -9,6 +9,10 @@ import { StackNavigation } from '../../types/navigation-types';
 
 import styles from './styles';
 
+export enum STORE_URL {
+  'ANDROID' = 'https://play.google.com/store/apps/details?id=com.planmylife.gratitudejournal',
+};
+
 export const MyAccount = () => {
   const navigation = useNavigation<StackNavigation>();
   const version = Constants?.expoConfig?.version || '1.0.0';
@@ -16,13 +20,21 @@ export const MyAccount = () => {
   const shareApp = async () => {
     try {
       await Share.share({
-        message: 'Hey! Try Gratitude Journal. App Link - https://play.google.com/store/apps/details?id=com.planmylife.gratitudejournal', 
-        url: 'https://play.google.com/store/apps/details?id=com.planmylife.gratitudejournal',
+        message: `Hey! Try Gratitude Journal. App Link - ${STORE_URL.ANDROID}`, 
+        url: STORE_URL.ANDROID,
       });
     } catch (error: any) {
       console.log(error);
     }
-  }
+  };
+
+  const rateUs = async () => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL('itms-apps://');
+    } else {
+      Linking.openURL('market://details?id=com.planmylife.gratitudejournal');
+    }
+  };
 
   return (
     <ContainerWithHeader
@@ -59,7 +71,7 @@ export const MyAccount = () => {
           <SubMenu.MenuButton
             icon="star-outline"
             content="Rate us"
-            onPress={() => {}}
+            onPress={rateUs}
           />
           <SubMenu.MenuButton
             icon="comment-quote-outline"
