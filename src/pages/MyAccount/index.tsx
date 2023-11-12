@@ -16,8 +16,8 @@ export const MyAccount = () => {
   const shareApp = async () => {
     try {
       await Share.share({
-        message: 'Hey! Try Gratitude Journal.',
-        url: 'https://www.dailyuplift.app',
+        message: 'Hey! Try Gratitude Journal. App Link - https://play.google.com/store/apps/details?id=com.planmylife.gratitudejournal', 
+        url: 'https://play.google.com/store/apps/details?id=com.planmylife.gratitudejournal',
       });
     } catch (error: any) {
       console.log(error);
