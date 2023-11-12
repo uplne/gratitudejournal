@@ -191,8 +191,8 @@ export const useRemidersStore = create<RemindersStateType>((set, get) => ({
   updateReminder: async ({
     id,
     notifId = undefined,
-    hour = 7,
-    minute = 30,
+    hour = 19,
+    minute = 0,
   }: UpdateReminderTypes) => {
     const reminders: Reminder[] = get().reminders;
     const reminderIsActive = reminders.find((item) => item.notifId === notifId);
