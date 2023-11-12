@@ -15,13 +15,20 @@ import { idType } from '../../../types/idtype';
 
 import styles from './styles';
 
-export const AddTag = (props: SheetProps<{ value: string }>) => {
+export const AddTag = (props: SheetProps<{ isCreating: boolean }>) => {
   const { tags, setNewTag } = useTagsStore();
+  const hasTags = tags.length > 0;
+  const isCreatingTag = props.payload?.isCreating;
   const { journalTags, updateJournalTags } = useJournalEntryStore();
   const [text, setText] = useState('');
   const [tagInputVisible, setTagInputVisible] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<idType[]>([])
-  const hasTags = tags.length > 0;
+  const [selectedTags, setSelectedTags] = useState<idType[]>([]);
+
+  useEffect(() => {
+    if (!isCreatingTag && !hasTags) {
+      setTagInputVisible(true);
+    }
+  }, []);
 
   const saveTags = async () => {
     await updateJournalTags(selectedTags);
@@ -50,6 +57,10 @@ export const AddTag = (props: SheetProps<{ value: string }>) => {
   const saveNewTag = async () => {
     await setNewTag(text);
     await setTagInputVisible(false);
+
+    if (isCreatingTag) {
+      await SheetManager.hide("AddTag");
+    }
   };
 
   useEffect(() => {
@@ -59,42 +70,46 @@ export const AddTag = (props: SheetProps<{ value: string }>) => {
   return (
     <ActionSheet id={props.sheetId}>
       <View style={styles.root}>
-        <Text style={styles.title}>Select Tags:</Text>
-        <IconButton
-          icon='close'
-          style={styles.iconButton}
-          onPress={() => SheetManager.hide("AddTag")}
-        />
-        {hasTags &&
-          <TagsWrapper>
-            {tags.map((tag) => {
-              let isSelected = !!selectedTags.find((id) => id === tag.id);
+      {!isCreatingTag &&
+        <>
+          <Text style={styles.title}>Select Tags:</Text>
+          <IconButton
+            icon='close'
+            style={styles.iconButton}
+            onPress={() => SheetManager.hide("AddTag")}
+          />
+          {hasTags &&
+            <TagsWrapper>
+              {tags.map((tag) => {
+                let isSelected = !!selectedTags.find((id) => id === tag.id);
 
-              return (
-                <Pressable
-                  onPress={() => onTagSelect(tag.id)}
-                >
-                  <Tag
-                    selected={isSelected}
-                  >{tag.tag}</Tag>
-                </Pressable>
-              );
-            })}
-            <Pressable
-              onPress={createNewTag}
-            >
-              <Tag
-                simple
+                return (
+                  <Pressable
+                    onPress={() => onTagSelect(tag.id)}
+                  >
+                    <Tag
+                      selected={isSelected}
+                    >{tag.tag}</Tag>
+                  </Pressable>
+                );
+              })}
+              <Pressable
+                onPress={createNewTag}
               >
-                <Entypo style={styles.plusIcon} name="plus" size={20} color="rgba(0,0,0,.3)" />
-              </Tag>
-            </Pressable>
-          </TagsWrapper>
-        }
-        {!hasTags &&
-          <View>
-            <Text>You have no tags yet.</Text>
-          </View>
+                <Tag
+                  simple
+                >
+                  <Entypo style={styles.plusIcon} name="plus" size={20} color="rgba(0,0,0,.3)" />
+                </Tag>
+              </Pressable>
+            </TagsWrapper>
+          }
+          {!hasTags &&
+            <View>
+              <Text>You have no tags yet.</Text>
+            </View>
+          }
+          </>
         }
         {tagInputVisible &&
           <View style={styles.createWrapper}>
@@ -117,14 +132,16 @@ export const AddTag = (props: SheetProps<{ value: string }>) => {
             </View>
           </View>
         }
-        <View style={styles.bottom}>
-          <ButtonNext
-            style={{ backgroundColor: theme.colorPrimary }}
-            onPress={saveTags}
-          >
-            Save
-          </ButtonNext>
-        </View>
+        {!isCreatingTag &&
+          <View style={styles.bottom}>
+            <ButtonNext
+              style={{ backgroundColor: theme.colorPrimary }}
+              onPress={saveTags}
+            >
+              Save
+            </ButtonNext>
+          </View>
+        }
       </View>
     </ActionSheet>
   );

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Pressable } from "native-base";
 import { View, Text, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { SheetManager } from 'react-native-actions-sheet';
 
 import { StackNavigation } from '../../types/navigation-types';
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
@@ -30,6 +31,10 @@ export const TagManager = () => {
     });
   };
 
+  const createTag = () => SheetManager.show("AddTag", {
+    payload: { isCreating: true },
+  });
+
   return (
     <ContainerWithHeader
       title="Tags"
@@ -45,32 +50,30 @@ export const TagManager = () => {
         </View>
       }
 
-      {hasTags &&
-        <Container>
-          {hasTags &&
-            <TagsWrapper>
-              {tags.map((tag) => {
-                return (
-                  <Pressable
-                    style={styles.tag}
-                    onPress={() => openEditTag(tag.id)}
-                  >
-                    <Text>{tag.tag}</Text>
-                  </Pressable>
-                )
-              })}
-            </TagsWrapper>
-          }
-          <View style={styles.addNewWrapper}>
-            <Pressable
-              style={styles.button}
-              onPress={() => {}}
-            >
-              <Text>Add New Tag</Text>
-            </Pressable>
-          </View>
-        </Container>
-      }
+      <Container>
+        {hasTags &&
+          <TagsWrapper>
+            {tags.map((tag) => {
+              return (
+                <Pressable
+                  style={styles.tag}
+                  onPress={() => openEditTag(tag.id)}
+                >
+                  <Text>{tag.tag}</Text>
+                </Pressable>
+              )
+            })}
+          </TagsWrapper>
+        }
+        <View style={styles.addNewWrapper}>
+          <Pressable
+            style={styles.button}
+            onPress={createTag}
+          >
+            <Text>Create New Tag</Text>
+          </Pressable>
+        </View>
+      </Container>
     </ContainerWithHeader>
   );
 };

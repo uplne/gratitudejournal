@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, AppState } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -136,20 +136,18 @@ export default function App() {
                 <Stack.Screen name="Biometrics" component={Biometrics} />
                 <Stack.Screen name="ExportData" component={ExportData} />
                 <Stack.Screen name="TagManager" component={TagManager} />
-
-                {/* // Journals */}
+                <Stack.Screen name="ImageGallery" component={ImageGallery} />
+                <Stack.Screen name="AddNew" component={AddNew} />
                 <Stack.Screen name="ThreeThings" component={ThreeThings} />
                 <Stack.Screen name="Default" component={Default} />
                 <Stack.Screen name="OneLine" component={OneLine} />
                 <Stack.Screen name="Prompt" component={Prompt} />
+                <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
 
                 <Stack.Group screenOptions={{
                   presentation: 'modal',
                   animation: 'slide_from_bottom',
                 }}>
-                  <Stack.Screen name="AddNew" component={AddNew} />
-                  <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
-                  <Stack.Screen name="ImageGallery" component={ImageGallery} />
                   <Stack.Screen name="EditTag" component={EditTag} />
                 </Stack.Group>
 

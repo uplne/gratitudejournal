@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Keyboard } from 'react-native';
+import { View, TextInput } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Button, AlertDialog } from "native-base";

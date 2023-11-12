@@ -59,7 +59,6 @@ export const ImageGallery = ({
     <ContainerWithHeader
       title={moment(journalItem.date).format('Do MMM YYYY')}
       style={styles.root}
-      modal
     >
       <View style={styles.root}>
         <Swiper

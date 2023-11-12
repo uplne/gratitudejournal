@@ -31,9 +31,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  tag: {
+    marginBottom: 0,
+  },
   albums: {
     fontFamily: 'GabaritoSemiBold',
     marginRight: 20,
+    alignContent: 'center',
   },
   imageList: {
     display: 'flex',

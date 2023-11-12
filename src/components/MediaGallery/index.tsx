@@ -81,12 +81,8 @@ export const MediaGallery = (props: SheetProps<{ value: string }>) => {
         />
 
         <View style={[styles.row, styles.albumsRow]}>
-          <View>
-            <Text style={styles.albums}>Album:</Text>
-          </View>
-          <View>
-            <Tag>Camera</Tag>
-          </View>
+          <Text style={styles.albums}>Album:</Text>
+          <Tag style={styles.tag}>Camera</Tag>
         </View>
 
         <View style={styles.row}>

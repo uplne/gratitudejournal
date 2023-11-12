@@ -1,4 +1,4 @@
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, Platform } from 'react-native';
 import { Pressable } from "native-base";
 import { Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -47,13 +47,15 @@ export const ContainerWithHeader = ({
     }
 
     return <Appbar.BackAction onPress={() => navigation.goBack()} />;
-  }
+  };
+
+  const StatusBarHeight = Platform.OS === 'ios' ? undefined : undefined;
 
   return (
     <View style={componentStyles}>
       <View style={styles.titleWrapper}>
         <StatusBar translucent backgroundColor='transparent' barStyle="dark-content" />
-        <Appbar.Header style={styles.appBar}>
+        <Appbar.Header style={styles.appBar} statusBarHeight={StatusBarHeight}>
           {renderBackAction()}
           <View style={styles.buttons}>
             {allowDelete &&

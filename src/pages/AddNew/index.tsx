@@ -40,7 +40,6 @@ export const AddNew = () => {
   return (
     <ContainerWithHeader
       title="New Journal Entry"
-      modal
     >
       <StatusBar translucent backgroundColor='transparent' />
 

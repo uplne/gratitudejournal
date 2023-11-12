@@ -20,7 +20,9 @@ export default {
     "**/*"
   ],
   "ios": {
-    "supportsTablet": true
+    "supportsTablet": false,
+    "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
+    "buildNumber": "1.0.0"
   },
   "android": {
     "adaptiveIcon": {
