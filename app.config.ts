@@ -3,7 +3,7 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 export default {
   "name": IS_DEV ? "Gratitude Journal (Dev)" : "Gratitude Journal",
   "slug": "gratitude-journal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@ export default {
   "ios": {
     "supportsTablet": false,
     "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "buildNumber": "1.0.1"
+    "buildNumber": "1.0.2"
   },
   "android": {
     "adaptiveIcon": {
@@ -30,7 +30,7 @@ export default {
       "backgroundColor": "#ffffff"
     },
     "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "versionCode": 2
+    "versionCode": 3
   },
   "web": {
     "favicon": "./assets/favicon.png"
