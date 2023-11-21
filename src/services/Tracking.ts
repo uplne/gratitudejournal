@@ -1,22 +1,20 @@
 import Constants, { ExecutionEnvironment } from "expo-constants";
 // import { vexo, customEvent } from 'vexo-analytics';
-
-let Vexo:any = null;
+import auth from '@react-native-firebase/app';
 
 const isInProduction = true; //Constants.executionEnvironment === ExecutionEnvironment.Standalone;
 
-if (isInProduction) {
-  Vexo = require('vexo-analytics');
-}
-
-export const InitTracking = () => {
-  if (isInProduction) {
-    Vexo.vexo('c986c684-f36f-4b8e-bbd9-b1539439133d');
-  }
+export const InitTracking = async () => {
+  // setTimeout(async () => {
+  //   console.log('INIT TRACKIING: ', vexo);
+  //   if (isInProduction) {
+  //     await vexo('c986c684-f36f-4b8e-bbd9-b1539439133d');
+  //   }
+  // }, 5000);
 }
 
 export const TrackingEvent = (eventTitle: string, eventObject: Record<string, string>) => {
   if (isInProduction) {
-    Vexo.customEvent(eventTitle, eventObject);
+    // customEvent(eventTitle, eventObject);
   }
 };

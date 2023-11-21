@@ -2,12 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 import { View, TextInput } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Button, AlertDialog } from "native-base";
 
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
 import { useTagsStore } from '../../state/TagsState';
 import { RootStackParamList } from '../../../App';
 import { Container } from '../../components/Container';
+import { Delete } from '../../components/Alerts/Delete';
 import { StackNavigation } from '../../types/navigation-types';
 
 import styles from './styles';
@@ -27,7 +27,6 @@ export const EditTag = ({
   const tag = tags.filter((tag) => tagId === tag.id)[0];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [text, setText] = useState('');
-  const cancelRef = useRef(null);
   
   const openDelete = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
@@ -73,24 +72,13 @@ export const EditTag = ({
           </View>
         </View>
       </Container>
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
-        <AlertDialog.Content>
-          <AlertDialog.Header>Delete Tag</AlertDialog.Header>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
-                Cancel
-              </Button>
-              <Button
-                style={styles.buttonDelete}
-                onPress={deleteHandler}
-              >
-                Delete
-              </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
-      </AlertDialog>
+      <Delete
+        title="Delete Tag"
+        deleteButtonLabel="Delete"
+        deleteHandler={deleteHandler}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </ContainerWithHeader>
   );
 };

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, Dimensions, Pressable } from 'react-native';
 import ActionSheet, { SheetProps, SheetManager } from "react-native-actions-sheet";
-import { useNavigation } from '@react-navigation/native';
 import { IconButton } from 'react-native-paper';
 import debounce from 'lodash/debounce';
 import { AntDesign } from '@expo/vector-icons'; 
 import uuid from 'react-native-uuid';
 import * as MediaLibrary from 'expo-media-library';
 
-import { StackNavigation } from '../../types/navigation-types';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
 import theme from '../../styles/theme';
 import { Tag } from '../Tag';
@@ -17,7 +15,6 @@ import { TrackingEvent } from '../../services/Tracking';
 import styles from './styles';
 
 export const MediaGallery = (props: SheetProps<{ value: string }>) => {
-  const navigation = useNavigation<StackNavigation>();
   const {
     addJournalEditedImages,
   } = useJournalEntryStore();

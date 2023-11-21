@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: 'rgba(0,0,0,.1)',
     paddingHorizontal: 10,
-    paddingTop: 4,
-    paddingBottom: 6,
+    paddingVertical: 6,
     borderRadius: 5,
     marginRight: 15,
     marginBottom: 15,

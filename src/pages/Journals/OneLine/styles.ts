@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import theme from '../../../styles/theme';
 
@@ -63,9 +63,10 @@ const styles = StyleSheet.create({
     fontFamily: 'GabaritoMedium',
     fontSize: 18,
     lineHeight: 24,
+    marginTop: Platform.OS === 'ios' ? -7 : 0,
     color: theme.colorSecondary,
     selectionColor: theme.colorSecondary,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparenthgfhdfh',
     width: '90%',
     textAlignVertical: 'top',
   },

@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Pressable, Image, Text, View, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable } from "native-base";
 
 import { idType } from '../../types/idtype';
 import { Delete } from '../Alerts/Delete';
@@ -30,9 +29,17 @@ export const ImageWrapper = ({
   const DEFAULT_WIDTH = 100;
   const DEFAULT_HEIGHT = 100;
   
-  const imageWidth = DEFAULT_WIDTH;
-  const imageHeight = DEFAULT_HEIGHT;
-  const marginRight = smallGap ? 15 : styles.root.marginRight;
+  let imageWidth = DEFAULT_WIDTH;
+  let imageHeight = DEFAULT_HEIGHT;
+  const { width } = Dimensions.get('window');
+  const offSet = smallGap ? 80 : 40;
+  const safeZoneWidth = width - offSet;
+
+  imageWidth = (safeZoneWidth / 3) * 0.95;
+  imageHeight = imageWidth;
+  
+  const gapWidth = safeZoneWidth / 3 - imageWidth;
+  const marginRight = gapWidth * 1.5;
 
   return (
     <View style={[styles.root, { marginRight }]}>
@@ -49,10 +56,10 @@ export const ImageWrapper = ({
         </Pressable>
       }
       {!journalId &&
-      <Image
-        style={[...[styles.image], { width: imageWidth, height: imageHeight }]}
-        source={{uri }}
-      />
+        <Image
+          style={[...[styles.image], { width: imageWidth, height: imageHeight }]}
+          source={{uri }}
+        />
       }
       {onDelete && 
         <>

@@ -22,7 +22,10 @@ export default {
   "ios": {
     "supportsTablet": false,
     "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "buildNumber": "1.0.2"
+    "buildNumber": "1.0.2",
+    "infoPlist": {
+      "NSFaceIDUsageDescription": "This app uses the FaceID to secure your journals."
+    }
   },
   "android": {
     "adaptiveIcon": {
@@ -66,7 +69,21 @@ export default {
         "savePhotosPermission": "Allow Gratitude Journal to save photos.",
         "isAccessMediaLocationEnabled": true
       }
-    ]
+    ],
+    [
+      "expo-local-authentication",
+      {
+        "faceIDPermission": "Allow Gratitude Journal to use Face ID."
+      }
+    ],
+    [
+      "expo-build-properties",
+      {
+        "ios": {
+          "useFrameworks": "static"
+        }
+      }
+    ],
   ],
   "owner": "planmylife"
 };

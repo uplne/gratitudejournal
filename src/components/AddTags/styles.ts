@@ -16,8 +16,7 @@ const styles = StyleSheet.create({
   button: {
     width: 120,
     paddingHorizontal: 20,
-    paddingTop: 4,
-    paddingBottom: 6,
+    paddingVertical: 6,
     borderStyle: 'solid',
     borderWidth: 2,
     borderColor: 'rgba(0,0,0,.2)',
@@ -30,8 +29,7 @@ const styles = StyleSheet.create({
   tag: {
     backgroundColor: 'rgba(0,0,0,.1)',
     paddingHorizontal: 10,
-    paddingTop: 4,
-    paddingBottom: 6,
+    paddingVertical: 6,
     borderRadius: 5,
     marginRight: 15,
     marginBottom: 15,

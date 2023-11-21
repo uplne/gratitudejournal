@@ -1,5 +1,4 @@
-import { View, Text, StatusBar, Platform } from 'react-native';
-import { Pressable } from "native-base";
+import { View, Text, StatusBar, Platform, Pressable } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
@@ -49,7 +48,7 @@ export const ContainerWithHeader = ({
     return <Appbar.BackAction onPress={() => navigation.goBack()} />;
   };
 
-  const StatusBarHeight = Platform.OS === 'ios' ? undefined : undefined;
+  const StatusBarHeight = Platform.OS === 'ios' && modal ? 0 : undefined;
 
   return (
     <View style={componentStyles}>

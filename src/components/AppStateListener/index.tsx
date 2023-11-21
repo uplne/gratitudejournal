@@ -15,15 +15,19 @@ export const AppStateListener = () => {
     updateAppState,
     appState,
     shouldLock,
+    updateShouldLock,
   } = useAppStateStore((state) => state);
-  const RefShouldLock = useRef(shouldLock);
   const RefAppState = useRef(ReactAppState.currentState);
   const biometricsActive = appState && appState.biometrics;
   const RefBiometricsActive = useRef(biometricsActive);
+  const RefShouldLock = useRef(shouldLock);
 
   const handleBiometricAuth = async () => {
+    console.log('handleBiometricAuth: SHOULD LOCK - false');
+    await updateShouldLock(false);
+
     if (biometricsActive) {
-      updateAppState({
+      await updateAppState({
         loggedIn: false,
       });
       const biometricAuth = await LocalAuthentication.authenticateAsync({
@@ -31,11 +35,11 @@ export const AppStateListener = () => {
       });
 
       if (biometricAuth && biometricAuth.success) {
-        updateAppState({
+        await updateAppState({
           loggedIn: true,
         });
       } else {
-        updateAppState({
+        await updateAppState({
           loggedIn: false,
         });
       }
@@ -46,7 +50,9 @@ export const AppStateListener = () => {
   useEffect(() => { RefBiometricsActive.current = biometricsActive; }, [biometricsActive]);
 
   const changeHandler = useCallback((nextAppState: any) => {
-    // To prevent locking the screen for events like image picker which sends app to background
+    console.log('changeHandler: isTemporarilyInactive: ', RefShouldLock.current);
+
+    // We have FaceID popup open so app is in background/inactive but we don't want to trigger biometrics again
     if (!RefShouldLock.current) {
       return;
     }
@@ -56,7 +62,7 @@ export const AppStateListener = () => {
       return;
     }
 
-    if (RefAppState.current.match(/active/) && nextAppState === 'background') {
+    if (RefAppState.current.match(/active/) && nextAppState.match(/inactive|background/)) {
       console.log('app is in going to background');
       updateAppState({
         loggedIn: false,
@@ -70,6 +76,7 @@ export const AppStateListener = () => {
     ) {
       console.log('app is in going to foreground');
       navigation.navigate('LockScreen');
+      console.log('BIOMETRICS FROM HANDLER');
       handleBiometricAuth();
     }
 
@@ -81,6 +88,7 @@ export const AppStateListener = () => {
 
     if (biometricsActive) {
       subscription = ReactAppState.addEventListener('change', changeHandler);
+      console.log('START CHANGE HANDLER');
     }
 
     (async () => {
@@ -89,10 +97,12 @@ export const AppStateListener = () => {
         biometricsAvailable: compatible,
       });
 
+      console.log('START INITIAL BIOMETRICS');
       await handleBiometricAuth();
     })();
 
     return () => {
+      console.log('APPSTATELISTENER UNMOUT');
       if (subscription !== null) {
         subscription.remove();
       }
@@ -108,20 +118,17 @@ export const AppStateListener = () => {
   };
 
   useEffect(() => {
-    if (!RefShouldLock.current) {
-      return;
-    }
-
     if (!biometricsActive) {
       return goNext();
     }
 
     if (appState && appState.loggedIn) {
+      updateShouldLock(true);
       goNext();
     } else {
       navigation.navigate('LockScreen');
     }
-  }, [appState, RefShouldLock]);
+  }, [appState]);
 
-  return null;
+  return <></>;
 };

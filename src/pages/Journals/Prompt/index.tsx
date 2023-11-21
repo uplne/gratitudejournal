@@ -61,7 +61,6 @@ export const Prompt = () => {
   return (
     <ContainerWithHeader
       allowSave={onSave}
-      modal
     >
       <StatusBar translucent backgroundColor='transparent' />
       <Container>

@@ -14,6 +14,7 @@ type JournalStateType = {
   resetJournalEditedImages: () => void,
   journalTags: idType[],
   updateJournalTags: (tags:idType[]) => void,
+  resetJournalTags: () => void,
 };
 
 export const useJournalEntryStore = create<JournalStateType>((set, get) => ({
@@ -37,4 +38,5 @@ export const useJournalEntryStore = create<JournalStateType>((set, get) => ({
   updateJournalTags: async (tags: idType[]) => {
     set({ journalTags: tags });
   },
+  resetJournalTags: async () => set({ journalTags: []}),
 }));

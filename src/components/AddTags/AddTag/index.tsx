@@ -25,7 +25,7 @@ export const AddTag = (props: SheetProps<{ isCreating: boolean }>) => {
   const [selectedTags, setSelectedTags] = useState<idType[]>([]);
 
   useEffect(() => {
-    if (!isCreatingTag && !hasTags) {
+    if (isCreatingTag) {
       setTagInputVisible(true);
     }
   }, []);
@@ -78,32 +78,30 @@ export const AddTag = (props: SheetProps<{ isCreating: boolean }>) => {
             style={styles.iconButton}
             onPress={() => SheetManager.hide("AddTag")}
           />
-          {hasTags &&
-            <TagsWrapper>
-              {tags.map((tag) => {
-                let isSelected = !!selectedTags.find((id) => id === tag.id);
+          <TagsWrapper>
+            {hasTags && tags.map((tag) => {
+              let isSelected = !!selectedTags.find((id) => id === tag.id);
 
-                return (
-                  <Pressable
-                    onPress={() => onTagSelect(tag.id)}
-                  >
-                    <Tag
-                      selected={isSelected}
-                    >{tag.tag}</Tag>
-                  </Pressable>
-                );
-              })}
-              <Pressable
-                onPress={createNewTag}
-              >
-                <Tag
-                  simple
+              return (
+                <Pressable
+                  onPress={() => onTagSelect(tag.id)}
                 >
-                  <Entypo style={styles.plusIcon} name="plus" size={20} color="rgba(0,0,0,.3)" />
-                </Tag>
-              </Pressable>
-            </TagsWrapper>
-          }
+                  <Tag
+                    selected={isSelected}
+                  >{tag.tag}</Tag>
+                </Pressable>
+              );
+            })}
+            <Pressable
+              onPress={createNewTag}
+            >
+              <Tag
+                simple
+              >
+                <Entypo style={styles.plusIcon} name="plus" size={21} color="rgba(0,0,0,.3)" />
+              </Tag>
+            </Pressable>
+          </TagsWrapper>
           {!hasTags &&
             <View>
               <Text>You have no tags yet.</Text>
@@ -120,7 +118,6 @@ export const AddTag = (props: SheetProps<{ isCreating: boolean }>) => {
                   value={text}
                   onChangeText={setText}
                   style={styles.textArea}
-                  selectionColor={styles.textArea.selectionColor}
                 />
               </View>
               <Pressable

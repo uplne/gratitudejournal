@@ -28,7 +28,7 @@ export const AppStart = () => {
 
       // Setup reminder
       if (notifications.length === 0) {
-        createReminder(7, 30);
+        createReminder(19, 30);
       }
     };
 

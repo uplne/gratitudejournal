@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { Pressable } from "native-base";
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { SheetManager } from 'react-native-actions-sheet';
 
 import { useTagsStore } from '../../state/TagsState';
@@ -11,12 +10,13 @@ import styles from './styles';
 
 export const AddTags = () => {
   const { tags, getData } = useTagsStore();
-  const { journalTags } = useJournalEntryStore();
+  const { journalTags, resetJournalTags } = useJournalEntryStore();
   const hasTags = journalTags.length > 0;
 
   useEffect(() => {
     (async () => {
-      getData();
+      await getData();
+      await resetJournalTags();
     })();
   }, []);
 

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import theme from '../../../styles/theme';
 
@@ -58,18 +58,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   textArea: {
     fontFamily: 'GabaritoMedium',
     letterSpacing: 0.3,
     fontSize: 18,
     lineHeight: 24,
+    marginTop: Platform.OS === 'ios' ? -7 : 0,
     color: theme.colorSecondary,
     selectionColor: theme.colorSecondary,
     backgroundColor: 'transparent',
     width: '90%',
-    textAlignVertical: 'top',
+    textAlignVertical: 'center',
+    justifyContent: 'center',
   },
   inputWrapper: {
     flex: 1,

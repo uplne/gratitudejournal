@@ -40,7 +40,6 @@ export const MyAccount = () => {
     <ContainerWithHeader
       title="My Account"
       style={styles.container}
-      modal
     >
       <View style={styles.submenu}>
         <SubMenu>

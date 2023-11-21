@@ -44,7 +44,6 @@ export const Default = () => {
   return (
     <ContainerWithHeader
       allowSave={onSave}
-      modal
     >
       <StatusBar translucent backgroundColor='transparent' />
       <Container>

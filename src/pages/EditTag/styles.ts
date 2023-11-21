@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import theme from '../../styles/theme';
 
 const styles = StyleSheet.create({
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     selectionColor: theme.colorSecondary,
     backgroundColor: 'transparent',
     width: '90%',
+    marginTop: Platform.OS === 'ios' ? -6 : 0,
     textAlignVertical: 'top',
   },
   textAreaMultiline: {

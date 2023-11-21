@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import theme from '../../../styles/theme';
 
@@ -47,19 +47,18 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'rgba(0,0,0,.2)',
     borderRadius: 20,
-    paddingTop: 10,
     paddingLeft: 10,
-    paddingBottom: 8,
     marginBottom: 15,
+    paddingVertical: 0,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   createButton: {
     backgroundColor: theme.colorPrimary,
     borderRadius: 20,
-    height: 50,
+    paddingVertical: 11,
     lineHeight: 50,
     width: 80,
     display: 'flex',
@@ -74,12 +73,13 @@ const styles = StyleSheet.create({
   textArea: {
     fontFamily: 'GabaritoMedium',
     fontSize: 18,
-    lineHeight: 24,
+    lineHeight: 21,
+    paddingVertical: Platform.OS === 'ios' ? 6 : 4,
+    marginTop: Platform.OS === 'ios' ? 0 : 0,
     color: theme.colorSecondary,
     selectionColor: theme.colorSecondary,
     backgroundColor: 'transparent',
     width: '90%',
-    textAlignVertical: 'top',
   },
   bottom: {
     justifyContent: 'center',
@@ -87,8 +87,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   plusIcon: {
-    position: 'absolute',
-    top: 4,
+    paddingTop: 5,
   },
   createWrapper: {
     display: 'flex',

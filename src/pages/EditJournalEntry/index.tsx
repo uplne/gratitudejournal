@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Button, AlertDialog } from "native-base";
+import { Button } from "native-base";
 
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
 import { useJournalStore, JOURNAL_TYPES, JournalTypes } from '../../state/JournalState';
@@ -14,6 +14,7 @@ import { EditDefaultJournal } from './EditDefaultJournal';
 import { EditPromptJournal } from './EditPromptJournal';
 import { resetNavigationToHome } from '../../hooks/resetNavigationToHome';
 import { idType } from '../../types/idtype';
+import { Delete } from '../../components/Alerts/Delete';
 
 import styles from './styles';
 
@@ -73,17 +74,13 @@ export const EditJournalEntry = ({
   const journalId = route.params?.id;
   const journalItem = journal.filter((item) => item.id === journalId)[0] || null;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const cancelRef = useRef(null);
   
   const openDelete = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
   const deleteHandler = async () => {
-    setIsDeleting(true);
     await deleteJournal(journalId);
     resetToHome();
-    setIsDeleting(false);
     onClose();
   };
 
@@ -110,31 +107,18 @@ export const EditJournalEntry = ({
       style={styles.root}
       allowDelete={openDelete}
       allowSave={saveValue}
-      modal
     >
       <RenderEdit
         journalId={journalId}
         journalItem={journalItem}
       />
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
-        <AlertDialog.Content>
-          <AlertDialog.Header>Delete Journal Entry</AlertDialog.Header>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
-                Cancel
-              </Button>
-              <Button
-                style={styles.buttonDelete}
-                onPress={deleteHandler}
-                isLoading={isDeleting}
-              >
-                Delete
-              </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
-      </AlertDialog>
+      <Delete
+        title="Delete Journal Entry"
+        deleteButtonLabel="Delete"
+        deleteHandler={deleteHandler}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </ContainerWithHeader>
   );
 };

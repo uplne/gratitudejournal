@@ -1,4 +1,4 @@
-import { useEffect, usseEffect } from 'react';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 
 import { useRemidersStore } from '../../state/RemindersState';
@@ -14,6 +14,8 @@ export const RemindersList = ({
   contrast = false,
 }:ComponentPropsTypes) => {
   const { reminders, getData } = useRemidersStore((state) => state);
+
+  console.log(reminders);
 
   useEffect(() => {
     getData();

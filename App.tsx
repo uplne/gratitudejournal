@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -83,8 +83,6 @@ export default function App() {
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
 
-  console.log(appState);
-
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
       await SplashScreen.hideAsync();
@@ -94,10 +92,12 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       const appData = await getAppData();
+      console.log('APP PREPARING - STARTING TRACKING');
       await updateAppState({
         ...appData,
       });
       
+      console.log('APP IS READY');
       setAppIsReady(true);
     };
 
@@ -105,8 +105,12 @@ export default function App() {
   }, []);
 
   if (!fontsLoaded || !appIsReady) {
+    console.log('APP IS NULL');
     return null;
   }
+
+  console.log('APP IS LOADING: ', fontsLoaded, appIsReady);
+  console.log('APP IS RENDERING');
 
   return (
     <View
@@ -165,12 +169,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

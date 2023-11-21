@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   buttonImageText: {
     color: theme.colorSecondary,
-    lineHeight: 15,
+    lineHeight: 17,
   },
 });
 
