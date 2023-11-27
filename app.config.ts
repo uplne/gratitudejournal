@@ -3,7 +3,7 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 export default {
   "name": IS_DEV ? "Gratitude Journal (Dev)" : "Gratitude Journal",
   "slug": "gratitude-journal",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
@@ -22,10 +22,11 @@ export default {
   "ios": {
     "supportsTablet": false,
     "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "buildNumber": "1.0.2",
+    "buildNumber": "1.0.3",
     "infoPlist": {
       "NSFaceIDUsageDescription": "This app uses the FaceID to secure your journals."
-    }
+    },
+    "googleServicesFile": IS_DEV ? "./GoogleService-Info-dev.plist" : "./GoogleService-Info.plist",
   },
   "android": {
     "adaptiveIcon": {
@@ -33,7 +34,8 @@ export default {
       "backgroundColor": "#ffffff"
     },
     "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "versionCode": 3
+    "versionCode": 4,
+    "googleServicesFile": IS_DEV ? "./google-services-dev.json" : "./google-services.json",
   },
   "web": {
     "favicon": "./assets/favicon.png"
@@ -76,14 +78,29 @@ export default {
         "faceIDPermission": "Allow Gratitude Journal to use Face ID."
       }
     ],
+    "@react-native-firebase/app",
+    "@react-native-firebase/perf",
+    "@react-native-firebase/crashlytics",
     [
-      "expo-build-properties",
+        "expo-build-properties",
+        {
+            "ios": {
+            "useFrameworks": "static"
+            }
+        }
+    ],
+    ['sentry-expo'],
+  ],
+  "hooks": {
+    "postPublish": [
       {
-        "ios": {
-          "useFrameworks": "static"
+        "file": "sentry-expo/upload-sourcemaps",
+        "config": {
+          "organization": "lio-software-ltd",
+          "project": "gratitude-journal"
         }
       }
-    ],
-  ],
+    ]
+  },
   "owner": "planmylife"
 };

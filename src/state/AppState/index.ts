@@ -74,6 +74,13 @@ export const useAppStateStore = create<AppStateType>((set, get) => ({
   shouldLock: true,
   updateShouldLock: async (value: boolean) => {
     set({ shouldLock: value });
+    // setTimeout(() => {
+    //   const currentShouldLock = get().shouldLock;
+
+    //   if (currentShouldLock) {
+    //     set({ shouldLock: true });
+    //   }
+    // }, 5000);
   },
   updateAppState: async (values:Partial<AppStateTypes>) => {
     const appStateValues: AppStateTypes = get().appState;

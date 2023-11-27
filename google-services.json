@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "326974871796",
+    "project_id": "gratitude-journal-b79aa",
+    "storage_bucket": "gratitude-journal-b79aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326974871796:android:4e0c138fc53a560e12a6a1",
+        "android_client_info": {
+          "package_name": "com.planmylife.gratitudejournal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwapeaknrv80DunsM2iGkkrO6jfN1FjGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

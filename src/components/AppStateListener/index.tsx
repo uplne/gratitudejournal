@@ -21,11 +21,13 @@ export const AppStateListener = () => {
   const biometricsActive = appState && appState.biometrics;
   const RefBiometricsActive = useRef(biometricsActive);
   const RefShouldLock = useRef(shouldLock);
+  let subscription: NativeEventSubscription | null = null;
 
   const handleBiometricAuth = async () => {
     console.log('handleBiometricAuth: SHOULD LOCK - false');
     await updateShouldLock(false);
 
+    console.log('biometricsActive: ', biometricsActive);
     if (biometricsActive) {
       await updateAppState({
         loggedIn: false,
@@ -81,14 +83,23 @@ export const AppStateListener = () => {
     }
 
     RefAppState.current = nextAppState;
-  }, [])
+  }, []);
+
+  const subscribeChangeHandler = () => {
+    console.log('START CHANGE HANDLER');
+    subscription = ReactAppState.addEventListener('change', changeHandler);
+  };
+
+  const unSubscribeChangeHandler = () => {
+    console.log('STOP CHANGE HANDLER');
+    if (subscription !== null) {
+      subscription.remove();
+    }
+  };
 
   useEffect(() => {
-    let subscription: NativeEventSubscription | null = null;
-
     if (biometricsActive) {
-      subscription = ReactAppState.addEventListener('change', changeHandler);
-      console.log('START CHANGE HANDLER');
+      subscribeChangeHandler();
     }
 
     (async () => {
@@ -103,9 +114,7 @@ export const AppStateListener = () => {
 
     return () => {
       console.log('APPSTATELISTENER UNMOUT');
-      if (subscription !== null) {
-        subscription.remove();
-      }
+      unSubscribeChangeHandler();
     };
   }, []);
 
@@ -118,6 +127,14 @@ export const AppStateListener = () => {
   };
 
   useEffect(() => {
+    if (appState && 'biometrics'in appState) {
+      if (appState.biometrics && !subscription) {
+        subscribeChangeHandler();
+      }
+    }
+  }, [appState.biometrics]);
+
+  useEffect(() => {
     if (!biometricsActive) {
       return goNext();
     }
@@ -128,7 +145,7 @@ export const AppStateListener = () => {
     } else {
       navigation.navigate('LockScreen');
     }
-  }, [appState]);
+  }, [appState.loggedIn]);
 
   return <></>;
 };
