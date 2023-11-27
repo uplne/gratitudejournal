@@ -78,9 +78,6 @@ export default {
         "faceIDPermission": "Allow Gratitude Journal to use Face ID."
       }
     ],
-    "@react-native-firebase/app",
-    "@react-native-firebase/perf",
-    "@react-native-firebase/crashlytics",
     [
         "expo-build-properties",
         {
