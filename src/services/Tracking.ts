@@ -1,7 +1,7 @@
 import Constants, { ExecutionEnvironment } from "expo-constants";
 import analytics from '@react-native-firebase/analytics';
 
-const isInProduction = true; //Constants.executionEnvironment === ExecutionEnvironment.Standalone;
+const isInProduction = Constants.executionEnvironment === ExecutionEnvironment.Standalone;
 
 export const InitTracking = async () => {
   await analytics().logEvent("test_analytics_event", {
@@ -11,6 +11,6 @@ export const InitTracking = async () => {
 
 export const TrackingEvent = async (eventTitle: string, eventObject: Record<string, string>) => {
   if (isInProduction) {
-    await analytics().logEvent("some_event", eventObject);
+    await analytics().logEvent(eventTitle, eventObject);
   }
 };
