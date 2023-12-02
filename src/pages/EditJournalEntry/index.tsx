@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Button } from "native-base";
 
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
 import { useJournalStore, JOURNAL_TYPES, JournalTypes } from '../../state/JournalState';

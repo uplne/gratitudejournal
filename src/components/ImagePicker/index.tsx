@@ -9,7 +9,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { ImageWrapper } from '../ImageWrapper';
 import { ImageType, useJournalStore } from '../../state/JournalState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
-import { useAppStateStore } from '../../state/AppState';
 
 import styles from './styles';
 import { idType } from 'src/types/idtype';
@@ -30,7 +29,6 @@ export const ImagePicker = ({
     removeJournalEditedImages,
   } = useJournalEntryStore();
   const { journal } = useJournalStore();
-  const updateShouldLock = useAppStateStore((state) => state.updateShouldLock);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
   const initializeFolder = async () => {
@@ -79,14 +77,11 @@ export const ImagePicker = ({
   };
 
   const pickImage = async () => {
-    await updateShouldLock(false);
     const permissions = await checkPermissions();
 
     if (permissions) {
-      await updateShouldLock(true);
       SheetManager.show("MediaGallery");
     } else {
-      await updateShouldLock(true);
       setIsAlertOpen(true);
     }
   };

@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
 import { Switch } from 'react-native-paper';
-import { enableTracking, disableTracking } from 'vexo-analytics';
 import { showMessage } from "react-native-flash-message";
 
 import { ContainerWithHeader } from '../../components/ContainerWithHeader';
@@ -21,13 +20,13 @@ export const Tracking = () => {
       updateAppState({
         tracking: false,
       });
-      await disableTracking();
+      // await disableTracking();
     } else {
       TrackingEvent('My Account', { "Tracking": 'Opt In'});
       updateAppState({
         tracking: true,
       });
-      await enableTracking();
+      // await enableTracking();
     }
 
     showMessage({

@@ -51,6 +51,8 @@ export const Biometrics = () => {
       }
     }
 
+    await updateShouldLock(true);
+
     showMessage({
       message: MESSAGES.CHANGES_SAVED,
       type: 'success',

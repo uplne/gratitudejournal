@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { Pressable } from "native-base";
+import { View, Text } from 'react-native';
 import { SheetManager } from 'react-native-actions-sheet';
 
 import { useTagsStore } from '../../state/TagsState';

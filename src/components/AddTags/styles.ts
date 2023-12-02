@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import theme from '../../styles/theme';
-
 const styles = StyleSheet.create({
   root: {
     display: 'flex',

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
-import { Pressable } from "native-base";
+import { View, Text, TextInput, Pressable } from 'react-native';
 import ActionSheet, { SheetProps, SheetManager } from "react-native-actions-sheet";
 import { IconButton } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';

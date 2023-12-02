@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
@@ -32,7 +32,6 @@ import { idType } from './src/types/idtype';
 import { useAppStateStore } from './src/state/AppState';
 
 import { InitTracking } from './src/services/Tracking';
-import { InitSentry } from './src/services/Sentry';
 
 import './src/components/ActionSheet/sheets';
 
@@ -83,8 +82,8 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
-  const routeNameRef = useRef(null);
-  const navigationRef = useRef(null);
+
+  console.log(appState);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
@@ -94,15 +93,11 @@ export default function App() {
 
   useEffect(() => {
     const prepare = async () => {
-      console.log('INIT SENTRY');
-      InitSentry();
       const appData = await getAppData();
-      console.log('APP PREPARING - STARTING TRACKING');
       await updateAppState({
         ...appData,
       });
       
-      console.log('APP IS READY');
       setAppIsReady(true);
     };
 
@@ -110,12 +105,8 @@ export default function App() {
   }, []);
 
   if (!fontsLoaded || !appIsReady) {
-    console.log('APP IS NULL');
     return null;
   }
-
-  console.log('APP IS LOADING: ', fontsLoaded, appIsReady);
-  console.log('APP IS RENDERING');
 
   return (
     <View
@@ -124,24 +115,7 @@ export default function App() {
     >
       <PaperProvider>
         <NativeBaseProvider>
-          <NavigationContainer
-            ref={navigationRef}
-            onReady={() => {
-              routeNameRef.current = navigationRef?.current?.getCurrentRoute().name;
-            }}
-            onStateChange={async () => {
-              const previousRouteName = routeNameRef.current;
-              const currentRouteName = navigationRef?.current?.getCurrentRoute().name;
-      
-              if (previousRouteName !== currentRouteName) {
-                await analytics().logScreenView({
-                  screen_name: currentRouteName,
-                  screen_class: currentRouteName,
-                });
-              }
-              routeNameRef.current = currentRouteName;
-            }}
-          >
+          <NavigationContainer>
             <SheetProvider>
               <FlashMessage position="bottom" />
               <Stack.Navigator

@@ -24,11 +24,9 @@ export const AppStateListener = () => {
   let subscription: NativeEventSubscription | null = null;
 
   const handleBiometricAuth = async () => {
-    console.log('handleBiometricAuth: SHOULD LOCK - false');
     await updateShouldLock(false);
 
-    console.log('biometricsActive: ', biometricsActive);
-    if (biometricsActive) {
+    if (RefBiometricsActive.current) {
       await updateAppState({
         loggedIn: false,
       });
@@ -52,8 +50,6 @@ export const AppStateListener = () => {
   useEffect(() => { RefBiometricsActive.current = biometricsActive; }, [biometricsActive]);
 
   const changeHandler = useCallback((nextAppState: any) => {
-    console.log('changeHandler: isTemporarilyInactive: ', RefShouldLock.current);
-
     // We have FaceID popup open so app is in background/inactive but we don't want to trigger biometrics again
     if (!RefShouldLock.current) {
       return;
@@ -78,7 +74,6 @@ export const AppStateListener = () => {
     ) {
       console.log('app is in going to foreground');
       navigation.navigate('LockScreen');
-      console.log('BIOMETRICS FROM HANDLER');
       handleBiometricAuth();
     }
 
@@ -86,12 +81,10 @@ export const AppStateListener = () => {
   }, []);
 
   const subscribeChangeHandler = () => {
-    console.log('START CHANGE HANDLER');
     subscription = ReactAppState.addEventListener('change', changeHandler);
   };
 
   const unSubscribeChangeHandler = () => {
-    console.log('STOP CHANGE HANDLER');
     if (subscription !== null) {
       subscription.remove();
     }
@@ -108,12 +101,10 @@ export const AppStateListener = () => {
         biometricsAvailable: compatible,
       });
 
-      console.log('START INITIAL BIOMETRICS');
       await handleBiometricAuth();
     })();
 
     return () => {
-      console.log('APPSTATELISTENER UNMOUT');
       unSubscribeChangeHandler();
     };
   }, []);

@@ -15,8 +15,6 @@ export const RemindersList = ({
 }:ComponentPropsTypes) => {
   const { reminders, getData } = useRemidersStore((state) => state);
 
-  console.log(reminders);
-
   useEffect(() => {
     getData();
   }, [])

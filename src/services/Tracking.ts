@@ -1,16 +1,15 @@
 import Constants, { ExecutionEnvironment } from "expo-constants";
-import analytics from '@react-native-firebase/analytics';
 
-const isInProduction = Constants.executionEnvironment === ExecutionEnvironment.Standalone;
+const isInProduction = true; //Constants.executionEnvironment === ExecutionEnvironment.Standalone;
 
-export const InitTracking = async () => {
-  await analytics().logEvent("test_analytics_event", {
-    additionaParam: "test",
-  });
+export const InitTracking = () => {
+  if (isInProduction) {
+    // Vexo.vexo('c986c684-f36f-4b8e-bbd9-b1539439133d');
+  }
 }
 
-export const TrackingEvent = async (eventTitle: string, eventObject: Record<string, string>) => {
+export const TrackingEvent = (eventTitle: string, eventObject: Record<string, string>) => {
   if (isInProduction) {
-    await analytics().logEvent(eventTitle, eventObject);
+    // Vexo.customEvent(eventTitle, eventObject);
   }
 };
