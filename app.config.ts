@@ -3,7 +3,7 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 export default {
   "name": IS_DEV ? "Gratitude Journal (Dev)" : "Gratitude Journal",
   "slug": "gratitude-journal",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@ export default {
   "ios": {
     "supportsTablet": false,
     "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "buildNumber": "1.0.5",
+    "buildNumber": "1.0.6",
     "infoPlist": {
       "NSFaceIDUsageDescription": "This app uses the FaceID to secure your journals."
     }
@@ -33,7 +33,7 @@ export default {
       "backgroundColor": "#ffffff"
     },
     "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "versionCode": 6
+    "versionCode": 7
   },
   "web": {
     "favicon": "./assets/favicon.png"
