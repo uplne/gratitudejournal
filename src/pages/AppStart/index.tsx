@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import * as Notifications from "expo-notifications";
 import uuid from 'react-native-uuid';
 
 import { useAppStateStore } from '../../state/AppState';
@@ -11,7 +10,7 @@ export const AppStart = () => {
   const navigation = useNavigation<StackNavigation>();
   const appState = useAppStateStore((state) => state.appState);
   const updateAppState = useAppStateStore((state) => state.updateAppState);
-  const createReminder = useRemidersStore((state) => state.createReminder);
+  const { createReminder, reminders } = useRemidersStore((state) => state);
   let userID = appState.userID;
 
   const goNext = () => {
@@ -24,10 +23,9 @@ export const AppStart = () => {
 
   useEffect(() => {
     const getNotifications = async () => {
-      const notifications = await Notifications.getAllScheduledNotificationsAsync();
-
+      console.log('AppStart: Notifications: ', reminders);
       // Setup reminder
-      if (notifications.length === 0) {
+      if (reminders.length === 0) {
         createReminder(19, 30);
       }
     };

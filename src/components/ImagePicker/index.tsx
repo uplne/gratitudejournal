@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View, Pressable } from 'react-native';
+import { View, Pressable, Dimensions } from 'react-native';
 import { SheetManager } from 'react-native-actions-sheet';
 import { Entypo } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import * as Linking from 'expo-linking';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { ImageWrapper } from '../ImageWrapper';
@@ -91,6 +92,21 @@ export const ImagePicker = ({
     // await FileSystem.deleteAsync(image.uri);
   };
 
+  const DEFAULT_WIDTH = 100;
+  const DEFAULT_HEIGHT = 100;
+  
+  let imageWidth = DEFAULT_WIDTH;
+  let imageHeight = DEFAULT_HEIGHT;
+  const { width } = Dimensions.get('window');
+  const offSet = 40;
+  const safeZoneWidth = width - offSet;
+
+  imageWidth = (safeZoneWidth / 3) * 0.95;
+  imageHeight = imageWidth;
+  
+  const gapWidth = safeZoneWidth / 3 - imageWidth;
+  const marginRight = gapWidth * 1.5;
+
   return (
     <View style={styles.root}>
       {journalEditedImages.length > 0 &&
@@ -106,7 +122,7 @@ export const ImagePicker = ({
       }
       {journalEditedImages.length < 3 &&
         <Pressable
-          style={styles.buttonImage}
+          style={[...[styles.buttonImage], { width: imageWidth, height: imageHeight }]}
           onPress={pickImage}
         >
           <Entypo name="plus" size={30} color="rgba(0,0,0,.3)" />
@@ -123,6 +139,7 @@ export const ImagePicker = ({
           confirmText="Ok"
           confirmButtonColor="#DD6B55"
           onConfirmPressed={() => {
+            Linking.openSettings();
             setIsAlertOpen(false);
           }}
         />

@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
 import styles from './styles';
@@ -18,8 +18,11 @@ export const Container = ({
   ];
 
   return (
-    <View style={componentStyles}>
+    <KeyboardAvoidingView
+      style={componentStyles}
+      behavior='padding'
+    >
       {children}
-    </View>
+    </KeyboardAvoidingView>
   );
 };

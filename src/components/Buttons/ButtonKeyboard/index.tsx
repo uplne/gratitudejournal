@@ -1,4 +1,4 @@
-import { Pressable } from "native-base";
+import { Pressable, View } from "native-base";
 import type { TextStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -19,11 +19,13 @@ export const ButtonKeyboard = ({
   ];
 
   return (
-    <Pressable
-      style={componentStyles}
-      onPress={onPress}
-    >
-      <MaterialIcons name="keyboard-hide" size={24} color="black" />
-    </Pressable>
+    <View style={styles.wrapper}>
+      <Pressable
+        style={componentStyles}
+        onPress={onPress}
+      >
+        <MaterialIcons name="keyboard-hide" size={24} color="black" />
+      </Pressable>
+    </View>
   );
 };

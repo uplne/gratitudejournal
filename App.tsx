@@ -30,6 +30,7 @@ import { AppStateListener } from './src/components/AppStateListener';
 import { getAppData } from './src/state/AppState';
 import { idType } from './src/types/idtype';
 import { useAppStateStore } from './src/state/AppState';
+import { useRemidersStore } from './src/state/RemindersState';
 
 import { InitTracking } from './src/services/Tracking';
 
@@ -66,6 +67,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { updateAppState, appState } = useAppStateStore((state) => state);
+  const { getData: getRemiderData } = useRemidersStore((state) => state);
   const [fontsLoaded] = useFonts({
     'CeraProBold': require('./assets/fonts/cerapro/CeraProBold.otf'),
     'CeraProBoldItalic': require('./assets/fonts/cerapro/CeraProBoldItalic.otf'),
@@ -94,6 +96,7 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       const appData = await getAppData();
+      await getRemiderData();
       await updateAppState({
         ...appData,
       });

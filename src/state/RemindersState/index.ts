@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { Alert } from 'react-native';
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import * as Notifications from "expo-notifications";
 import { Platform } from 'expo-modules-core';
 import * as Device from 'expo-device';
+import * as Linking from 'expo-linking';
 import { useNavigation } from '@react-navigation/native';
 
 import { StackNavigation } from '../../types/navigation-types';
@@ -56,7 +58,7 @@ export const Notification = () => {
 
 export const schedulePushNotification = async (hour:number, minute:number) => {
   const id = await Notifications.scheduleNotificationAsync({
-    identifier: 'daily',
+    identifier: `daily_${uuid.v4()}`,
     content: {
       title: "Don't forget to reflect on the good.",
       body: "Take a moment to write in your gratitude journal and appreciate the little joys that bring happiness to your life. 🌟",
@@ -73,16 +75,16 @@ export const schedulePushNotification = async (hour:number, minute:number) => {
 
 async function registerForPushNotificationsAsync() {
   let token;
+
   if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
     if (existingStatus !== "granted") {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
+      console.log("Failed to get push token for push notification!");
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
@@ -105,7 +107,51 @@ async function registerForPushNotificationsAsync() {
   return token;
 };
 
-registerForPushNotificationsAsync();
+export async function allowsNotificationsAsync() {
+  const settings = await Notifications.getPermissionsAsync();
+
+  return (
+    settings.granted || settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL
+  );
+};
+
+export const requestPermissionsAsync = async () => {
+  console.log('requestPermissionsAsync');
+  return await Notifications.requestPermissionsAsync({
+    ios: {
+      allowAlert: true,
+      allowBadge: true,
+      allowSound: true,
+      allowAnnouncements: true,
+    },
+  });
+};
+
+const showPermissionsAlert = () =>
+  Alert.alert(
+    'Ooops. Looks like you denied notifications permissions before.',
+    'You can enable them in settings.',
+    [
+      {
+        text: 'Take me to Settings',
+        onPress: () => Linking.openSettings(),
+      },
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+    ],
+    {
+      cancelable: true,
+      onDismiss: () =>
+        Alert.alert(
+          'This alert was dismissed by tapping outside of the alert dialog.',
+        ),
+    },
+  );
+
+// registerForPushNotificationsAsync();
 
 export const cancelNotification = async (notifId:string) => {
   await Notifications.cancelScheduledNotificationAsync(notifId);
@@ -146,7 +192,7 @@ type RemindersStateType = {
     id,
     notifId,
   }: ToggleReminderTypes) => void,
-  getData: () => void,
+  getData: () => Promise<Reminder[]>,
 };
 
 const getData = async () => {
@@ -173,16 +219,47 @@ export const useRemidersStore = create<RemindersStateType>((set, get) => ({
   reminders: [],
   createReminder: async (hour: number, minute: number) => {
     const reminders: Reminder[] = get().reminders;
-    const notifId = await schedulePushNotification(hour, minute);
 
-    const newReminder = {
+    let newReminder:Reminder = {
       id: String(uuid.v4()),
-      notifId,
+      notifId: undefined,
       title: 'Daily Gratitude Reminder',
       hour,
       minute,
-      active: true,
+      active: false,
     };
+
+    // Check permissions first
+    let permissionsStatus = await allowsNotificationsAsync();
+
+    if (!permissionsStatus) {
+      // If no permissions ask again
+      await requestPermissionsAsync();
+
+      // After this check permissions again
+      permissionsStatus = await allowsNotificationsAsync();
+
+      // If still not granted stop here
+      if (!permissionsStatus) {
+        // If we have no reminders (first load?) create one but make it not active
+        const newRemindersArray:Reminder[] = [...reminders, newReminder];
+
+        await saveReminders(newRemindersArray);
+        set({ reminders: newRemindersArray });
+
+        // Show alert only if this is not the first reminder beging created.
+        // The assumption is that this it the first load of the app, so we don't need it.
+        if (reminders.length !== 0) {
+          await showPermissionsAlert();
+        }
+
+        return;
+      }
+    }
+
+    const notifId = await schedulePushNotification(hour, minute);
+    newReminder.notifId = notifId;
+
     const newRemindersArray:Reminder[] = [...reminders, newReminder];
 
     await saveReminders(newRemindersArray);
@@ -202,10 +279,12 @@ export const useRemidersStore = create<RemindersStateType>((set, get) => ({
     if (reminderIsActive && notifId) {
       await cancelNotification(notifId);
       newNotifId = undefined;
-    } 
+    }
     
-    // And schedule a new one
+    // Esle schedule a new one
     newNotifId = await schedulePushNotification(hour, minute);
+
+    console.log('newNotifId: ', newNotifId);
 
     const remindersToSave = reminders.map((item:Reminder) => {
       if (item.id === id) {
@@ -244,7 +323,25 @@ export const useRemidersStore = create<RemindersStateType>((set, get) => ({
         newNotifId = undefined;
       // Or schedule a new one
       } else {
+        // Check permissions first
+        let permissionsStatus = await allowsNotificationsAsync();
+
+        if (!permissionsStatus) {
+          // If no permissions ask again
+          await requestPermissionsAsync();
+
+          // After this check permissions again
+          permissionsStatus = await allowsNotificationsAsync();
+
+          // If still not granted stop here
+          if (!permissionsStatus) {
+            await showPermissionsAlert();
+            return;
+          }
+        }
+        
         newNotifId = await schedulePushNotification(notification.hour, notification.minute);
+        console.log('newNotifId toggle: ', newNotifId);
       }
 
       const remindersToSave = reminders.map((item:Reminder) => {
@@ -263,7 +360,8 @@ export const useRemidersStore = create<RemindersStateType>((set, get) => ({
     }
   },
   getData: async () => {
-    const data = await getData();
+    const data:Reminder[] = await getData();
     set({ reminders: data });
+    return data;
   }
 }));
