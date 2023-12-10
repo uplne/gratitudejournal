@@ -8,6 +8,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { SheetProvider } from "react-native-actions-sheet";
 import FlashMessage from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Home } from './src/pages/Home';
 import { AppStart } from './src/pages/AppStart';
@@ -84,8 +85,6 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
-
-  console.log(appState);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {

@@ -9,6 +9,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { ImageWrapper } from '../ImageWrapper';
 import { ImageType, useJournalStore } from '../../state/JournalState';
+import { useAppStateStore } from '../../state/AppState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
 
 import styles from './styles';
@@ -29,6 +30,9 @@ export const ImagePicker = ({
     addJournalEditedImages,
     removeJournalEditedImages,
   } = useJournalEntryStore();
+  const {
+    updateShouldLock,
+  } = useAppStateStore();
   const { journal } = useJournalStore();
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
@@ -60,6 +64,7 @@ export const ImagePicker = ({
   }, []);
 
   const checkPermissions = async () => {
+    await updateShouldLock(false);
     const permission = await MediaLibrary.getPermissionsAsync();
 
     if (!permission.granted) {
@@ -68,12 +73,14 @@ export const ImagePicker = ({
       if (!result.granted) {
         // TODO - show something
         console.log('No access granted to media library');
+        await updateShouldLock(true);
         return false;
       }
 
+      await updateShouldLock(true);
       return true;
     }
-
+    await updateShouldLock(true);
     return permission.granted;
   };
 
@@ -103,9 +110,6 @@ export const ImagePicker = ({
 
   imageWidth = (safeZoneWidth / 3) * 0.95;
   imageHeight = imageWidth;
-  
-  const gapWidth = safeZoneWidth / 3 - imageWidth;
-  const marginRight = gapWidth * 1.5;
 
   return (
     <View style={styles.root}>

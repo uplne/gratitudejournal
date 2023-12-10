@@ -116,7 +116,6 @@ export async function allowsNotificationsAsync() {
 };
 
 export const requestPermissionsAsync = async () => {
-  console.log('requestPermissionsAsync');
   return await Notifications.requestPermissionsAsync({
     ios: {
       allowAlert: true,
