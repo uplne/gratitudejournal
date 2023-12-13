@@ -8,7 +8,6 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { SheetProvider } from "react-native-actions-sheet";
 import FlashMessage from "react-native-flash-message";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Home } from './src/pages/Home';
 import { AppStart } from './src/pages/AppStart';
@@ -26,6 +25,7 @@ import { ExportData } from './src/pages/ExportData';
 import { EditJournalEntry } from './src/pages/EditJournalEntry';
 import { ImageGallery } from './src/pages/ImageGallery';
 import { TagManager } from './src/pages/TagManager';
+import { DataSecurity } from './src/pages/DataSecurity';
 import { EditTag } from './src/pages/EditTag';
 import { AppStateListener } from './src/components/AppStateListener';
 import { getAppData } from './src/state/AppState';
@@ -53,6 +53,7 @@ export type RootStackParamList = {
   LockScreen: undefined,
   ExportData: undefined,
   TagManager: undefined,
+  DataSecurity: undefined,
   EditJournalEntry: { id: idType },
   EditTag: { id: idType },
 
@@ -85,6 +86,8 @@ export default function App() {
     'GabaritoBlack': require('./assets/fonts/Gabarito/Gabarito-Black.ttf'),
     'GabaritoExtraBold': require('./assets/fonts/Gabarito/Gabarito-ExtraBold.ttf'),
   });
+
+  console.log('appState: ', appState);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && appIsReady) {
@@ -145,6 +148,7 @@ export default function App() {
                 <Stack.Screen name="OneLine" component={OneLine} />
                 <Stack.Screen name="Prompt" component={Prompt} />
                 <Stack.Screen name="EditJournalEntry" component={EditJournalEntry} />
+                <Stack.Screen name="DataSecurity" component={DataSecurity} />
 
                 <Stack.Group screenOptions={{
                   presentation: 'modal',

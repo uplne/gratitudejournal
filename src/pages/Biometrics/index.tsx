@@ -34,7 +34,6 @@ export const Biometrics = () => {
 
       // If it works enable auth
       if (biometricAuth && biometricAuth.success) {
-        console.log('update biometrics to true');
         await updateAppState({
           biometrics: true,
         });

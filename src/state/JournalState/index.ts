@@ -3,9 +3,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import CryptoES from 'crypto-es';
 
 import { TagTypes } from '../TagsState';
 import { useJournalEntryStore } from '../JournalEntryState';
+import { useAppStateStore } from '../AppState';
 
 import { idType } from '../../types/idtype';
 
@@ -81,7 +83,61 @@ const saveJournal = async (values: JournalTypes[]) => {
   } catch (e) {
     console.log('Saving error: ', e);
   }
-}
+};
+
+export const encryptData = async (data: DataType, userHash: idType | null) => {
+  if (!userHash) {
+    return data;
+  }
+
+  if (typeof data === 'string') {
+    return `encrypted_${CryptoES.AES.encrypt(data, userHash.toString())}`;
+  }
+
+  if (Array.isArray(data)) {
+    const newArray = [...data];
+    newArray.forEach((item, index) => {
+      newArray[index] = `encrypted_${CryptoES.AES.encrypt(item || '', userHash.toString())}`;
+    });
+
+    return newArray;
+  }
+};
+
+export const decryptData = (data: DataType, userHash: idType | null) => {
+  if (!userHash) {
+    return data;
+  }
+
+  if (typeof data === 'string') {
+    const isEncrypted = data.match(/^encrypted_/);
+
+    if (isEncrypted) {
+      const newText = data.replace(/^encrypted_/, '');
+      const decrypted = CryptoES.AES.decrypt(newText.toString(), userHash.toString());
+      const result = decrypted.toString(CryptoES.enc.Utf8);
+      return result;
+    }
+
+    return data;
+  }
+
+  if (Array.isArray(data)) {
+    const newArray = [...data];
+
+    newArray.forEach((item, index) => {
+      const isEncrypted = item?.match(/^encrypted_/);
+
+      if (isEncrypted) {
+        const newText = item?.replace(/^encrypted_/, '') || '';
+        const decrypted = CryptoES.AES.decrypt(newText.toString(), userHash.toString());
+        newArray[index] = decrypted.toString(CryptoES.enc.Utf8);
+      }
+    });
+
+    return newArray;
+  }
+};
 
 export const useJournalStore = create<JournalStateType>((set, get) => ({
   journal: [],
@@ -92,6 +148,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
   },
   updateJournal: async (id:idType, type: JOURNAL_TYPES, values: DataType, images: ImageType[]) => {
     const journal: JournalTypes[] = get().journal;
+    const appState = useAppStateStore.getState().appState;
     const tags: TagTypes[] = useJournalEntryStore.getState().journalTags;
 
     const imagesMap = async (item: JournalTypes) => {
@@ -131,7 +188,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
         return {
           ...item,
           type,
-          data: values,
+          data: await encryptData(values, appState.userHash),
           tags,
           images: updatedImages,
         };
@@ -157,6 +214,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
   setNewJournal: async (item: JournalTypes) => {
     const journal: JournalTypes[] = get().journal;
     const tags: idType[] = useJournalEntryStore.getState().journalTags;
+    const appState = useAppStateStore.getState().appState;
     const imagesMap = await Promise.all([...item.images].map(async (image) => {
       const key = uuid.v4();
       const newUri = `${PHOTOS_FOLDER}/${key}.jpg`;
@@ -172,7 +230,7 @@ export const useJournalStore = create<JournalStateType>((set, get) => ({
       id: uuid.v4(),
       type: item.type,
       date: item.date,
-      data: item.data,
+      data: await encryptData(item.data, appState.userHash),
       prompt: item.prompt,
       images: imagesMap,
       tags, 

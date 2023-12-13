@@ -3,7 +3,7 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 export default {
   "name": IS_DEV ? "Gratitude Journal (Dev)" : "Gratitude Journal",
   "slug": "gratitude-journal",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
@@ -22,9 +22,10 @@ export default {
   "ios": {
     "supportsTablet": false,
     "bundleIdentifier": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "buildNumber": "1.0.7",
+    "buildNumber": "1.1.0",
     "infoPlist": {
-      "NSFaceIDUsageDescription": "This app uses the FaceID to secure your journals."
+      "NSFaceIDUsageDescription": "This app uses the FaceID to secure your journals.",
+      "NSUserTrackingUsageDescription": "We only store and collect what's necessary to give you the best experience on Gratitude Journal."
     }
   },
   "android": {
@@ -33,7 +34,7 @@ export default {
       "backgroundColor": "#ffffff"
     },
     "package": IS_DEV ? "com.planmylife.gratitudejournal.dev" : "com.planmylife.gratitudejournal",
-    "versionCode": 8
+    "versionCode": 9
   },
   "web": {
     "favicon": "./assets/favicon.png"
@@ -74,6 +75,12 @@ export default {
       "expo-local-authentication",
       {
         "faceIDPermission": "Allow Gratitude Journal to use Face ID."
+      }
+    ],
+    [
+      "expo-tracking-transparency",
+      {
+        "userTrackingPermission": "We only store and collect what's necessary to give you the best experience on Gratitude Journal."
       }
     ]
   ],

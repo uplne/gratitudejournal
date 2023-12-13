@@ -13,6 +13,7 @@ export type AppStateTypes = {
   alreadyLaunched: boolean,
   name: string,
   userID: idType | null,
+  userHash: idType | null,
   tracking: boolean,
   tier: TierTypes,
   biometrics: boolean,
@@ -31,6 +32,7 @@ const appStateDefaultValues = {
   alreadyLaunched: false,
   name: '',
   userID: null,
+  userHash: null,
   tracking: true,
   tier: TierTypes.FREE,
   biometrics: false,
@@ -62,13 +64,6 @@ const saveAppState = async (values: Partial<AppStateTypes>) => {
   }
 };
 
-const updateAppState = async (values:Partial<AppStateTypes>, state: AppStateTypes) => {
-  await saveAppState({
-    ...state,
-    ...values,
-  });
-};
-
 export const useAppStateStore = create<AppStateType>((set, get) => ({
   appState: appStateDefaultValues,
   shouldLock: true,
@@ -77,7 +72,10 @@ export const useAppStateStore = create<AppStateType>((set, get) => ({
   },
   updateAppState: async (values:Partial<AppStateTypes>) => {
     const appStateValues: AppStateTypes = get().appState;
-    await updateAppState(values, appStateValues);
+    await saveAppState({
+      ...appStateValues,
+      ...values,
+    });
     set({ appState: {
       ...appStateValues,
       ...values,

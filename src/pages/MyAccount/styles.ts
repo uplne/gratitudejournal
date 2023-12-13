@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    marginBottom: 30,
   },
   container: {
     backgroundColor: theme.secondary,

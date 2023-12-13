@@ -3,7 +3,8 @@ import { Entypo } from '@expo/vector-icons';
 import Constants from "expo-constants";
 import RenderHtml from 'react-native-render-html';
 
-import { JournalTypes, JOURNAL_TYPES } from '../../../../state/JournalState';
+import { JournalTypes, JOURNAL_TYPES, decryptData } from '../../../../state/JournalState';
+import { useAppStateStore } from '../../../../state/AppState';
 
 import styles from '../../styles';
 import TagStyles from '../TagStyles';
@@ -17,6 +18,8 @@ const systemFonts = [...Constants.systemFonts, 'GabaritoRegular', 'GabaritoBold'
 export const Default = ({
   data,
 }: Props) => {
+  const appState = useAppStateStore.getState().appState;
+
   if (typeof data.data !== 'string') {
     return (
       <View style={{ marginBottom: 15 }}>
@@ -31,10 +34,12 @@ export const Default = ({
             marginTopStyle = 0;
           }
 
+          const singleDataDecrypted = decryptData(item, appState.userHash)?.toString();
+
           return (
-          <View key={item} style={[styles.container, { marginTop: marginTopStyle, paddingBottom: 0, width: '85%', }]}>
+          <View key={singleDataDecrypted} style={[styles.container, { marginTop: marginTopStyle, paddingBottom: 0, width: '85%', }]}>
             <Entypo style={styles.icon} name="dot-single" size={24} color="black" />
-            <Text style={styles.text}>{item}</Text>
+            <Text style={styles.text}>{singleDataDecrypted}</Text>
           </View> 
           );
         })}
@@ -42,10 +47,12 @@ export const Default = ({
     );
   }
 
+  const singleDataDecrypted = decryptData(data.data, appState.userHash)?.toString();
+
   if (data.type === JOURNAL_TYPES.ONE_LINE) {
     return (
-      <View key={data.data} style={[styles.container, { paddingBottom: 0, marginBottom: 15, }]}>
-        <Text style={styles.text}>{data.data}</Text>
+      <View key={singleDataDecrypted} style={[styles.container, { paddingBottom: 0, marginBottom: 15, }]}>
+        <Text style={styles.text}>{singleDataDecrypted}</Text>
       </View> 
     );
   }
@@ -53,14 +60,14 @@ export const Default = ({
   const containerStyles = data.type === JOURNAL_TYPES.PROMPT ? styles.containerWithPrompt : styles.container;
 
   return (
-    <View key={String(data.data)} style={containerStyles}>
+    <View key={String(singleDataDecrypted)} style={containerStyles}>
       {data.type === JOURNAL_TYPES.PROMPT && <Text style={styles.prompt}>{data.prompt}</Text>}
       <RenderHtml
         contentWidth={300}
         baseStyle={styles.text}
         tagsStyles={TagStyles}
         systemFonts={systemFonts}
-        source={{ html: data.data}}
+        source={{ html: singleDataDecrypted || ''}}
       />
     </View> 
   );

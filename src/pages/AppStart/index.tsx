@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 import { useAppStateStore } from '../../state/AppState';
 import { useRemidersStore } from '../../state/RemindersState';
@@ -12,6 +14,8 @@ export const AppStart = () => {
   const updateAppState = useAppStateStore((state) => state.updateAppState);
   const { createReminder, reminders } = useRemidersStore((state) => state);
   let userID = appState.userID;
+  let userHash = appState.userHash;
+  let tracking = appState.tracking;
 
   const goNext = () => {
     if (appState && !appState.alreadyLaunched) {
@@ -23,7 +27,6 @@ export const AppStart = () => {
 
   useEffect(() => {
     const getNotifications = async () => {
-      console.log('AppStart: Notifications: ', reminders);
       // Setup reminder
       if (reminders.length === 0) {
         createReminder(19, 30);
@@ -32,13 +35,29 @@ export const AppStart = () => {
 
     getNotifications();
 
+    (async () => {
+      if (Platform.OS === 'ios') {
+        const { status } = await requestTrackingPermissionsAsync();
+
+        if (status !== 'granted') {
+          tracking = false;
+        }
+      }
+    })();
+
     if (!userID) {
       userID = uuid.v4();
+    }
+
+    if (!userHash) {
+      userHash = uuid.v4();
     }
 
     updateAppState({
       alreadyLaunched: true,
       userID,
+      userHash,
+      tracking,
     });
 
     goNext();
