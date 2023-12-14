@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginBottom: 20,
   },
   button: {
     width: 40,
