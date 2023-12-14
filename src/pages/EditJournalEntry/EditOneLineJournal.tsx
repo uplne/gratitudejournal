@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { View, TextInput, Keyboard, ScrollView } from 'react-native';
 
-import { useJournalStore } from '../../state/JournalState';
+import { useJournalStore, decryptData } from '../../state/JournalState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
+import { useAppStateStore } from '../../state/AppState';
 import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
@@ -24,6 +25,7 @@ export const EditOneLineJournal = ({
     updateJournalEditedText,
     updateJournalTags,
   } = useJournalEntryStore();
+  const { appState } = useAppStateStore();
   const journalId = id;
   const journalEntry = journal.filter((item) => item.id === journalId)[0];
   const journalItemData = journalEntry?.data || null;
@@ -55,7 +57,7 @@ export const EditOneLineJournal = ({
           <View style={styles.innerWrap}>
             <View style={styles.textInputContainer}>
               <TextInput
-                value={text}
+                value={decryptData(text, appState.userHash)?.toString()}
                 onChangeText={updateJournalEditedText}
                 style={styles.textArea}
                 selectionColor={styles.textArea.selectionColor}

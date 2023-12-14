@@ -1,8 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 
-import { useJournalStore } from '../../state/JournalState';
+import { useJournalStore, decryptData } from '../../state/JournalState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
+import { useAppStateStore } from '../../state/AppState';
 import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
@@ -25,6 +26,7 @@ export const EditDefaultJournal = ({
     updateJournalEditedText,
     updateJournalTags,
   } = useJournalEntryStore();
+  const { appState } = useAppStateStore();
   const journalId = id;
   const journalEntry = journal.filter((item) => item.id === journalId)[0];
   const journalItemData = journalEntry?.data || null;
@@ -52,7 +54,7 @@ export const EditDefaultJournal = ({
             <View style={styles.innerWrap}>
               <RichTextEditor
                 ref={EditorRef}
-                initialContentHTML={journalEditedText}
+                initialContentHTML={decryptData(journalEditedText, appState.userHash)?.toString()}
                 setText={updateJournalEditedText}
               />
               <ImagePicker journalId={journalId} />

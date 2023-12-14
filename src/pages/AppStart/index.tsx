@@ -15,7 +15,6 @@ export const AppStart = () => {
   const { createReminder, reminders } = useRemidersStore((state) => state);
   let userID = appState.userID;
   let userHash = appState.userHash;
-  let tracking = appState.tracking;
 
   const goNext = () => {
     if (appState && !appState.alreadyLaunched) {
@@ -38,9 +37,12 @@ export const AppStart = () => {
     (async () => {
       if (Platform.OS === 'ios') {
         const { status } = await requestTrackingPermissionsAsync();
+        console.log('requestTrackingPermissionsAsync: ', status);
 
         if (status !== 'granted') {
-          tracking = false;
+          updateAppState({
+            tracking: false,
+          });
         }
       }
     })();
@@ -57,7 +59,6 @@ export const AppStart = () => {
       alreadyLaunched: true,
       userID,
       userHash,
-      tracking,
     });
 
     goNext();

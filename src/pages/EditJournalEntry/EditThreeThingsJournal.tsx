@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { View, TextInput, Keyboard, ScrollView } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
-import { useJournalStore } from '../../state/JournalState';
+import { useJournalStore, decryptData } from '../../state/JournalState';
 import { useJournalEntryStore } from '../../state/JournalEntryState';
+import { useAppStateStore } from '../../state/AppState';
 import { ButtonKeyboard } from '../../components/Buttons/ButtonKeyboard';
 import { useKeyboardShow } from '../../hooks/useKeyboardShow';
 import { Container } from '../../components/Container';
@@ -25,6 +26,7 @@ export const EditThreeThingsJournal = ({
     updateJournalEditedText,
     updateJournalTags,
   } = useJournalEntryStore();
+  const { appState } = useAppStateStore();
   const journalId = id;
   const journalEntry = journal.filter((item) => item.id === journalId)[0];
   const journalItemData = journalEntry?.data || null;
@@ -63,7 +65,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalEditedText[0]}
+                  value={decryptData(journalEditedText[0], appState.userHash)?.toString()}
                   multiline
                   onChangeText={(text) => onChangeText(text, 0)}
                   style={styles.textArea}
@@ -73,7 +75,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalEditedText[1]}
+                  value={decryptData(journalEditedText[1], appState.userHash)?.toString()}
                   multiline
                   onChangeText={(text) => onChangeText(text, 1)}
                   style={styles.textArea}
@@ -83,7 +85,7 @@ export const EditThreeThingsJournal = ({
               <View style={styles.textInputContainer}>
                 <Entypo name="dot-single" size={24} color="black" />
                 <TextInput
-                  value={journalEditedText[2]}
+                  value={decryptData(journalEditedText[2], appState.userHash)?.toString()}
                   multiline
                   onChangeText={(text) => onChangeText(text, 2)}
                   style={styles.textArea}

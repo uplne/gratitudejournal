@@ -90,6 +90,10 @@ export const encryptData = async (data: DataType, userHash: idType | null) => {
     return data;
   }
 
+  if (data === '' || data === null) {
+    return null;
+  }
+
   if (typeof data === 'string') {
     return `encrypted_${CryptoES.AES.encrypt(data, userHash.toString())}`;
   }
@@ -97,6 +101,11 @@ export const encryptData = async (data: DataType, userHash: idType | null) => {
   if (Array.isArray(data)) {
     const newArray = [...data];
     newArray.forEach((item, index) => {
+
+      if (item === '' || item === null) {
+        return null;
+      }
+      
       newArray[index] = `encrypted_${CryptoES.AES.encrypt(item || '', userHash.toString())}`;
     });
 
