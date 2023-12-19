@@ -53,11 +53,11 @@ export const MyAccount = () => {
               content="Reminders"
               onPress={() => navigation.navigate('Reminders')}
             />
-            <SubMenu.MenuButton
+            {/* <SubMenu.MenuButton
               icon="database-eye-outline"
               content="Tracking"
               onPress={() => navigation.navigate('Tracking')}
-            />
+            /> */}
             <SubMenu.MenuButton
               icon="shield-lock-outline"
               content="Touch/Face ID Lock"

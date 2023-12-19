@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+// import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
-import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+// import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 import { useAppStateStore } from '../../state/AppState';
 import { useRemidersStore } from '../../state/RemindersState';
@@ -32,20 +32,19 @@ export const AppStart = () => {
       }
     };
 
+    // (async () => {
+    //   if (Platform.OS === 'ios') {
+    //     const { status } = await requestTrackingPermissionsAsync();
+
+    //     if (status !== 'granted') {
+    //       updateAppState({
+    //         tracking: false,
+    //       });
+    //     }
+    //   }
+    // })();
+
     getNotifications();
-
-    (async () => {
-      if (Platform.OS === 'ios') {
-        const { status } = await requestTrackingPermissionsAsync();
-        console.log('requestTrackingPermissionsAsync: ', status);
-
-        if (status !== 'granted') {
-          updateAppState({
-            tracking: false,
-          });
-        }
-      }
-    })();
 
     if (!userID) {
       userID = uuid.v4();

@@ -33,7 +33,7 @@ const appStateDefaultValues = {
   name: '',
   userID: null,
   userHash: null,
-  tracking: true,
+  tracking: false,
   tier: TierTypes.FREE,
   biometrics: false,
   biometricsAvailable: false,
